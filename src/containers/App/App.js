@@ -1,25 +1,13 @@
 import React from 'react';
-import logo from '../../assets/svgs/logo.svg';
 import classes from './App.module.scss';
+import BarChartWithButton from '../../examples/d3WithReact/D3BarChartAndBarChartContainer/BarChartWithButton.js';
 
 function App() {
+
   return (
     <div className={classes.App}>
-      <header className={classes.AppHeader}>
-        <img src={logo} className={classes.AppLogo} alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className={classes.AppLink}
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <BarChartWithButton heightOfBars={250} widthOfBars={50} />
+    </div >
   );
 }
 
