@@ -24,12 +24,12 @@ const StreamGraph = () => {
 
     // code runs only if data has been fetched
     useEffect(() => {
+
         const dataHasFetched = data !== undefined && data.columns !== undefined && data !== [];
+        const svg = d3.select(svgRef.current);
 
         if (dataHasFetched) {
 
-
-            const svg = d3.select(svgRef.current);
 
             // debug to see data we have fetched!
             console.log(data);
@@ -93,13 +93,15 @@ const StreamGraph = () => {
 
             // Three function that change the tooltip when user hover / move / leave a cell
             var mouseover = function (d) {
+                console.log(d);
                 Tooltip.style("opacity", 1)
                 d3.selectAll(".myArea").style("opacity", .2)
                 d3.select(this)
-                    .style("stroke", "black")
+                    //.style("stroke", "black")
                     .style("opacity", 1)
             }
             var mousemove = function (d, i) {
+                console.log(i);
                 var grp = keys[i];
                 Tooltip.text(grp);
             }
@@ -110,6 +112,7 @@ const StreamGraph = () => {
 
             // Area generator
             var area = d3.area()
+                .curve(d3.curveBasis)
                 .x(function (d) { return x(d.data.year); })
                 .y0(function (d) { return y(d[0]); })
                 .y1(function (d) { return y(d[1]); });
@@ -130,6 +133,12 @@ const StreamGraph = () => {
                 .on("mousemove", mousemove)
                 .on("mouseleave", mouseleave)
         }
+
+        return () => {
+            svg.selectAll("svg").exit().remove();
+        }
+
+
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data]);
 
     return <div height={'700px'}> <svg height={'1000px'} width={'1000px'} ref={svgRef}></svg></div >;
