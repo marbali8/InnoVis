@@ -1,6 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import companyData from '../../data/companies_yearly_data.json';
+import * as _ from 'lodash'
+
+const RELEVANT_YEARS = ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"];
+
+const stack_company_data = _.mapValues(_.groupBy(companyData, "primary_code_in_NIC"), business_segment => {
+  let result = RELEVANT_YEARS.map(x => 0)
+  for (let company of business_segment) {
+    for (let i = 0; i < RELEVANT_YEARS.length; i++) {
+      if (company["revenue_" + RELEVANT_YEARS[i]] != null) {
+        result[i] += company["revenue_" + RELEVANT_YEARS[i]]
+      }
+    }
+  }
+  return result
+});
+
+// omitting companies without sni for now
+delete stack_company_data['null']
+
+const SNI_codes = Object.keys(stack_company_data)
+
+const result = RELEVANT_YEARS.map(year => {
+  let obj = {
+    year: year,
+  }
+  for (let SNI of SNI_codes) {
+    obj[SNI] = stack_company_data[SNI][RELEVANT_YEARS.indexOf(year)]
+  }
+  return obj
+})
 
 const StreamGraph = () => {
 
@@ -9,30 +39,32 @@ const StreamGraph = () => {
     const width = 460 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    // state and ref to svg 
+    // state and ref to svg
     const svgRef = useRef();
     const [data, setData] = useState([]);
 
-    // called only on first mount to fetch data and set it to state
     useEffect(() => {
+      setData(result);
+    })
+
+    // called only on first mount to fetch data and set it to state
+    /*useEffect(() => {
         async function fetchData() {
             var fetchedData = await d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered_wide.csv");
-            setData(fetchedData);
+            console.log(fetchedData)
         };
         fetchData();
-    }, []);
+    }, []);*/
 
     // code runs only if data has been fetched
     useEffect(() => {
 
-        const dataHasFetched = data !== undefined && data.columns !== undefined && data !== [];
+        const dataHasFetched = data !== undefined && data.length !== 0;
         const svg = d3.select(svgRef.current);
 
         if (dataHasFetched) {
 
-
-            // debug to see data we have fetched!
-            console.log(data);
+            console.log(data)
 
             // append the svg object to the body of the page
             svg
@@ -43,10 +75,9 @@ const StreamGraph = () => {
                 .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")");
 
-            var keys = data.columns.slice(1);
-            // var keys = companyData[0].keys;
+            const keys = SNI_codes;
 
-            console.log(keys);
+            console.log(d3.extent(data, function (d) { return d.year; }));
 
             // add X axis
             var x = d3.scaleLinear()
@@ -54,7 +85,7 @@ const StreamGraph = () => {
                 .range([0, width]);
             svg.append("g")
                 .attr("transform", "translate(0," + height * 0.8 + ")")
-                .call(d3.axisBottom(x).tickSize(-height * .7).tickValues([1900, 1925, 1975, 2000]))
+                .call(d3.axisBottom(x).tickSize(-height * .7).tickValues(RELEVANT_YEARS))
                 .select(".domain").remove()
 
             // customization
@@ -69,7 +100,7 @@ const StreamGraph = () => {
 
             // add y axis
             var y = d3.scaleLinear()
-                .domain([-100000, 100000])
+                .domain([-3000000, 3000000])
                 .range([height, 0]);
 
             // color palette
@@ -93,7 +124,6 @@ const StreamGraph = () => {
 
             // Three function that change the tooltip when user hover / move / leave a cell
             var mouseover = function (d) {
-                console.log(d);
                 Tooltip.style("opacity", 1)
                 d3.selectAll(".myArea").style("opacity", .2)
                 d3.select(this)
@@ -101,7 +131,6 @@ const StreamGraph = () => {
                     .style("opacity", 1)
             }
             var mousemove = function (d, i) {
-                console.log(i);
                 var grp = keys[i];
                 Tooltip.text(grp);
             }
@@ -116,9 +145,6 @@ const StreamGraph = () => {
                 .x(function (d) { return x(d.data.year); })
                 .y0(function (d) { return y(d[0]); })
                 .y1(function (d) { return y(d[1]); });
-
-
-            console.log(stackedData);
 
             // Show the areas
             svg
