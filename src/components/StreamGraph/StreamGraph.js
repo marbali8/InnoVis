@@ -6,15 +6,15 @@ import * as _ from 'lodash'
 const RELEVANT_YEARS = ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"];
 
 const stack_company_data = _.mapValues(_.groupBy(companyData, "primary_code_in_NIC"), business_segment => {
-  let result = RELEVANT_YEARS.map(x => 0)
-  for (let company of business_segment) {
-    for (let i = 0; i < RELEVANT_YEARS.length; i++) {
-      if (company["revenue_" + RELEVANT_YEARS[i]] != null) {
-        result[i] += company["revenue_" + RELEVANT_YEARS[i]]
-      }
+    let result = RELEVANT_YEARS.map(x => 0)
+    for (let company of business_segment) {
+        for (let i = 0; i < RELEVANT_YEARS.length; i++) {
+            if (company["revenue_" + RELEVANT_YEARS[i]] != null) {
+                result[i] += company["revenue_" + RELEVANT_YEARS[i]]
+            }
+        }
     }
-  }
-  return result
+    return result
 });
 
 // omitting companies without sni for now
@@ -23,13 +23,13 @@ delete stack_company_data['null']
 const SNI_codes = Object.keys(stack_company_data)
 
 const result = RELEVANT_YEARS.map(year => {
-  let obj = {
-    year: year,
-  }
-  for (let SNI of SNI_codes) {
-    obj[SNI] = stack_company_data[SNI][RELEVANT_YEARS.indexOf(year)]
-  }
-  return obj
+    let obj = {
+        year: year,
+    }
+    for (let SNI of SNI_codes) {
+        obj[SNI] = stack_company_data[SNI][RELEVANT_YEARS.indexOf(year)]
+    }
+    return obj
 })
 
 const StreamGraph = () => {
@@ -44,7 +44,7 @@ const StreamGraph = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      setData(result);
+        setData(result);
     })
 
     // called only on first mount to fetch data and set it to state
@@ -77,8 +77,6 @@ const StreamGraph = () => {
 
             const keys = SNI_codes;
 
-            console.log(d3.extent(data, function (d) { return d.year; }));
-
             // add X axis
             var x = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return d.year; }))
@@ -103,10 +101,26 @@ const StreamGraph = () => {
                 .domain([-3000000, 3000000])
                 .range([height, 0]);
 
+
+            // var keyToColorMap = (key) => { return d3.interpolateRainbow(key / (96090 + 1000)) };
+
+            // for random coloring of each stream in the graph:
+            var keyToColorMap = (key) => { return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6) };
+
             // color palette
             var color = d3.scaleOrdinal()
                 .domain(keys)
-                .range(d3.schemeDark2);
+                .range(["#34802", "#34329"]);
+
+
+
+            // var color = d3.scaleOrdinal()
+            //     .domain(keys)
+            //     .range(d3.range(keys.length).map(d3.scale.linear()
+            //         .domain([0, keys.length - 1])
+            //         .range(["red", "blue"])
+            //         .interpolate(d3.interpolateLab)));
+
 
             //stack the data
             var stackedData = d3.stack()
@@ -153,7 +167,10 @@ const StreamGraph = () => {
                 .enter()
                 .append("path")
                 .attr("class", "myArea")
-                .style("fill", function (d) { return color(d.key); })
+                .style("fill", function (d) {
+                    console.log(d.key);
+                    return keyToColorMap(d.key);
+                })
                 .attr("d", area)
                 .on("mouseover", mouseover)
                 .on("mousemove", mousemove)
@@ -167,19 +184,7 @@ const StreamGraph = () => {
 
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data]);
 
-    return <div height={'700px'}> <svg height={'1000px'} width={'1000px'} ref={svgRef}></svg></div >;
+    return <React.Fragment><svg height={'400px'} width={'500px'} ref={svgRef}></svg></React.Fragment>;
 };
 
 export default StreamGraph;
-
-
-    // svg.selectAll("circle")
-            //     .data(data)
-            //     .join(
-            //         enter => enter.append('g').append("circle")
-            //             .attr("r", d => d)
-            //             .attr("cx", d => d * 2.5)
-            //             .attr("cy", d => d * 3 + 10),
-            //         update => update.attr("class", "updated"),
-            //         exit => exit.remove()
-            //     );
