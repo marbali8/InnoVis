@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './App.module.scss';
-import MegaBallsViewFloating from '../../components/MegaBallsView/MegaBallsViewFloating.js';
+import MegaBallsViewFloating from '../../components/MegaBallsView/MegaBallsViewFloating/MegaBallsViewFloating.js';
 
 function App() {
 
