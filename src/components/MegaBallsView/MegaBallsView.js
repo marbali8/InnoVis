@@ -24,14 +24,16 @@ const MegaBallsView = (mockData) => {
         };
 
         // adjustable options
-        const numBalls = 200;
-        const maxSpeed = 20;
+        const numBalls = 280;
+        let numCategories = 6;
+        const maxSpeed = 1;
         const maxBallArea = 10;
         // max domain value for color scale's domain = [0,1,2...m]
         const m = 20;
 
         const radiusScale = d3.scaleSqrt().domain([0, 100]).range([0, maxBallArea]);
-        const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain("red");//d3.range(10000));
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
+        var colorSpectral = d3.scaleSequential().domain([1,10]).interpolator(d3.schemeSpectral);
 
         const nodes = [];
         for (let i = 0; i < numBalls; i++) {
@@ -40,8 +42,8 @@ const MegaBallsView = (mockData) => {
                 color: colorScale(Math.floor(Math.random() * m)),
                 x: ballBox.min.x + (Math.random() * (ballBox.max.x - ballBox.min.x)),
                 y: ballBox.min.y + (Math.random() * (ballBox.max.y - ballBox.min.y)),
-                speedX: (Math.random() - 0.5) * 10 * maxSpeed,
-                speedY: (Math.random() - 0.5) * 10 * maxSpeed
+                speedX: (Math.random() - 0.5) * 2 * maxSpeed,
+                speedY: (Math.random() - 0.5) * 2 * maxSpeed
             });
         }
 
@@ -57,38 +59,65 @@ const MegaBallsView = (mockData) => {
         canvas = referencedSvg.select("g");
 
         var simulation = d3.forceSimulation()
-            .force("forceX", d3.forceX().strength(.1).x(width * .5))
-            .force("forceY", d3.forceY().strength(.1).y(height * .5))
+            .force("forceX", d3.forceX().strength(.1).x(-width * .5))
+            .force("forceY", d3.forceY().strength(.1).y(-height * .5))
             .force("center", d3.forceCenter().x(width * .5).y(height * .5))
-            .force("charge", d3.forceManyBody().strength(-25));
-//            .force("distanceMin", d3.forceManyBody().distanceMin(10))
-//            .force("theta", d3.forceManyBody().theta(.1));
+            .force("charge", d3.forceManyBody().strength(-1))
+            .force("distanceMin", d3.forceManyBody().distanceMin(-1))
+            .force("theta", d3.forceManyBody().theta(.9));
 
         const graph = [];
         const nodeLinks = [];
+        const nodeAntiLinks = [];
+
 
         for (let i = 0; i < numBalls; i++)
         {
-            if (i < 4) graph.push({size: 10});
+            if (i < numCategories)
+            {
+                graph.push({size: 0, id: i});
+
+                if (i > 0)
+                {
+                    for (let j = 0; j < i; j++)
+                    {
+                        nodeLinks.push({"source": i, "target": j});
+                    }
+                }
+            }
             else
             {
-                graph.push({"size": Math.random() * 2+3});
+                graph.push({
+                    size: Math.random() * 2+3,
+                    id: i%numCategories
+                });
 
-                nodeLinks.push({"source": i%4, "target": i});
+                for (let j = 0; j < numCategories; j++)
+                {
+                    if (j == i%numCategories){
+                        nodeLinks.push({"source": j, "target": i});
+                    }
+                    else
+                    {
+                        nodeAntiLinks.push({"source": j, "target": i});
+                    }
+                }
             }
+
         }
         //const graph = [{ size: 2 }, { size: 3 }, { size: 4 }];
 
         // update the simulation based on the data
         simulation
             .nodes(graph)
-            .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return d.radius + 5; }).iterations(1))
+            .force("collide", d3.forceCollide().strength(.9).radius(function (d) { return d.radius; }).iterations(1))
             .on("tick", function (d) {
                 node
                     .attr("cx", function (d) { return d.x; })
                     .attr("cy", function (d) { return d.y; })
             })
-            .force("link", d3.forceLink(nodeLinks).strength(.9).distance(5).iterations(1));
+            .force("link", d3.forceLink(nodeLinks).strength(.09).distance(.0005).iterations(10).id(graph.id));
+            //.force("link", d3.forceLink(nodeAntiLinks).strength(.03).distance(10).iterations(2));
         
         
 
@@ -107,7 +136,7 @@ const MegaBallsView = (mockData) => {
             .data(graph)
             .enter().append("circle")
             .attr("r", function (d) { return d.size; })
-            .attr("fill", function (d) { return colorScale(Math.floor(Math.random() * 20)) })
+            .attr("fill", function (d) { return colorScale(d.id) })
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
             .call(d3.drag()
@@ -119,6 +148,16 @@ const MegaBallsView = (mockData) => {
             if (!d3.event.active) simulation.alphaTarget(.03).restart();
             d.fx = d.x;
             d.fy = d.y;
+        }
+
+        function pow(x, y)
+        {
+            let ret = 1;
+            for (let i = 0; i < y; i++)
+            {
+                ret *= x;
+            }
+            return ret;
         }
 
         function dragged(d) {
