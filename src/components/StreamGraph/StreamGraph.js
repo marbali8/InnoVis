@@ -64,7 +64,7 @@ const StreamGraph = () => {
 
         if (dataHasFetched) {
 
-            console.log(data)
+            //console.log(data);
 
             // append the svg object to the body of the page
             svg
@@ -168,7 +168,7 @@ const StreamGraph = () => {
                 .append("path")
                 .attr("class", "myArea")
                 .style("fill", function (d) {
-                    console.log(d.key);
+                    //console.log(d.key);
                     return keyToColorMap(d.key);
                 })
                 .attr("d", area)
