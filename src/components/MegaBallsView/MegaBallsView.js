@@ -16,11 +16,11 @@ const MegaBallsView = (mockData) => {
 
         // vertical & horizontal margin to ball box, which is rectangular area containing the balls
         // top margin = bottom margin = vertical margin, similar eq for hz. margin!
-        const vm = 1 / 10 * height;
-        const hm = 1 / 10 * width;
+        const bvm = 1 / 10 * height;
+        const bhm = 1 / 10 * width;
         const ballBox = {
-            min: { x: hm, y: vm },
-            max: { x: width - hm, y: height - vm }
+            min: { x: bhm, y: bvm },
+            max: { x: width - bhm, y: height - bvm }
         };
 
         // adjustable options
@@ -60,8 +60,8 @@ const MegaBallsView = (mockData) => {
         canvas = referencedSvg.select("g");
 
         canvas.append("svg:rect")
-            .attr("width", width - hm * 2)
-            .attr("height", height - vm * 2)
+            .attr("width", width - bhm * 2)
+            .attr("height", height - bvm * 2)
             .attr("x", ballBox.min.x)
             .attr("y", ballBox.min.y)
             .style("fill", "None")
