@@ -33,7 +33,7 @@ const MegaBallsView = (mockData) => {
 
         const radiusScale = d3.scaleSqrt().domain([0, 100]).range([0, maxBallArea]);
         const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
-        var colorSpectral = d3.scaleSequential().domain([1,10]).interpolator(d3.schemeSpectral);
+        var colorSpectral = d3.scaleSequential().domain([1, 10]).interpolator(d3.schemeSpectral);
 
         const nodes = [];
         for (let i = 0; i < numBalls; i++) {
@@ -71,35 +71,28 @@ const MegaBallsView = (mockData) => {
         const nodeAntiLinks = [];
 
 
-        for (let i = 0; i < numBalls; i++)
-        {
-            if (i < numCategories)
-            {
-                graph.push({size: 0, id: i});
+        for (let i = 0; i < numBalls; i++) {
+            if (i < numCategories) {
+                graph.push({ size: 0, id: i });
 
-                if (i > 0)
-                {
-                    for (let j = 0; j < i; j++)
-                    {
-                        nodeLinks.push({"source": i, "target": j});
+                if (i > 0) {
+                    for (let j = 0; j < i; j++) {
+                        nodeLinks.push({ "source": i, "target": j });
                     }
                 }
             }
-            else
-            {
+            else {
                 graph.push({
-                    size: Math.random() * 2+3,
-                    id: i%numCategories
+                    size: Math.random() * 2 + 3,
+                    id: i % numCategories
                 });
 
-                for (let j = 0; j < numCategories; j++)
-                {
-                    if (j == i%numCategories){
-                        nodeLinks.push({"source": j, "target": i});
+                for (let j = 0; j < numCategories; j++) {
+                    if (j == i % numCategories) {
+                        nodeLinks.push({ "source": j, "target": i });
                     }
-                    else
-                    {
-                        nodeAntiLinks.push({"source": j, "target": i});
+                    else {
+                        nodeAntiLinks.push({ "source": j, "target": i });
                     }
                 }
             }
@@ -117,9 +110,9 @@ const MegaBallsView = (mockData) => {
                     .attr("cy", function (d) { return d.y; })
             })
             .force("link", d3.forceLink(nodeLinks).strength(.09).distance(.0005).iterations(10).id(graph.id));
-            //.force("link", d3.forceLink(nodeAntiLinks).strength(.03).distance(10).iterations(2));
-        
-        
+        //.force("link", d3.forceLink(nodeAntiLinks).strength(.03).distance(10).iterations(2));
+
+
 
         // draw bounding box;
         canvas.append("svg:rect")
@@ -150,11 +143,9 @@ const MegaBallsView = (mockData) => {
             d.fy = d.y;
         }
 
-        function pow(x, y)
-        {
+        function pow(x, y) {
             let ret = 1;
-            for (let i = 0; i < y; i++)
-            {
+            for (let i = 0; i < y; i++) {
                 ret *= x;
             }
             return ret;

@@ -1,12 +1,14 @@
 import React from 'react';
 import classes from './App.module.scss';
-import MegaBallsView from '../../components/MegaBallsView/MegaBallsView.js';
+import MegaBallsViewFloating from '../../components/MegaBallsView/MegaBallsViewFloating.js';
 
 function App() {
 
+  // next step is to combine the two files into a new file where we transition between
+  // the megaball views when grouping balls by SNI code or industry
   return (
     <div className={classes.App}>
-      <MegaBallsView></MegaBallsView>
+      <MegaBallsViewFloating></MegaBallsViewFloating>
     </div >
   );
 }
