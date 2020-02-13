@@ -6,15 +6,14 @@ const MegaBallsView = (mockData) => {
 
     const svgRef = useRef();
 
-    const margin = { left: 0, right: 0, top: 0, bottom: 100 };
+    const margin = { left: 0, right: 0, top: 0, bottom: 0 };
     const width = 1000 - margin.left - margin.right;
     const height = 1000 - margin.top - margin.bottom;
 
     useEffect(() => {
-
-        // vertical & horizontal margin to ball box, which is rectangular area containing the balls
-        // top margin = bottom margin = vertical margin, similar eq for hz. margin!
-        // max = top right corner, min = bottom left corner
+        // vertical & horizontal margin to ball box, which is rectangular area corralling the balls
+        // top margin = bottom margin = ball box vertical margin, similar eq for hz. margin!
+        // max = top right corner of b.box, min = bottom left corner of b.box
         // as bvm and bhm increase -> area of ballBox decreases. 
         const bvm = 1 / 10 * height;
         const bhm = 1 / 10 * width;
@@ -25,12 +24,14 @@ const MegaBallsView = (mockData) => {
 
         // adjustable options
         const numBalls = 500;
-        const maxSpeed = 100;
+        const maxSpeed = 1000;
         const maxBallArea = 10;
         const gravityAlpha = 0.001;
-        const extraPaddingBetweenBalls = 0.95;
-        const collisionAlpha = 1;
-        const showBorderOfBallBox = false;
+        // minimum distance between balls before collision detector intervenes
+        const extraPaddingBetweenBalls = 1;
+        // force with which collisions pushes colliding balls away from each other
+        const collisionForce = 1;
+        const showBorderOfBallBox = true;
 
         // max domain value for color scale's domain = [0,1,2...m]
         const m = 20;
@@ -64,7 +65,7 @@ const MegaBallsView = (mockData) => {
         canvas = referencedSvg.select("g");
 
         var simulation = d3.forceSimulation()
-            // stops the simulation from ending, it will just keep going!
+            // stops the simulation from ending, it will just keep going otherwise!
             .alphaDecay(0)
         // not used right now, since we only use force simulation to call tick.
         // .force("forceX", d3.forceX().strength(.1).x(width * .5))
@@ -75,7 +76,7 @@ const MegaBallsView = (mockData) => {
         // call tick function to update ball positions with gravity() & collision()
         simulation
             .nodes([]) // empty for now
-            .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return d.radius + 20; }).iterations(1000))
+            //.force("collide", d3.forceCollide().strength(.5).radius(function (d) { return d.radius + 20; }).iterations(1000))
             .on("tick", function (d) {
                 tick();
             });
@@ -102,7 +103,7 @@ const MegaBallsView = (mockData) => {
         function tick() {
             circles
                 .each(gravity(gravityAlpha))
-                .each(collide(collisionAlpha))
+                .each(collide(collisionForce))
                 .attr("cx", function (d) { return d.x; })
                 .attr("cy", function (d) { return d.y; });
         }
@@ -112,8 +113,8 @@ const MegaBallsView = (mockData) => {
             return function (d) {
                 if ((d.x - d.radius) < ballBox.min.x) d.speedX = Math.abs(d.speedX);
                 if ((d.x + d.radius) > ballBox.max.x) d.speedX = -1 * Math.abs(d.speedX);
-                if ((d.y - d.radius) < ballBox.min.y) d.speedY = -1 * Math.abs(d.speedY);
-                if ((d.y + d.radius) > ballBox.max.y) d.speedY = Math.abs(d.speedY);
+                if ((d.y - d.radius) < ballBox.max.y) d.speedY = -1 * Math.abs(d.speedY);
+                if ((d.y + d.radius) > ballBox.min.y) d.speedY = Math.abs(d.speedY);
 
                 d.x = d.x + (d.speedX * alpha);
                 d.y = d.y + (-1 * d.speedY * alpha);
