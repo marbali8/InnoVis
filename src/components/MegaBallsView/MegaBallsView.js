@@ -45,9 +45,6 @@ const MegaBallsView = (mockData) => {
             });
         }
 
-        // MAKE A FORCE FIELD HERE, BUT HOW????? NOBODY KNOWS! :(
-        // const force = d3.forceSimulation(nodes);
-
         const referencedSvg = d3.select(svgRef.current);
 
         // create a canvas
@@ -59,6 +56,25 @@ const MegaBallsView = (mockData) => {
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         canvas = referencedSvg.select("g");
 
+        var simulation = d3.forceSimulation()
+            .force("forceX", d3.forceX().strength(.1).x(width * .5))
+            .force("forceY", d3.forceY().strength(.1).y(height * .5))
+            .force("center", d3.forceCenter().x(width * .5).y(height * .5))
+            .force("charge", d3.forceManyBody().strength(-15));
+
+        const graph = [{ size: 2 }, { size: 3 }, { size: 4 }];
+
+        // update the simulation based on the data
+        simulation
+            .nodes(graph)
+            .force("collide", d3.forceCollide().strength(.5).radius(function (d) { return d.radius + 5; }).iterations(1))
+            .on("tick", function (d) {
+                node
+                    .attr("cx", function (d) { return d.x; })
+                    .attr("cy", function (d) { return d.y; })
+            });
+
+        // draw bounding box;
         canvas.append("svg:rect")
             .attr("width", width - bhm * 2)
             .attr("height", height - bvm * 2)
@@ -67,13 +83,44 @@ const MegaBallsView = (mockData) => {
             .style("fill", "None")
             .style("stroke", "#232323");
 
-        const balls = canvas.selectAll("circle")
-            .data(nodes)
+        var node = canvas.append("g")
+            .attr("class", "node")
+            .selectAll("circle")
+            .data(graph)
             .enter().append("circle")
-            .attr("r", function (d) { return d.radius })
-            .attr("cx", function (d) { return d.x })
+            .attr("r", function (d) { return d.size; })
+            .attr("fill", function (d) { return colorScale(Math.floor(Math.random() * 20)) })
+            .attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; })
-            .style("fill", function (d) { return d.color; });
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(.03).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
+
+        function dragended(d) {
+            if (!d3.event.active) simulation.alphaTarget(.03);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function types(d) {
+            d.gdp = +d.gdp;
+            d.size = +d.gdp / 100;
+            d.size < 3 ? d.radius = 3 : d.radius = d.size;
+            return d;
+        }
+
 
         // remaining code from bouncing balls example pasted at eof.
 
@@ -140,3 +187,16 @@ export default MegaBallsView;
         //         });
         //     };
         // };//collide
+
+
+
+
+        // old balls
+
+         // const balls = canvas.selectAll("circle")
+        //     .data(nodes)
+        //     .enter().append("circle")
+        //     .attr("r", function (d) { return d.radius })
+        //     .attr("cx", function (d) { return d.x })
+        //     .attr("cy", function (d) { return d.y; })
+        //     .style("fill", function (d) { return d.color; });
