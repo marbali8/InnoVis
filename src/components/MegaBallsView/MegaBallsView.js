@@ -7,8 +7,8 @@ const MegaBallsView = (mockData) => {
     const svgRef = useRef();
 
     const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-    const width = 200 - margin.left - margin.right;
-    const height = 200 - margin.top - margin.bottom;
+    const width = 600 - margin.left - margin.right;
+    const height = 600 - margin.top - margin.bottom;
     // to be used!
     const extraPaddingBetweenBalls = 6;
 
@@ -24,14 +24,14 @@ const MegaBallsView = (mockData) => {
         };
 
         // adjustable options
-        const numBalls = 283;
-        const maxSpeed = 10;
-        const maxBallArea = 1;
+        const numBalls = 200;
+        const maxSpeed = 20;
+        const maxBallArea = 10;
         // max domain value for color scale's domain = [0,1,2...m]
         const m = 20;
 
         const radiusScale = d3.scaleSqrt().domain([0, 100]).range([0, maxBallArea]);
-        const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(m));
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain("red");//d3.range(10000));
 
         const nodes = [];
         for (let i = 0; i < numBalls; i++) {
@@ -40,8 +40,8 @@ const MegaBallsView = (mockData) => {
                 color: colorScale(Math.floor(Math.random() * m)),
                 x: ballBox.min.x + (Math.random() * (ballBox.max.x - ballBox.min.x)),
                 y: ballBox.min.y + (Math.random() * (ballBox.max.y - ballBox.min.y)),
-                speedX: (Math.random() - 0.5) * 2 * maxSpeed,
-                speedY: (Math.random() - 0.5) * 2 * maxSpeed
+                speedX: (Math.random() - 0.5) * 10 * maxSpeed,
+                speedY: (Math.random() - 0.5) * 10 * maxSpeed
             });
         }
 
@@ -60,9 +60,24 @@ const MegaBallsView = (mockData) => {
             .force("forceX", d3.forceX().strength(.1).x(width * .5))
             .force("forceY", d3.forceY().strength(.1).y(height * .5))
             .force("center", d3.forceCenter().x(width * .5).y(height * .5))
-            .force("charge", d3.forceManyBody().strength(-15));
+            .force("charge", d3.forceManyBody().strength(-25));
+//            .force("distanceMin", d3.forceManyBody().distanceMin(10))
+//            .force("theta", d3.forceManyBody().theta(.1));
 
-        const graph = [{ size: 2 }, { size: 3 }, { size: 4 }];
+        const graph = [];
+        const nodeLinks = [];
+
+        for (let i = 0; i < numBalls; i++)
+        {
+            if (i < 4) graph.push({size: 10});
+            else
+            {
+                graph.push({"size": Math.random() * 2+3});
+
+                nodeLinks.push({"source": i%4, "target": i});
+            }
+        }
+        //const graph = [{ size: 2 }, { size: 3 }, { size: 4 }];
 
         // update the simulation based on the data
         simulation
@@ -72,7 +87,10 @@ const MegaBallsView = (mockData) => {
                 node
                     .attr("cx", function (d) { return d.x; })
                     .attr("cy", function (d) { return d.y; })
-            });
+            })
+            .force("link", d3.forceLink(nodeLinks).strength(.9).distance(5).iterations(1));
+        
+        
 
         // draw bounding box;
         canvas.append("svg:rect")
