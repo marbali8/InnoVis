@@ -8,7 +8,6 @@ function App() {
 
   return (
     <div className={classes.App}>
-      {classes.App}
       <MegaBallsView></MegaBallsView>
     </div >
   );

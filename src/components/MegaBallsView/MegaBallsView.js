@@ -19,7 +19,6 @@ const MegaBallsView = () => {
             max: { x: width - margin.right, y: margin.top }
         };
 
-
         // adjustable options
         const numBalls = 283;
         // max domain value for color scale = [0,1,2...m];
@@ -44,13 +43,6 @@ const MegaBallsView = () => {
         }
 
 
-        // const force =
-        //     //d3.layout.force()
-        //     d3.forceSimulation(nodes)
-        //         //.size([width, height])
-        //         .force("charge", d3.forceManyBody())
-        //         .force("center", d3.forceCenter())
-        //         .start();
         const svg = d3.select(svgRef.current);
 
         svg.append("svg").attr("width", width + margin.left + margin.right)
@@ -138,3 +130,10 @@ const MegaBallsView = () => {
 
 export default MegaBallsView;
 
+ // const force =
+        //     //d3.layout.force()
+        //     d3.forceSimulation(nodes)
+        //         //.size([width, height])
+        //         .force("charge", d3.forceManyBody())
+        //         .force("center", d3.forceCenter())
+        //         .start();
