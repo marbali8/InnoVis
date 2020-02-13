@@ -26,7 +26,7 @@ const MegaBallsView = (mockData) => {
         const numBalls = 500;
         const maxSpeed = 1000;
         const maxBallArea = 10;
-        const gravityAlpha = 0.01;
+        const gravityAlpha = 0.001;
         // minimum distance between balls before collision detector intervenes
         const extraPaddingBetweenBalls = 1;
         // force with which collisions pushes colliding balls away from each other
