@@ -4,8 +4,6 @@ import MegaBallsView from '../../components/MegaBallsView/MegaBallsView.js';
 
 function App() {
 
-  console.log(classes.app);
-
   return (
     <div className={classes.App}>
       <MegaBallsView></MegaBallsView>

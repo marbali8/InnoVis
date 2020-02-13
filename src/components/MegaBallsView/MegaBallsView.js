@@ -1,72 +1,93 @@
 import React, { useEffect, useRef } from "react";
-//import data from '../../data/companies_yearly_data.json';
+// import data from '../../data/companies_yearly_data.json';
 import * as d3 from 'd3';
 
-
-const MegaBallsView = () => {
+const MegaBallsView = (mockData) => {
 
     const svgRef = useRef();
 
+    const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+    const width = 200 - margin.left - margin.right;
+    const height = 200 - margin.top - margin.bottom;
+    // to be used!
+    const extraPaddingBetweenBalls = 6;
 
     useEffect(() => {
 
-        const margin = { top: 100, right: 100, bottom: 0, left: 100 };
-        const width = 200 - margin.left - margin.right;
-        const height = 200 - margin.top - margin.bottom;
-
-        const boundingBox = {
-            min: { x: margin.left, y: height - margin.bottom },
-            max: { x: width - margin.right, y: margin.top }
+        // vertical & horizontal margin to ball box, which is rectangular area containing the balls
+        // top margin = bottom margin = vertical margin, similar eq for hz. margin!
+        const vm = 1 / 10 * height;
+        const hm = 1 / 10 * width;
+        const ballBox = {
+            min: { x: hm, y: vm },
+            max: { x: width - hm, y: height - vm }
         };
 
         // adjustable options
         const numBalls = 283;
-        // max domain value for color scale = [0,1,2...m];
-        const m = 20;
-        const padding = 6;
         const maxSpeed = 10;
+        const maxBallArea = 1;
+        // max domain value for color scale's domain = [0,1,2...m]
+        const m = 20;
 
-        const radiusScale = d3.scaleSqrt().range([0, 8]);
+        const radiusScale = d3.scaleSqrt().domain([0, 100]).range([0, maxBallArea]);
         const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(m));
 
         const nodes = [];
-
         for (let i = 0; i < numBalls; i++) {
             nodes.push({
-                radius: radiusScale(1 + Math.floor(Math.random() * 50)),
+                radius: radiusScale(1 + Math.floor(Math.random() * (100 - 1))),
                 color: colorScale(Math.floor(Math.random() * m)),
-                x: boundingBox.min.x + (Math.random() * (boundingBox.max.x - boundingBox.min.x)),
-                y: boundingBox.min.y + (Math.random() * (boundingBox.max.y - boundingBox.min.y)),
+                x: ballBox.min.x + (Math.random() * (ballBox.max.x - ballBox.min.x)),
+                y: ballBox.min.y + (Math.random() * (ballBox.max.y - ballBox.min.y)),
                 speedX: (Math.random() - 0.5) * 2 * maxSpeed,
                 speedY: (Math.random() - 0.5) * 2 * maxSpeed
             });
         }
 
+        // MAKE A FORCE FIELD HERE, BUT HOW????? NOBODY KNOWS! :(
+        // const force = d3.forceSimulation(nodes);
 
-        const svg = d3.select(svgRef.current);
+        const referencedSvg = d3.select(svgRef.current);
 
-        svg.append("svg").attr("width", width + margin.left + margin.right)
+        // create a canvas
+        let canvas;
+        referencedSvg.append("svg")
+            .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        canvas = referencedSvg.select("g");
 
-        svg.select("svg").append("svg:rect")
-            .attr("width", 50)
-            .attr("height", 50)
-            .attr("x", 0)
-            .attr("y", 0)
-            .style("fill", "red")
+        canvas.append("svg:rect")
+            .attr("width", width - hm * 2)
+            .attr("height", height - vm * 2)
+            .attr("x", ballBox.min.x)
+            .attr("y", ballBox.min.y)
+            .style("fill", "None")
             .style("stroke", "#232323");
 
-        // const circle = svg.selectAll("circle")
-        //     .data(nodes)
-        //     .enter().append("circle")
-        //     .attr("r", function (d) { return d.radius; })
-        //     .attr("cx", function (d) { return d.x; })
-        //     .attr("cy", function (d) { return d.y; })
-        //     .style("fill", function (d) { return d.color; });
+        const balls = canvas.selectAll("circle")
+            .data(nodes)
+            .enter().append("circle")
+            .attr("r", function (d) { return d.radius })
+            .attr("cx", function (d) { return d.x })
+            .attr("cy", function (d) { return d.y; })
+            .style("fill", function (d) { return d.color; });
 
-        // function tick(e) {
+        // remaining code from bouncing balls example pasted at eof.
+
+    }, []); // useEffect
+
+    return <React.Fragment><svg height={height} width={width} ref={svgRef}></svg> </React.Fragment>;
+};
+
+export default MegaBallsView;
+
+
+// code from bouncing balls example
+
+ // function tick(e) {
         //     force.alpha(1);
         //     circle
         //         .each(gravity(e.alpha))
@@ -119,21 +140,3 @@ const MegaBallsView = () => {
         //         });
         //     };
         // };//collide
-
-    }, []); //useEffect
-
-
-
-    return <React.Fragment><svg ref={svgRef}></svg> </React.Fragment>;
-};
-
-
-export default MegaBallsView;
-
- // const force =
-        //     //d3.layout.force()
-        //     d3.forceSimulation(nodes)
-        //         //.size([width, height])
-        //         .force("charge", d3.forceManyBody())
-        //         .force("center", d3.forceCenter())
-        //         .start();
