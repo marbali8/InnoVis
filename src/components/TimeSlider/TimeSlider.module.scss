@@ -1,4 +1,7 @@
-#chart svg line.track-inset {
+
+.timeSlider{
+
+> #chart svg line.track-inset {
     stroke: steelblue;
     stroke-width: 20px;
 }
@@ -17,4 +20,5 @@
 
 #chart svg .ticks {
   font-size: 15px;
+}
 }

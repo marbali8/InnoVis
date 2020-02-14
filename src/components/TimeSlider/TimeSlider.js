@@ -66,7 +66,7 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
             .attr("stroke", "black");
 
         // create drag handler function
-        var dragHandler = d3.drag().on("start", (e) => {
+        var dragHandler = d3.drag().on("drag", (e) => {
             dragged(d3.event.x);
         });
         // not sure how to add 'start.interrupt' or what it exactly does, but you could add .on("start.interrupt",<callbackfunc>) to the chain...
