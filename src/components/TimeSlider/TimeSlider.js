@@ -38,14 +38,6 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
 
         xScale.clamp(true);
 
-        // drag behavior initialization
-        var drag = d3.drag()
-            .on('start.interrupt', function () {
-                slider.interrupt();
-            }).on('start drag', function () {
-                dragged(d3.event.x);
-            });
-
         // // this is the main bar with a stroke (applied through CSS)
         var track = slider.append('line').attr('class', 'track')
             .attr('x1', xScale.range()[0])
@@ -59,14 +51,32 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
             .call(xAxis);
 
         // drag handle
-        var handle = slider.append('circle').classed('handle', true)
-            .attr('r', 8);
+        var handle = slider.append('circle').classed('handle', true).attr('r', 8);
 
         //  this is the bar on top of above tracks with stroke = transparent and on which the drag behaviour is actually called
-        d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
-            .call(drag);
+        var trackoverlay = d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
+
+            // added these attributes for testing so you can see the actual line and click, hold and drag line to call the "drag" handler
+            // before the line had no start and end point so it had no actual length or mass and it had no stroke width or color so = invisible element
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 500)
+            .attr("y2", 0)
+            .attr("stroke-width", 5)
+            .attr("stroke", "black");
+
+        // create drag handler function
+        var dragHandler = d3.drag().on("start", (e) => {
+            dragged(d3.event.x);
+        });
+        // not sure how to add 'start.interrupt' or what it exactly does, but you could add .on("start.interrupt",<callbackfunc>) to the chain...
+
+        // attach the drag handler to the track overlay 
+        dragHandler(slider.select(".track-overlay"));
 
         function dragged(value) {
+
+            console.log("Dragged() called with value: " + value);
 
             var x = xScale.invert(value), index = null, midPoint, cx;
             if (step) {
@@ -90,7 +100,6 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
             handle.attr('cx', cx);
         }
 
-        //dragged(d3.event.x);
 
     }, []);
 
