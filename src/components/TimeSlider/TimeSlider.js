@@ -41,35 +41,37 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
         // // this is the main bar with a stroke (applied through CSS)
         var track = slider.append('line').attr('class', 'track')
             .attr('x1', xScale.range()[0])
-            .attr('x2', xScale.range()[1]);
+            .attr('x2', xScale.range()[1])
+            .attr('stroke-linecap', 'round');
 
         // // this is a bar that's inside the main "track" to make it look like a rect with a border
-        d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-inset');
+        d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-inset')
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", "20")
+            .attr('stroke-linecap', 'round');
 
         slider.append('g').attr('class', 'ticks')
             .attr('transform', 'translate(0, 15)')
-            .call(xAxis);
+            .call(xAxis)
+            .attr('font-size', 15);
 
         // drag handle
-        var handle = slider.append('circle').classed('handle', true).attr('r', 8);
+        var handle = slider.append('circle').classed('handle', true)
+            .attr('r', 8)
+            .attr('fill', 'orange');
 
         //  this is the bar on top of above tracks with stroke = transparent and on which the drag behaviour is actually called
-        var trackoverlay = d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
-
-            // added these attributes for testing so you can see the actual line and click, hold and drag line to call the "drag" handler
-            // before the line had no start and end point so it had no actual length or mass and it had no stroke width or color so = invisible element
-            .attr("x1", 0)
-            .attr("y1", 0)
-            .attr("x2", 500)
-            .attr("y2", 0)
-            .attr("stroke-width", 5)
-            .attr("stroke", "black");
+        d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
+            .attr("stroke", "#e73a4e")
+            .attr("stroke-width", 15)
+            .attr("stroke-opacity", 0)
+            .attr("cursor", "grab")
+            .attr('stroke-linecap', 'round');
 
         // create drag handler function
         var dragHandler = d3.drag().on("drag", (e) => {
             dragged(d3.event.x);
         });
-        // not sure how to add 'start.interrupt' or what it exactly does, but you could add .on("start.interrupt",<callbackfunc>) to the chain...
 
         // attach the drag handler to the track overlay 
         dragHandler(slider.select(".track-overlay"));
