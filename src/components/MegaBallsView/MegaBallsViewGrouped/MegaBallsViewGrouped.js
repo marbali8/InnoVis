@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-// import data from '../../data/companies_yearly_data.json';
+import data from '../../../data/companies_yearly_data.json';
 import * as d3 from 'd3';
 
 const MegaBallsView = (mockData) => {
@@ -24,28 +24,34 @@ const MegaBallsView = (mockData) => {
         };
 
         // adjustable options
-        const numBalls = 280;
-        let numCategories = 6;
-        const maxSpeed = 1;
-        const maxBallArea = 10;
+        const numBalls = data.length;
+        let numCategories = 30;
+        const maxSpeed = 10;
+        const maxBallArea = 1;
         // max domain value for color scale's domain = [0,1,2...m]
-        const m = 20;
+        const m = 200;
+
+        var categorical = [
+            { "name" : "schemeAccent", "n": 8},
+            { "name" : "schemeDark2", "n": 8},
+            { "name" : "schemePastel2", "n": 8},
+            { "name" : "schemeSet2", "n": 8},
+            { "name" : "schemeSet1", "n": numCategories},
+            { "name" : "schemePastel1", "n": 9},
+            { "name" : "schemeCategory10", "n" : numCategories},
+            { "name" : "schemeSet3", "n" : 12 },
+            { "name" : "schemePaired", "n": 12},
+            { "name" : "schemeCategory20", "n" : 20 },
+            { "name" : "schemeCategory20b", "n" : 20},
+            { "name" : "schemeCategory20c", "n" : 20 }
+          ];
+
 
         const radiusScale = d3.scaleSqrt().domain([0, 100]).range([0, maxBallArea]);
-        const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
-        var colorSpectral = d3.scaleSequential().domain([1, 10]).interpolator(d3.schemeSpectral);
-
-        const nodes = [];
-        for (let i = 0; i < numBalls; i++) {
-            nodes.push({
-                radius: radiusScale(1 + Math.floor(Math.random() * (100 - 1))),
-                color: colorScale(Math.floor(Math.random() * m)),
-                x: ballBox.min.x + (Math.random() * (ballBox.max.x - ballBox.min.x)),
-                y: ballBox.min.y + (Math.random() * (ballBox.max.y - ballBox.min.y)),
-                speedX: (Math.random() - 0.5) * 2 * maxSpeed,
-                speedY: (Math.random() - 0.5) * 2 * maxSpeed
-            });
-        }
+        const colorScale2 = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
+        var colorScale3 = d3.scaleOrdinal(d3[categorical[6].name]);
+        //pick from here: https://github.com/d3/d3-scale-chromatic
+        var colorScale = d3.interpolateRainbow;
 
         const referencedSvg = d3.select(svgRef.current);
 
@@ -59,60 +65,57 @@ const MegaBallsView = (mockData) => {
         canvas = referencedSvg.select("g");
 
         var simulation = d3.forceSimulation()
-            .force("forceX", d3.forceX().strength(.1).x(-width * .5))
-            .force("forceY", d3.forceY().strength(.1).y(-height * .5))
+            .force("forceX", d3.forceX().strength(.5).x(width/2 * 1))
+            .force("forceY", d3.forceY().strength(.5).y(height/2 * 1))
             .force("center", d3.forceCenter().x(width * .5).y(height * .5))
-            .force("charge", d3.forceManyBody().strength(-1))
-            .force("distanceMin", d3.forceManyBody().distanceMin(-1))
+            .force("charge", d3.forceManyBody().strength(-2))
             .force("theta", d3.forceManyBody().theta(.9));
 
         const graph = [];
         const nodeLinks = [];
-        const nodeAntiLinks = [];
+        const anchorNodes = {};
 
-
-        for (let i = 0; i < numBalls; i++) {
-            if (i < numCategories) {
-                graph.push({ size: 0, id: i });
-
-                if (i > 0) {
-                    for (let j = 0; j < i; j++) {
-                        nodeLinks.push({ "source": i, "target": j });
-                    }
-                }
+        for (let i = 0; i < numBalls; i++)
+        {
+            let tempID = data[i].primary_code_in_NIC; 
+            graph.push({
+                size: Math.sqrt(Math.sqrt(data[i].revenue_2018)),
+                secsize: Math.sqrt(data[i].employees_2018),
+                id: tempID
+            })
+            if (tempID in anchorNodes)
+            {
+                nodeLinks.push({ "source": anchorNodes[tempID], "target": i });
+                nodeLinks.push({ "source": i, "target": anchorNodes[tempID] });
             }
-            else {
-                graph.push({
-                    size: Math.random() * 2 + 3,
-                    id: i % numCategories
-                });
-
-                for (let j = 0; j < numCategories; j++) {
-                    if (j == i % numCategories) {
-                        nodeLinks.push({ "source": j, "target": i });
-                    }
-                    else {
-                        nodeAntiLinks.push({ "source": j, "target": i });
-                    }
-                }
+            else 
+            {
+                anchorNodes[tempID] = i;
             }
-
         }
-        //const graph = [{ size: 2 }, { size: 3 }, { size: 4 }];
+        console.log(data);
+        console.log(anchorNodes);
 
         // update the simulation based on the data
         simulation
             .nodes(graph)
-            .force("collide", d3.forceCollide().strength(.9).radius(function (d) { return d.radius; }).iterations(1))
+            .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return d.size; }).iterations(2))
             .on("tick", function (d) {
                 node
                     .attr("cx", function (d) { return d.x; })
                     .attr("cy", function (d) { return d.y; })
             })
-            .force("link", d3.forceLink(nodeLinks).strength(.09).distance(.0005).iterations(10).id(graph.id));
-        //.force("link", d3.forceLink(nodeAntiLinks).strength(.03).distance(10).iterations(2));
+            .force("link", d3.forceLink(nodeLinks).strength(.1).distance(1).iterations(2).id(graph.id));
 
 
+
+        Object.size = function(obj) {
+            var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        };        
 
         // draw bounding box;
         canvas.append("svg:rect")
@@ -129,26 +132,46 @@ const MegaBallsView = (mockData) => {
             .data(graph)
             .enter().append("circle")
             .attr("r", function (d) { return d.size; })
-            .attr("fill", function (d) { return colorScale(d.id) })
-            .attr("cx", function (d) { return d.x; })
-            .attr("cy", function (d) { return d.y; })
+            .attr("fill", function (d) { return colorScale(d.id / (Object.size(anchorNodes))) })
+            .attr('fill-opacity', 0.8)
+            .style("stroke", d => d.error ? "red" : "black")
+            .attr("cx", function (d) { return d.x+width/2; })
+            .attr("cy", function (d) { return d.y+height/2; })
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+/*
+        var node = canvas.selectAll('.node')
+            .data( graph )
+            .enter().append('g')
+            //.attr('title', name)
+            .attr('class', 'node')
+            .call( d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
 
+
+        node.append('circle')
+            .attr('r', function (d) { return d.secsize; })
+            .attr("fill", function (d) { return colorScale(d.id / (Object.size(anchorNodes))) })
+            .attr('fill-opacity', 1)
+            .attr("cx", function (d) { return d.x+width/2; })
+            .attr("cy", function (d) { return d.y+height/2; })
+;
+
+        node.append('circle')
+            .attr('r', function (d) { return d.size; })
+            .attr('stroke', 'black')
+            .attr('fill', 'transparent')
+            .attr("cx", function (d) { return d.x+width/2; })
+            .attr("cy", function (d) { return d.y+height/2; });
+*/
         function dragstarted(d) {
             if (!d3.event.active) simulation.alphaTarget(.03).restart();
             d.fx = d.x;
             d.fy = d.y;
-        }
-
-        function pow(x, y) {
-            let ret = 1;
-            for (let i = 0; i < y; i++) {
-                ret *= x;
-            }
-            return ret;
         }
 
         function dragged(d) {

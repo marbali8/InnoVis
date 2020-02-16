@@ -1,6 +1,8 @@
 import React from 'react';
 import classes from './App.module.scss';
 import MegaBallsViewFloating from '../../components/MegaBallsView/MegaBallsViewFloating/MegaBallsViewFloating.js';
+import MegaBallsViewGrouped from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js';
+
 
 function App() {
 
@@ -8,7 +10,7 @@ function App() {
   // the megaball views when grouping balls by SNI code or industry
   return (
     <div className={classes.App}>
-      <MegaBallsViewFloating></MegaBallsViewFloating>
+      <MegaBallsViewGrouped></MegaBallsViewGrouped>
     </div >
   );
 }
