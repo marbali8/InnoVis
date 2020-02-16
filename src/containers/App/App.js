@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classes from './App.module.scss';
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 
 function App() {
 
+  const defaultYear = 2010;
+
+  const [year, setYear] = useState(defaultYear);
+
+  const handleTimeSliderYearClicked = (year) => {
+    setYear(year);
+  };
+
   return (
     <div className={classes.App}>
-      <TimeSlider range = {[2010, 2020]} />
+      <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2020]} />
     </div >
   );
 }
