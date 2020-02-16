@@ -1,12 +1,18 @@
+// original code: https://blockbuilder.org/noblemillie/c2ab3de8e4b2de7361a23778fcbad9bd
+// codepen: https://codepen.io/marbali8/pen/rNVxBra?editors=1000
+
 import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import classes from './TimeSlider.module.scss';
 
-const TimeSlider = ({ height = 500, width = 500 }) => {
+const TimeSlider = ({ height = 100, width = 500, range }) => {
 
-    var margin = { left: 30, right: 30 },
-        range = [2010, 2018],
-        step = 1; // change the step and if null, it'll switch back to a normal slider
+    // TODO: will need also data for the graph behind, w/h for the graph
+    // TODO: will need to call a drag event of main view
+
+    var margin = {left: 30, right: 30},
+        step = 1,
+        stroke_width = 20;
 
     // state and ref to svg 
     let divRef = useRef();
@@ -36,31 +42,28 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
             return d;
         });
 
-        xScale.clamp(true);
-
-        // // this is the main bar with a stroke (applied through CSS)
+        // main bar with a stroke
         var track = slider.append('line').attr('class', 'track')
             .attr('x1', xScale.range()[0])
-            .attr('x2', xScale.range()[1])
-            .attr('stroke-linecap', 'round');
+            .attr('x2', xScale.range()[1]);
 
-        // // this is a bar that's inside the main "track" to make it look like a rect with a border
+        // bar that's inside the main track to make it look like a rect with a border
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-inset')
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", "20")
+            .attr('stroke', '#1954a6')
+            .attr('stroke-width', stroke_width)
             .attr('stroke-linecap', 'round');
 
         slider.append('g').attr('class', 'ticks')
-            .attr('transform', 'translate(0, 15)')
+            .attr('transform', 'translate(0, ' + (stroke_width/2 + 5) + ')')
             .call(xAxis)
-            .attr('font-size', 15);
+            .attr('font-size', 13);
 
         // drag handle
         var handle = slider.append('circle').classed('handle', true)
-            .attr('r', 8)
-            .attr('fill', 'orange');
+            .attr('r', stroke_width/3)
+            .attr('fill', '#e600ff');
 
-        //  this is the bar on top of above tracks with stroke = transparent and on which the drag behaviour is actually called
+        // bar on top with stroke = transparent and on which the drag behaviour is actually called
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
             .attr("stroke", "#e73a4e")
             .attr("stroke-width", 15)
@@ -78,7 +81,7 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
 
         function dragged(value) {
 
-            console.log("Dragged() called with value: " + value);
+            console.log("dragged() called with value " + value);
 
             var x = xScale.invert(value), index = null, midPoint, cx;
             if (step) {
@@ -106,7 +109,7 @@ const TimeSlider = ({ height = 500, width = 500 }) => {
     }, []);
 
     // style property is passed an object with height and width converted to strings using template literals
-    return <div ref={divRef} height={height} width={width} className={classes.timeSlider}></div>;
+    return <div ref={divRef} height={height} width={width} range={range} className={classes.timeSlider}></div>;
 };
 
 export default TimeSlider;

@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div className={classes.App}>
-      <TimeSlider />
+      <TimeSlider range = {[2010, 2020]} />
     </div >
   );
 }
