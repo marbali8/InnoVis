@@ -5,10 +5,11 @@ import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import classes from './TimeSlider.module.scss';
 
-const TimeSlider = ({ height = 100, width = 500, range }) => {
+const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
 
     // TODO: will need also data for the graph behind, w/h for the graph
     // TODO: will need to call a drag event of main view
+    // TODO: be able to upload svg's width and height
 
     var margin = {left: 30, right: 30},
         step = 1,
@@ -74,16 +75,16 @@ const TimeSlider = ({ height = 100, width = 500, range }) => {
         // create drag handler function
         var dragHandler = d3.drag().on("drag", (e) => {
             dragged(d3.event.x);
-        });
+        }).on("start", (e) => {
+            dragged(d3.event.x);
+        })
 
         // attach the drag handler to the track overlay 
         dragHandler(slider.select(".track-overlay"));
 
         function dragged(value) {
 
-            console.log("dragged() called with value " + value);
-
-            var x = xScale.invert(value), index = null, midPoint, cx;
+            var x = xScale.invert(value), index = null, midPoint, year;
             if (step) {
                 // if step has a value, compute the midpoint based on range values and reposition the slider based on the mouse position
                 for (var i = 0; i < rangeValues.length - 1; i++) {
@@ -94,22 +95,22 @@ const TimeSlider = ({ height = 100, width = 500, range }) => {
                 }
                 midPoint = (rangeValues[index] + rangeValues[index + 1]) / 2;
                 if (x < midPoint) {
-                    cx = xScale(rangeValues[index]);
+                    year = rangeValues[index];
                 } else {
-                    cx = xScale(rangeValues[index + 1]);
+                    year = rangeValues[index + 1];
                 }
             } else {
                 // if step is null or 0, return the drag value as is
-                cx = xScale(x);
+                year = x;
             }
-            handle.attr('cx', cx);
+            handle.attr('cx', xScale(year));
+            onYearClicked(year);
         }
 
 
     }, []);
 
-    // style property is passed an object with height and width converted to strings using template literals
-    return <div ref={divRef} height={height} width={width} range={range} className={classes.timeSlider}></div>;
+    return <div ref={divRef} height={height} width={width} className={classes.timeSlider}></div>;
 };
 
 export default TimeSlider;

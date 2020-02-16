@@ -9,6 +9,7 @@ function App() {
   const [year, setYear] = useState(defaultYear);
 
   const handleTimeSliderYearClicked = (year) => {
+    // console.log("onYearClicked to year " + year);
     setYear(year);
   };
 
