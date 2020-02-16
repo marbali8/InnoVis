@@ -103,8 +103,8 @@ const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
                 // if step is null or 0, return the drag value as is
                 year = x;
             }
+            if (handle.attr('cx') != xScale(year)) { onYearClicked(year); }
             handle.attr('cx', xScale(year));
-            onYearClicked(year);
         }
 
 
