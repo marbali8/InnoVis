@@ -20,10 +20,10 @@ function App() {
   return (
     <div className={classes.App}>
         <StreamGraph/>
-        <Infobox/>
-        <Sunburst/>
-        <GrantsChart/>
-      <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2020]} />
+        <Infobox onYearClicked={year}/>
+        <Sunburst onYearClicked={year}/>
+        <GrantsChart onYearClicked={year}/>
+      <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2008, 2020]} />
     </div >
   );
 }

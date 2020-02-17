@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import * as d3 from 'd3';
 import companyData from '../../data/companies_yearly_data.json';
-import yearlyAggregateData from '../../data/kth_innovation_yearly_data.json';
 import * as _ from 'lodash'
 
 const RELEVANT_YEARS = ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"];
@@ -33,9 +32,9 @@ const result = RELEVANT_YEARS.map(year => {
     return obj
 });
 
-const Sunburst = () => {
+const Sunburst = ({onYearClicked}) => {
 
-    const year_choice = 2015;
+    const year_choice = onYearClicked;
     const margin = {top: 10, right: 10, bottom: 10, left: 10};
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
@@ -48,25 +47,61 @@ const Sunburst = () => {
 
     useEffect(() => {
         setData(result);
-    });
+    }, []);
 
     // code runs only if data has been fetched
     useEffect(() => {
 
         const dataHasFetched = data !== undefined && data.length !== 0;
         const svg = d3.select(svgRef.current);
+        svg.selectAll("*").remove();
 
         if (dataHasFetched) {
-
-            var yearData = data[year_choice - 2010];
-            delete yearData['year'];
-
-            var keyToColorMap = (key) => { return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6) };
 
             var pie = d3.pie()
                 .value(function (d) {
                     return d.value;
-                });
+                })
+                .sort(null);
+
+            if (!RELEVANT_YEARS.includes(year_choice.toString())) {
+                var emptyData = [{name: "", value: 1}];
+                svg
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append('g')
+                    .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
+                    .selectAll()
+                    .data(pie(emptyData))
+                    .enter()
+                    .append('path')
+                    .attr('d', d3.arc()
+                        .innerRadius(innerRadius)
+                        .outerRadius(outerRadius)
+                    )
+                    .attr('fill', 'white')
+                    .attr('stroke', "black")
+                    .append('title')
+                    .text("no data available");
+
+
+                svg
+                    .append('text')
+                    .attr("x", width / 2)
+                    .attr("y", height / 2 + 5)
+                    .text(year_choice.toString())
+                    .style("text-anchor", "middle");
+
+                return;
+            }
+
+            var yearData = data[year_choice - 2010];
+            delete yearData['year'];
+
+            var keyToColorMap = (key) => {
+                return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
+            };
+
             var data_ready = pie(d3.entries(yearData));
 
             svg
@@ -93,34 +128,35 @@ const Sunburst = () => {
 
             svg
                 .append('text')
-                .attr('x', width/2)
-                .attr('y', height/2 + 5)
+                .attr('x', width / 2)
+                .attr('y', height / 2 + 5)
+                .attr('class', 'circletext')
                 .style("text-anchor", "middle")
                 .text(year_choice);
 
             //INTERACTION
             svg.selectAll('path')
-                .on('mouseover', function(d){
-                    console.log("HI");
+                .on('mouseover', function (d) {
+                    d3.selectAll(".circletext").text(d.data.key);
                     d3.selectAll(".piece").style("opacity", .2);
                     d3.select(this).style("opacity", 1);
                 })
                 .on('mouseout', function (d) {
-                    console.log("BYE");
+                    d3.selectAll(".circletext").text(year_choice.toString());
                     d3.selectAll(".piece").style("opacity", 1);
                 });
 
         }
 
-    return () => {
-        svg.selectAll("svg").exit().remove();
-    }
+        return () => {
+            svg.selectAll("svg").exit().remove();
+        }
 
-}, [height, width, margin.right, margin.left, margin.top, margin.bottom, data]);
+    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice, innerRadius, outerRadius]);
 
-return <React.Fragment>
-    <svg height={height} width={width} ref={svgRef}></svg>
-</React.Fragment>;
+    return <React.Fragment>
+        <svg height={height} width={width} ref={svgRef}></svg>
+    </React.Fragment>;
 };
 
 export default Sunburst;

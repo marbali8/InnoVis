@@ -7,13 +7,13 @@ const RELEVANT_YEARS = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", 
 
 const monthly_funding_data = fundingData;
 
-const GrantsChart = () => {
+const GrantsChart = ({onYearClicked}) => {
 
+    const year_choice = onYearClicked;
     // set dimensions of the graph
     const margin = {top: 20, right: 20, bottom: 30, left: 20};
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
-    const year_choice = 2010;
 
     // state and ref to svg
     const svgRef = useRef();
@@ -24,10 +24,10 @@ const GrantsChart = () => {
 
         const dataHasFetched = data !== undefined && data.length !== 0;
         const svg = d3.select(svgRef.current);
+        svg.selectAll("*").remove();
 
         if (dataHasFetched) {
 
-            console.log(monthly_funding_data);
             var yearData = monthly_funding_data[0];
             for (let i = 0; i < RELEVANT_YEARS.length; i++) {
                 if (monthly_funding_data[i].year === year_choice) {
