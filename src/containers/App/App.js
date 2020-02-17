@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classes from './App.module.scss';
 import StreamGraph from '../../components/StreamGraph/StreamGraph.js';
 import Infobox from '../../components/DetailView/Infobox.js'
 import Sunburst from '../../components/DetailView/Sunburst.js'
 import GrantsChart from "../../components/DetailView/GrantsChart";
+import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 
 function App() {
+
+  const defaultYear = 2010;
+
+  const [year, setYear] = useState(defaultYear);
+
+  const handleTimeSliderYearClicked = (year) => {
+    // console.log("onYearClicked to year " + year);
+    setYear(year);
+  };
 
   return (
     <div className={classes.App}>
@@ -13,6 +23,7 @@ function App() {
         <Infobox/>
         <Sunburst/>
         <GrantsChart/>
+      <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2020]} />
     </div >
   );
 }
