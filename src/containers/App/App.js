@@ -13,16 +13,15 @@ function App() {
   const [year, setYear] = useState(defaultYear);
 
   const handleTimeSliderYearClicked = (year) => {
-    // console.log("onYearClicked to year " + year);
     setYear(year);
   };
 
   return (
     <div className={classes.App}>
-        <StreamGraph/>
-        <Infobox onYearClicked={year}/>
-        <Sunburst onYearClicked={year}/>
-        <GrantsChart onYearClicked={year}/>
+      <StreamGraph />
+      <Infobox onYearClicked={year} />
+      <Sunburst onYearClicked={year} />
+      <GrantsChart onYearClicked={year} />
       <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2008, 2020]} />
     </div >
   );
