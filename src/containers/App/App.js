@@ -4,17 +4,13 @@ import Infobox from '../../components/DetailView/Infobox.js'
 import Sunburst from '../../components/DetailView/Sunburst.js'
 import GrantsChart from "../../components/DetailView/GrantsChart";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
-import BouncingBalls from '../../components/MegaBallsView/MegaBallsViewFloating/BouncingBalls.js'
 import GroupingBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js'
-import companyData from '../../data/companies_yearly_data.js';
-import {getRevenueForCompanyObjectByYear} from '../../data/data_accessor_methods.js';
-import * as d3 from 'd3';
 
 function App() {
 
     // magic voodoo values for demo! they control how big the balls are, and the colour range used
-    const radiusScale = d3.scaleSqrt().domain([0, 1314800]).range([0, 250]);
-    const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
+    //const radiusScale = d3.scaleSqrt().domain([0, 1314800]).range([0, 250]);
+    //const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
 
     const defaultYear = 2010;
     const [year, setYear] = useState(defaultYear);
@@ -23,6 +19,7 @@ function App() {
         setYear(year);
     };
 
+    /*
     const getFilteredBalls = () => {
         const filteredBalls = [];
 
@@ -36,7 +33,7 @@ function App() {
 
         });
         return filteredBalls;
-    };
+    };*/
 
 // <BouncingBalls showBorderOfBallBox={false} height={500} width={1000} balls = {getFilteredBalls()}/>
 

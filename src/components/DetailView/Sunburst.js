@@ -102,7 +102,7 @@ const Sunburst = ({onYearClicked}) => {
 
             var data_ready = pie(d3.entries(yearData));
 
-            const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
+            //const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
             var colorScale2 = d3.interpolateRainbow;
             const numCategories = 200;
             //use change colorscale2 to colorscale and change numCategories to 77 to use same color scheme as balls
