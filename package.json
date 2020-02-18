@@ -1,5 +1,6 @@
 {
   "name": "code",
+  "homepage": "https://fermit-group.gitlab.io/KTHInnovation",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
