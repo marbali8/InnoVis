@@ -5,6 +5,7 @@ import Sunburst from '../../components/DetailView/Sunburst.js'
 import GrantsChart from "../../components/DetailView/GrantsChart";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import BouncingBalls from '../../components/MegaBallsView/MegaBallsViewFloating/BouncingBalls.js'
+import GroupingBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js'
 import companyData from '../../data/companies_yearly_data.js';
 import {getRevenueForCompanyObjectByYear} from '../../data/data_accessor_methods.js';
 import * as _ from 'lodash';
@@ -38,6 +39,8 @@ function App() {
         return filteredBalls;
     };
 
+//<GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year}/>
+
     return (
 
         <div className={classes.App}>
@@ -45,7 +48,7 @@ function App() {
                 KTH INNOVATION
             </div>
             <div className={classes.megaBallsView}>
-                <BouncingBalls showBorderOfBallBox={false} height={500} width={1000} balls={getFilteredBalls()}/>
+                <BouncingBalls showBorderOfBallBox={false} height={500} width={1000} balls = {getFilteredBalls()}/>
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2008, 2020]}/>
             <div className={classes.aggregateKTHDataView}>

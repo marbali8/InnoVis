@@ -2,27 +2,33 @@ import React, { useEffect, useRef } from "react";
 import data from '../../../data/companies_yearly_data.json';
 import * as d3 from 'd3';
 
-const MegaBallsView = (mockData) => {
-
+const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true, margin = { left: 0, right: 0, top: 0, bottom: 0 }, onYearClicked }) => {
     const svgRef = useRef();
+    var year_choice = onYearClicked;
 
-    const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-    const width = 600 - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+    //const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+    //const width = 600 - margin.left - margin.right;
+    //const height = 600 - margin.top - margin.bottom;
     // to be used!
-    const extraPaddingBetweenBalls = 6;
+
+    const bvm = 1 / 10 * height;
+    const bhm = 1 / 10 * width;
+    const ballBox = {
+        min: { x: bhm, y: bvm },
+        max: { x: width - bhm, y: height - bvm }
+    };
+
+    const sim = useRef();
 
     useEffect(() => {
-
+        console.log("Hej!");
         // vertical & horizontal margin to ball box, which is rectangular area containing the balls
         // top margin = bottom margin = vertical margin, similar eq for hz. margin!
-        const bvm = 1 / 10 * height;
-        const bhm = 1 / 10 * width;
-        const ballBox = {
-            min: { x: bhm, y: bvm },
-            max: { x: width - bhm, y: height - bvm }
-        };
 
+
+        const referencedSvg = d3.select(svgRef.current);
+
+        referencedSvg.selectAll("*").remove();
         // adjustable options
         const numBalls = data.length;
         let numCategories = 30;
@@ -53,7 +59,6 @@ const MegaBallsView = (mockData) => {
         //pick from here: https://github.com/d3/d3-scale-chromatic
         var colorScale = d3.interpolateRainbow;
 
-        const referencedSvg = d3.select(svgRef.current);
 
         // create a canvas
         let canvas;
@@ -74,15 +79,89 @@ const MegaBallsView = (mockData) => {
         const graph = [];
         const nodeLinks = [];
         const anchorNodes = {};
-
+        console.log("Balls2");
+        console.log(year_choice);
         for (let i = 0; i < numBalls; i++)
         {
-            let tempID = data[i].primary_code_in_NIC; 
-            graph.push({
-                size: Math.sqrt(Math.sqrt(data[i].revenue_2018)),
-                secsize: Math.sqrt(data[i].employees_2018),
-                id: tempID
-            })
+            let tempID = data[i].primary_code_in_NIC;
+            var ball = {};
+            switch(year_choice)
+            {
+                case 2008:
+                case 2009:
+                case 2010:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2010)),
+                        secsize: Math.sqrt(data[i].employees_2010),
+                        id: tempID
+                    }
+                    break;
+                case 2011:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2011)),
+                        secsize: Math.sqrt(data[i].employees_2011),
+                        id: tempID
+                    }
+                    break;
+                case 2012:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2012)),
+                        secsize: Math.sqrt(data[i].employees_2012),
+                        id: tempID
+                    }
+                    break;
+                case 2013:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2013)),
+                        secsize: Math.sqrt(data[i].employees_2013),
+                        id: tempID
+                    }
+                    break;    
+                case 2014:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2014)),
+                        secsize: Math.sqrt(data[i].employees_2014),
+                        id: tempID
+                    }
+                    break;
+                case 2015:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2015)),
+                        secsize: Math.sqrt(data[i].employees_2015),
+                        id: tempID
+                    }
+                    break;
+                case 2016:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2016)),
+                        secsize: Math.sqrt(data[i].employees_2016),
+                        id: tempID
+                    }
+                    break;
+                case 2017:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2017)),
+                        secsize: Math.sqrt(data[i].employees_2017),
+                        id: tempID
+                    }
+                    break;
+                case 2019:
+                case 2020:
+                case 2018:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2018)),
+                        secsize: Math.sqrt(data[i].employees_2018),
+                        id: tempID
+                    }
+                    break;
+                default:
+                    ball = {
+                        size: Math.sqrt(Math.sqrt(data[i].revenue_2010)),
+                        secsize: Math.sqrt(data[i].employees_2010),
+                        id: tempID
+                    }
+            } 
+            graph.push( ball );
             if (tempID in anchorNodes)
             {
                 nodeLinks.push({ "source": anchorNodes[tempID], "target": i });
@@ -195,7 +274,7 @@ const MegaBallsView = (mockData) => {
 
         // remaining code from bouncing balls example pasted at eof.
 
-    }, []); // useEffect
+    }, [year_choice]); // useEffect
 
     return <React.Fragment><svg height={height} width={width} ref={svgRef}></svg> </React.Fragment>;
 };
