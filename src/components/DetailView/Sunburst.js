@@ -104,7 +104,7 @@ const Sunburst = ({onYearClicked}) => {
 
             const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
             var colorScale2 = d3.interpolateRainbow;
-            const numCategories = 1;
+            const numCategories = 200;
             //use change colorscale2 to colorscale and change numCategories to 77 to use same color scheme as balls
 
             svg
@@ -120,7 +120,7 @@ const Sunburst = ({onYearClicked}) => {
                     .outerRadius(outerRadius)
                 )
                 .attr('fill', function (d) {
-                    return colorScale(d.data.key / numCategories);
+                    return colorScale2(d.data.key / numCategories);
                 })
                 .attr("stroke", "black")
                 .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')

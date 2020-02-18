@@ -211,7 +211,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             .data(graph)
             .enter().append("circle")
             .attr("r", function (d) { return d.size; })
-            .attr("fill", function (d) { return colorScale(d.id / (Object.size(anchorNodes))) })
+            .attr("fill", function (d) { return colorScale(d.id / m) }) // m was (Object.size(anchorNodes)) before, matching Sunburst
             .attr('fill-opacity', 0.8)
             .style("stroke", d => d.error ? "red" : "black")
             .attr("cx", function (d) { return d.x+width/2; })
