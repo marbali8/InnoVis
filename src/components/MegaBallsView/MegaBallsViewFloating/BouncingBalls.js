@@ -6,7 +6,6 @@ function getRandom(min, max) {
 };
 
 function tick(circles, ballBox, bubbles) {
-    console.log("tick");
     circles
         .each(gravity(gravityAlpha, ballBox))
         .each(collide(collisionForce, bubbles))
@@ -63,11 +62,11 @@ function collide(alpha, balls) {
 };
 
 // adjustable options:
-const maxSpeed = 4000;
+const maxSpeed = 1500;
 //const maxBallArea = 50;
 const gravityAlpha = 0.001;
-const extraPaddingBetweenBalls = 1;
-const collisionForce = 1;
+const extraPaddingBetweenBalls = 0.8;
+const collisionForce = 0.8;
 const m = 20;
 
 // scales
@@ -95,8 +94,8 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
 
     const svgRef = useRef();
 
-    const bvm = 1 / 10 * height;
-    const bhm = 1 / 10 * width;
+    const bvm = 1.5 / 10 * height;
+    const bhm = 1.5 / 10 * width;
 
     const ballBox = {
         min: { x: margin.left + bhm, y: margin.top + height - bvm },
