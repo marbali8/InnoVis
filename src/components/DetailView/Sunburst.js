@@ -100,6 +100,7 @@ const Sunburst = ({onYearClicked}) => {
 
             var data_ready = pie(d3.entries(yearData));
 
+            const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
             svg
                 .attr("width", width)
                 .attr("height", height)
@@ -112,7 +113,9 @@ const Sunburst = ({onYearClicked}) => {
                     .innerRadius(innerRadius)
                     .outerRadius(outerRadius)
                 )
-                .attr('fill', d3.schemeCategory10())
+                .attr('fill', function (d) {
+                    return colorScale(d.data.key);
+                })
                 .attr("stroke", "black")
                 .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                 .append('title')
@@ -149,7 +152,7 @@ const Sunburst = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice, innerRadius, outerRadius]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}></svg>
+        <svg height={height} width={width} ref={svgRef}/>
     </React.Fragment>;
 };
 
