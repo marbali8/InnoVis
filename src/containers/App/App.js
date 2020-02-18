@@ -7,7 +7,6 @@ import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import BouncingBalls from '../../components/MegaBallsView/MegaBallsViewFloating/BouncingBalls.js'
 import companyData from '../../data/companies_yearly_data.js';
 import {getRevenueForCompanyObjectByYear} from '../../data/data_accessor_methods.js';
-import * as _ from 'lodash';
 import * as d3 from 'd3';
 
 function App() {
