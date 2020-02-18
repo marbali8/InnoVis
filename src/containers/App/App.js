@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classes from './App.module.scss';
-import MegaBallsViewFloating from '../../components/MegaBallsView/MegaBallsViewFloating/MegaBallsViewFloating.js';
-import MegaBallsViewGrouped from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js';
-
+import StreamGraph from '../../components/StreamGraph/StreamGraph.js';
+import Infobox from '../../components/DetailView/Infobox.js'
+import Sunburst from '../../components/DetailView/Sunburst.js'
+import GrantsChart from "../../components/DetailView/GrantsChart";
+import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 
 function App() {
 
-  // next step is to combine the two files into a new file where we transition between
-  // the megaball views when grouping balls by SNI code or industry
+  const defaultYear = 2010;
+
+  const [year, setYear] = useState(defaultYear);
+
+  const handleTimeSliderYearClicked = (year) => {
+    setYear(year);
+  };
+
   return (
     <div className={classes.App}>
-      <MegaBallsViewGrouped></MegaBallsViewGrouped>
+      <StreamGraph />
+      <Infobox onYearClicked={year} />
+      <Sunburst onYearClicked={year} />
+      <GrantsChart onYearClicked={year} />
+      <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2008, 2020]} />
     </div >
   );
 }

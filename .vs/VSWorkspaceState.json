@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\DetailView",
+    "\\src\\components\\StreamGraph",
+    "\\src\\containers",
+    "\\src\\containers\\App",
+    "\\src\\examples"
+  ],
+  "SelectedNode": "\\src\\components\\StreamGraph\\StreamGraph.js",
+  "PreviewInSolutionExplorer": false
+}
