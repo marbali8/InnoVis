@@ -1,17 +1,14 @@
-build site:
-  image: node:6
-  stage: build
-  script:
-    - npm install --progress=false
-    - npm start
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - dist
+image: node:6.5.0 # can be upgraded, depending on your node version used
 
-unit test:
-  image: node:6
-  stage: test
+pages:
+  stage: deploy
   script:
-    - npm install --progress=false
-    - npm start
+  - npm install
+  - npm run build
+  - rm -rf public
+  - mv build public
+  artifacts:
+    paths:
+    - public # mandatory, other folder won't work
+  only:
+  - master # or dev, the branch you want to publish
