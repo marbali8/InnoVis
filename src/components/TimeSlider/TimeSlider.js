@@ -109,7 +109,7 @@ const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
         }
 
 
-    }, []);
+    }, [height, margin.left, margin.right, onYearClicked, range, step, stroke_width, width]);
 
     return <div ref={divRef} height={height} width={width} className={classes.timeSlider}/>;
 };

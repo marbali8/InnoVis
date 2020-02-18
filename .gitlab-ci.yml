@@ -1,14 +1,20 @@
-image: node:6.5.0 # can be upgraded, depending on your node version used
+image: node:13.7.0
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
 
 pages:
   stage: deploy
   script:
-  - npm install --progress=false
   - npm run build
   - rm -rf public
   - mv build public
   artifacts:
     paths:
-    - public # mandatory, other folder won't work
+    - public
   only:
-  - master # or dev, the branch you want to publish
+  - master
