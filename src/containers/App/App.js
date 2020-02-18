@@ -39,7 +39,7 @@ function App() {
         return filteredBalls;
     };
 
-//<GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year}/>
+// <BouncingBalls showBorderOfBallBox={false} height={500} width={1000} balls = {getFilteredBalls()}/>
 
     return (
 
@@ -48,9 +48,9 @@ function App() {
                 KTH INNOVATION
             </div>
             <div className={classes.megaBallsView}>
-                <BouncingBalls showBorderOfBallBox={false} height={500} width={1000} balls = {getFilteredBalls()}/>
+                <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year}/>
             </div>
-            <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2008, 2020]}/>
+            <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]}/>
             <div className={classes.aggregateKTHDataView}>
                 <Sunburst onYearClicked={year}/>
                 <GrantsChart onYearClicked={year}/>
