@@ -119,9 +119,6 @@ const Infobox = ({onYearClicked}) => {
                     .attr('dy', 20)
                     .text("novelty searches: " + yearData.novelty_searches);
             }
-                svg
-                    .attr('transform', 'translate(' + width / 2 + " " + height + ")");
-
         }
 
 
@@ -133,7 +130,7 @@ const Infobox = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}></svg>
+        <svg height={height} width={width} ref={svgRef}/>
     </React.Fragment>;
 };
 

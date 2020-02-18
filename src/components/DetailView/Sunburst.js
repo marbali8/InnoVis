@@ -38,7 +38,7 @@ const Sunburst = ({onYearClicked}) => {
     const margin = {top: 10, right: 10, bottom: 10, left: 10};
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
-    const outerRadius = (width + height) / 4;
+    const outerRadius = ((width + height) / 4) - margin.top;
     const innerRadius = outerRadius / 3;
 
     // state and ref to svg
@@ -98,10 +98,6 @@ const Sunburst = ({onYearClicked}) => {
             var yearData = data[year_choice - 2010];
             delete yearData['year'];
 
-            var keyToColorMap = (key) => {
-                return '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
-            };
-
             var data_ready = pie(d3.entries(yearData));
 
             svg
@@ -116,9 +112,7 @@ const Sunburst = ({onYearClicked}) => {
                     .innerRadius(innerRadius)
                     .outerRadius(outerRadius)
                 )
-                .attr('fill', function (d) {
-                    return keyToColorMap(d);
-                })
+                .attr('fill', d3.schemeCategory10())
                 .attr("stroke", "black")
                 .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                 .append('title')

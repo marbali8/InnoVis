@@ -50,7 +50,7 @@ const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
 
         // bar that's inside the main track to make it look like a rect with a border
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-inset')
-            .attr('stroke', '#1954a6')
+            .attr('stroke', 'lightgrey')
             .attr('stroke-width', stroke_width)
             .attr('stroke-linecap', 'round');
 
@@ -62,7 +62,8 @@ const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
         // drag handle
         var handle = slider.append('circle').classed('handle', true)
             .attr('r', stroke_width/3)
-            .attr('fill', '#e600ff');
+            .attr('fill', 'grey')
+            .attr('stroke', 'black');
 
         // bar on top with stroke = transparent and on which the drag behaviour is actually called
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
@@ -110,7 +111,7 @@ const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
 
     }, []);
 
-    return <div ref={divRef} height={height} width={width} className={classes.timeSlider}></div>;
+    return <div ref={divRef} height={height} width={width} className={classes.timeSlider}/>;
 };
 
 export default TimeSlider;

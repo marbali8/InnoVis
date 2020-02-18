@@ -54,8 +54,9 @@ const GrantsChart = ({onYearClicked}) => {
                 .attr("transform", 'translate(' + -margin.bottom / 2 + ' ' + margin.bottom / 2 + ') rotate(-65)');
 
             //Y-AXIS
+            var domain = [0, 26];
             var y_scale = d3.scaleLinear()
-                .domain([0, 20])
+                .domain(domain)
                 .range([height - margin.bottom, margin.top]);
             var y_axis = d3.axisLeft()
                 .scale(y_scale);
@@ -76,7 +77,7 @@ const GrantsChart = ({onYearClicked}) => {
                 .datum(data_ready)
                 .attr("d", line)
                 .attr("transform", 'translate(' + margin.left + ' ' + 0 +')')
-                .style("stroke", 'blue')
+                .style("stroke", '#005ec4')
                 .style("fill", 'none');
 
             svg.selectAll(".dot")
@@ -91,7 +92,7 @@ const GrantsChart = ({onYearClicked}) => {
                 .on('mouseout', function (d) {
                     this.style.r = 3;
                 })
-                .style('fill', 'blue')
+                .style('fill', '#005ec4')
                 .append('title')
                 .text(function (d) {
                     return d;
@@ -107,7 +108,7 @@ const GrantsChart = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}></svg>
+        <svg height={height} width={width} ref={svgRef}/>
     </React.Fragment>;
 };
 
