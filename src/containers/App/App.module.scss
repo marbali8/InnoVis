@@ -10,8 +10,8 @@
   flex-direction: column;
   align-items: center;
 
+
   .title {
-    width: 100%;
     padding: 10px;
     text-align: center;
     font-family: "Open Sans", sans-serif;
@@ -23,7 +23,6 @@
   }
 
   .subtitle {
-    width: 100%;
     padding: 10px;
     text-align: center;
     font-family: "Open Sans", sans-serif;
@@ -46,19 +45,13 @@
   }
 
   .megaBallsView {
-    display: flex;
-    justify-content: center;
     border-radius: 8px;
-    width: 95%;
     background-color: #C1DFF0
   }
 
   .aggregateKTHDataView {
-
     border-radius: 10px;
-    width: 95%;
     display: flex;
-    justify-content: center;
     align-items: center;
     background-color: #C1DFF0
   }
