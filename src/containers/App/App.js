@@ -41,16 +41,22 @@ function App() {
 
         <div className={classes.App}>
             <div className={classes.title}>
-                KTH INNOVATION
+                InnoVis
+            </div>
+            <div className={classes.subtitle}>
+                    Seeing how KTH Innovation helps
             </div>
             <div className={classes.megaBallsView}>
                 <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year}/>
             </div>
-            <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]}/>
+            <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
                 <Sunburst onYearClicked={year}/>
                 <GrantsChart onYearClicked={year}/>
                 <Infobox onYearClicked={year}/>
+            </div>
+            <div className={classes.footer}>
+                Developed as part of Information Visualization at KTH for KTH Innovation by Alex, Alvin, Christina, Hannah, Jacob and Mar.
             </div>
         </div>
     );

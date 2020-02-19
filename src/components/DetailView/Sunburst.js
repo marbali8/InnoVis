@@ -122,7 +122,7 @@ const Sunburst = ({onYearClicked}) => {
                 .attr('fill', function (d) {
                     return colorScale2(d.data.key / numCategories);
                 })
-                .attr("stroke", "black")
+                .attr("stroke", "white")
                 .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                 .append('title')
                 .text(function (d) {
