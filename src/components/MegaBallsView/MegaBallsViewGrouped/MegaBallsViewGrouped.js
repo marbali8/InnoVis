@@ -21,7 +21,6 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
     //const sim = useRef();
 
     useEffect(() => {
-        console.log("Hej!");
         // vertical & horizontal margin to ball box, which is rectangular area containing the balls
         // top margin = bottom margin = vertical margin, similar eq for hz. margin!
 
@@ -172,9 +171,9 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             .nodes(graph)
             .force("collide", d3.forceCollide().strength(.2).radius(function (d) { return d.size; }).iterations(2))
             .on("tick", function (d) {
-                // node
-                //     .attr("cx", function (d) { return d.x; })
-                //     .attr("cy", function (d) { return d.y; })
+                node
+                    .attr("cx", function (d) { return d.x; })
+                    .attr("cy", function (d) { return d.y; })
             })
             .force("link", d3.forceLink(nodeLinks).strength(.1).distance(1).iterations(2).id(graph.id));
 
@@ -195,7 +194,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             .style("fill", "None")
             .style("stroke", "#232323");
 
-        // eslint-disable-next-line
+
         var node = canvas.append("g")
             .attr("class", "node")
             .selectAll("circle")
