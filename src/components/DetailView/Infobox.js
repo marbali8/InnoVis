@@ -127,7 +127,7 @@ const Infobox = ({onYearClicked}) => {
         }
 
 
-    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data]);
+    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice]);
 
     return <React.Fragment>
         <svg height={height} width={width} ref={svgRef}/>

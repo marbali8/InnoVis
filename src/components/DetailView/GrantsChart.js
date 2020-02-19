@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import * as d3 from 'd3';
 import fundingData from '../../data/fundings_aggregate_monthly.json';
-import {createRenderer} from "react-dom/test-utils";
 
 const RELEVANT_YEARS = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"];
 
@@ -61,7 +60,7 @@ const GrantsChart = ({onYearClicked}) => {
             var y_axis = d3.axisLeft()
                 .scale(y_scale);
             svg.append("g")
-                .attr("transform", "translate(" + margin.left + " " + "0)")
+                .attr("transform", "translate(" + margin.left + " 0)")
                 .call(y_axis);
 
             //LINE
@@ -105,7 +104,7 @@ const GrantsChart = ({onYearClicked}) => {
         }
 
 
-    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data]);
+    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice]);
 
     return <React.Fragment>
         <svg height={height} width={width} ref={svgRef}/>

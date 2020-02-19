@@ -18,7 +18,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
         max: { x: width - bhm, y: height - bvm }
     };
 
-    const sim = useRef();
+    //const sim = useRef();
 
     useEffect(() => {
         console.log("Hej!");
@@ -31,31 +31,31 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
         referencedSvg.selectAll("*").remove();
         // adjustable options
         const numBalls = data.length;
-        let numCategories = 30;
-        const maxSpeed = 10;
-        const maxBallArea = 1;
+        //let numCategories = 30;
+        //const maxSpeed = 10;
+        //const maxBallArea = 1;
         // max domain value for color scale's domain = [0,1,2...m]
         const m = 200;
 
-        var categorical = [
-            { "name": "schemeAccent", "n": 8 },
-            { "name": "schemeDark2", "n": 8 },
-            { "name": "schemePastel2", "n": 8 },
-            { "name": "schemeSet2", "n": 8 },
-            { "name": "schemeSet1", "n": numCategories },
-            { "name": "schemePastel1", "n": 9 },
-            { "name": "schemeCategory10", "n": numCategories },
-            { "name": "schemeSet3", "n": 12 },
-            { "name": "schemePaired", "n": 12 },
-            { "name": "schemeCategory20", "n": 20 },
-            { "name": "schemeCategory20b", "n": 20 },
-            { "name": "schemeCategory20c", "n": 20 }
-        ];
+        /*var categorical = [
+            { "name" : "schemeAccent", "n": 8},
+            { "name" : "schemeDark2", "n": 8},
+            { "name" : "schemePastel2", "n": 8},
+            { "name" : "schemeSet2", "n": 8},
+            { "name" : "schemeSet1", "n": numCategories},
+            { "name" : "schemePastel1", "n": 9},
+            { "name" : "schemeCategory10", "n" : numCategories},
+            { "name" : "schemeSet3", "n" : 12 },
+            { "name" : "schemePaired", "n": 12},
+            { "name" : "schemeCategory20", "n" : 20 },
+            { "name" : "schemeCategory20b", "n" : 20},
+            { "name" : "schemeCategory20c", "n" : 20 }
+          ];*/
 
 
-        const radiusScale = d3.scaleSqrt().domain([0, 100]).range([0, maxBallArea]);
-        const colorScale2 = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
-        var colorScale3 = d3.scaleOrdinal(d3[categorical[6].name]);
+        //const radiusScale = d3.scaleSqrt().domain([0, 100]).range([0, maxBallArea]);
+        //const colorScale2 = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
+        //var colorScale3 = d3.scaleOrdinal(d3[categorical[6].name]);
         //pick from here: https://github.com/d3/d3-scale-chromatic
         var colorScale = d3.interpolateRainbow;
 
@@ -201,7 +201,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             .data(graph)
             .enter().append("circle")
             .attr("r", function (d) { return d.size; })
-            .attr("fill", function (d) { return colorScale(d.id / (Object.size(anchorNodes))) })
+            .attr("fill", function (d) { return colorScale(d.id / m) }) // m was (Object.size(anchorNodes)) before, matching Sunburst
             .attr('fill-opacity', 0.8)
             .style("stroke", d => d.error ? "red" : "black")
             .attr("cx", function (d) { return d.x + width / 2; })
@@ -254,17 +254,18 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             d.fy = null;
         }
 
-        function types(d) {
-            d.gdp = +d.gdp;
-            d.size = +d.gdp / 100;
-            d.size < 3 ? d.radius = 3 : d.radius = d.size;
-            return d;
-        }
+        /*
+            function types(d) {
+                d.gdp = +d.gdp;
+                d.size = +d.gdp / 100;
+                d.size < 3 ? d.radius = 3 : d.radius = d.size;
+                return d;
+            }*/
 
 
         // remaining code from bouncing balls example pasted at eof.
 
-    }, [year_choice]); // useEffect
+    }, [year_choice, ballBox.min.x, ballBox.min.y, bhm, bvm, height, margin.bottom, margin.left, margin.right, margin.top, width]); // useEffect
 
     return <React.Fragment><svg height={height} width={width} ref={svgRef}></svg> </React.Fragment>;
 };

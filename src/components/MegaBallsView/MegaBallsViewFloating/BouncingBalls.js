@@ -160,7 +160,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
         let simulation = d3.forceSimulation().alphaDecay(0).on("tick", () => tick(merge, ballBox, bubbles));
         sim.current = simulation;
 
-    }, [balls]);
+    }, [balls, ballBox, height, margin.bottom, margin.left, margin.right, margin.top, showBorderOfBallBox, width]);
 
     return (
         < React.Fragment >

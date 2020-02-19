@@ -34,6 +34,8 @@ const result = RELEVANT_YEARS.map(year => {
 
 const Sunburst = ({onYearClicked}) => {
 
+    console.log("Sun");
+    console.log(onYearClicked);
     const year_choice = onYearClicked;
     const margin = {top: 10, right: 10, bottom: 10, left: 10};
     const width = 400 - margin.left - margin.right;
@@ -100,7 +102,11 @@ const Sunburst = ({onYearClicked}) => {
 
             var data_ready = pie(d3.entries(yearData));
 
-            const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
+            //const colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(20));
+            var colorScale2 = d3.interpolateRainbow;
+            const numCategories = 200;
+            //use change colorscale2 to colorscale and change numCategories to 77 to use same color scheme as balls
+
             svg
                 .attr("width", width)
                 .attr("height", height)
@@ -114,9 +120,9 @@ const Sunburst = ({onYearClicked}) => {
                     .outerRadius(outerRadius)
                 )
                 .attr('fill', function (d) {
-                    return colorScale(d.data.key);
+                    return colorScale2(d.data.key / numCategories);
                 })
-                .attr("stroke", "black")
+                .attr("stroke", "white")
                 .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                 .append('title')
                 .text(function (d) {

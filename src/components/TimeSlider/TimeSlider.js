@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import classes from './TimeSlider.module.scss';
 
-const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
+const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
 
     // TODO: will need also data for the graph behind, w/h for the graph
     // TODO: will need to call a drag event of main view
@@ -57,13 +57,13 @@ const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
         slider.append('g').attr('class', 'ticks')
             .attr('transform', 'translate(0, ' + (stroke_width/2 + 5) + ')')
             .call(xAxis)
-            .attr('font-size', 13);
+            .attr('font-size', 13)
+            .attr('color', 'lightgrey');
 
         // drag handle
         var handle = slider.append('circle').classed('handle', true)
             .attr('r', stroke_width/3)
-            .attr('fill', 'grey')
-            .attr('stroke', 'black');
+            .attr('fill', 'grey');
 
         // bar on top with stroke = transparent and on which the drag behaviour is actually called
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
@@ -109,7 +109,7 @@ const TimeSlider = ({ height = 100, width = 500, onYearClicked, range }) => {
         }
 
 
-    }, []);
+    }, [height, margin.left, margin.right, onYearClicked, range, step, stroke_width, width]);
 
     return <div ref={divRef} height={height} width={width} className={classes.timeSlider}/>;
 };
