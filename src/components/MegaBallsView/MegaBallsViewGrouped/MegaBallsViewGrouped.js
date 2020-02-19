@@ -195,6 +195,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             .style("fill", "None")
             .style("stroke", "#232323");
 
+        // eslint-disable-next-line
         var node = canvas.append("g")
             .attr("class", "node")
             .selectAll("circle")
