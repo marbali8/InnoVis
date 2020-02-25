@@ -114,20 +114,22 @@ const Sunburst = ({onYearClicked}) => {
                 .data(data_ready)
                 .enter()
                 .append('path')
-                .attr('class', 'piece')
+                .attr('class', 'piece') // class using piece
                 .attr('d', d3.arc()
                     .innerRadius(innerRadius)
                     .outerRadius(outerRadius)
                 )
                 .attr('fill', function (d) {
-                    return colorScale2(d.data.key / numCategories);
+                    return colorScale2(d.data.key / numCategories); // connect megaball with fill, so set this as a class?
                 })
                 .attr("stroke", "white")
                 .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                 .append('title')
                 .text(function (d) {
                     return d.data.key;
-                });
+                })
+                /*.attr('class', 'fill')
+                */;
 
             svg
                 .append('text')

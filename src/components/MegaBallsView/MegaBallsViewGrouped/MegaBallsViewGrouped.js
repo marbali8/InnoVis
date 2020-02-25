@@ -200,13 +200,15 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
 
 
         var node = canvas.append("g")
-            .attr("class", "node")
+            .attr("class", "node") // class using node
             .selectAll("circle")
             .data(graph)
             .enter().append("circle")
             .attr("r", function (d) { return d.size; })
             .attr("fill", function (d) { return colorScale(anchorNodesIndex[d.id] / 100) }) // m was (Object.size(anchorNodes)) before, matching Sunburst
+            // Thinking about setting fill as a class, connected with sunburst. Then you can controll the color of both.
             .attr('fill-opacity', 0.8)
+            //.attr("class", "fill")
             .style("stroke", d => d.error ? "red" : "black")
             .attr("cx", function (d) { return d.x + width / 2; })
             .attr("cy", function (d) { return d.y + height / 2; })
