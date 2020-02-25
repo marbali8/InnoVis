@@ -56,7 +56,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
         //const colorScale2 = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
         //var colorScale3 = d3.scaleOrdinal(d3[categorical[6].name]);
         //pick from here: https://github.com/d3/d3-scale-chromatic
-        var colorScale = d3.interpolateRainbow;
+        var colorScale = d3.interpolateSpectral;
 
 
         // create a canvas
@@ -78,6 +78,8 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
         const graph = [];
         const nodeLinks = [];
         const anchorNodes = {};
+        const anchorNodesIndex = {};
+        var idx = 0;
         for (let i = 0; i < numBalls; i++) {
             let tempID = data[i].primary_code_in_NIC;
             var ball = {};
@@ -163,6 +165,8 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             }
             else {
                 anchorNodes[tempID] = i;
+                anchorNodesIndex[tempID] = idx;
+                idx += 5;
             }
         }
 
@@ -201,7 +205,7 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             .data(graph)
             .enter().append("circle")
             .attr("r", function (d) { return d.size; })
-            .attr("fill", function (d) { return colorScale(d.id / m) }) // m was (Object.size(anchorNodes)) before, matching Sunburst
+            .attr("fill", function (d) { return colorScale(anchorNodesIndex[d.id] / 100) }) // m was (Object.size(anchorNodes)) before, matching Sunburst
             .attr('fill-opacity', 0.8)
             .style("stroke", d => d.error ? "red" : "black")
             .attr("cx", function (d) { return d.x + width / 2; })
