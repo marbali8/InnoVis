@@ -50,7 +50,7 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
 
         // bar that's inside the main track to make it look like a rect with a border
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-inset')
-            .attr('stroke', 'lightgrey')
+            .attr('stroke', '#bccee7')
             .attr('stroke-width', stroke_width)
             .attr('stroke-linecap', 'round');
 
@@ -58,12 +58,12 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
             .attr('transform', 'translate(0, ' + (stroke_width / 2 + 5) + ')')
             .call(xAxis)
             .attr('font-size', 13)
-            .attr('color', 'lightgrey');
+            .attr('color', 'black');
 
         // drag handle
         var handle = slider.append('circle').classed('handle', true)
             .attr('r', stroke_width / 3)
-            .attr('fill', 'grey');
+            .attr('fill', '#1954a6');
 
         // bar on top with stroke = transparent and on which the drag behaviour is actually called
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
