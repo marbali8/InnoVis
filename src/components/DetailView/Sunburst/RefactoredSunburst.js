@@ -1,9 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
+// time for transition between state changes in milliseconds
 const transitionDuration = 900;
 
-const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, bottom: 10, left: 10 }, textDisplayedAtCenter = "Default text", data = [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] }) => {
+/** sunburst component that updates everytime a prop changes with a transition animation, takes in a list of data + other optional props */
+const Sunburst = ({
+    widthHeightValue = 400,
+    margin = { top: 10, right: 10, bottom: 10, left: 10 },
+    data = [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }]
+}) => {
 
     const width = widthHeightValue - margin.left - margin.right;
     const height = widthHeightValue - margin.top - margin.bottom;
@@ -14,7 +20,7 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
     // used to append objects only on first mount
     const didMount = useRef(false);
 
-    //draws a white donut if no data
+    // draws a white donut if no data
     if (data.length === 0) {
         data = [{ label: "", value: 1, color: 'white' }];
     }
@@ -48,12 +54,12 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
             }
         };
 
-        // draws the sunburst using the enter and exit update 
+        /** uses enter() and exit() to redraw the sunburst every time props change with transitions */
         function drawSunburst() {
 
             var arcs = d3.select('.arcs').selectAll("path").data(pie(data));
 
-            //transition arcs when data changes
+            // transition arcs when data changes
             arcs.transition().duration(transitionDuration).attrTween("d", arcTween);
 
             // enter
@@ -63,7 +69,7 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
                 .attr("d", arc)
                 .each(function (d) { this._current = d; })
                 .attr("fill", function (d) { return d.data.color })
-                .attr('stroke', 'black')
+                .attr("stroke", "transparent")
                 .each(function (d) { this._current = d; });
 
             enter.on('mouseenter', function (d) {
@@ -81,9 +87,10 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
             arcs.exit().remove();
         };
 
+        /** draws the text in the center of the sunburst */
         function addTextInCenter() {
 
-            let center_text = d3.select('.sunburst_outer_svg').selectAll('.center_text').data([textDisplayedAtCenter], (d) => d.key);
+            let center_text = d3.select('.sunburst_outer_svg').selectAll('.center_text').data([0], (d) => d);
 
             // adds the center text only when mounting
             center_text
@@ -106,7 +113,7 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
             };
         }
 
-    }, [widthHeightValue, data, margin, textDisplayedAtCenter, width, height, pie, arc]);
+    }, [arc, data, height, pie, width]);
 
     return <React.Fragment><div className="Sunburst" ref={anchor} /></React.Fragment>;
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classes from './App.module.scss';
-import Infobox from '../../components/DetailView/Infobox.js'
-import Sunburst from '../../components/DetailView/Sunburst2.js'
-import GrantsChart from "../../components/DetailView/GrantsChart";
+import Infobox from '../../components/DetailView/InfoBox/Infobox.js'
+import Sunburst from '../../components/DetailView/Sunburst/Sunburst.js'
+import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import GroupingBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js';
 
@@ -52,7 +52,7 @@ function App() {
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
-                <Sunburst data={[{ label: 'FirstObj', color: 'red', value: 1, key: 'uniqueKey1' }, { label: 'SecondObj', color: 'blue', value: 1, key: 'uniqueKey2' }]} onYearClicked={year} />
+                <Sunburst onYearClicked={year} />
                 <GrantsChart onYearClicked={year} />
                 <Infobox onYearClicked={year} />
             </div>
