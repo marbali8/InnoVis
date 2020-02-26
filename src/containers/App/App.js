@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import classes from './App.module.scss';
 import Infobox from '../../components/DetailView/Infobox.js'
-import Sunburst from '../../components/DetailView/Sunburst.js'
+import Sunburst from '../../components/DetailView/Sunburst2.js'
 import GrantsChart from "../../components/DetailView/GrantsChart";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
-import GroupingBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js'
+import GroupingBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js';
 
 function App() {
 
@@ -35,7 +35,7 @@ function App() {
         return filteredBalls;
     };*/
 
-// <BouncingBalls showBorderOfBallBox={false} height={500} width={1000} balls = {getFilteredBalls()}/>
+    // <BouncingBalls showBorderOfBallBox={false} height={500} width={1000} balls = {getFilteredBalls()}/>
 
     return (
 
@@ -44,16 +44,16 @@ function App() {
                 InnoVis
             </div>
             <div className={classes.subtitle}>
-                    Seeing how KTH Innovation helps
+                Seeing how KTH Innovation helps
             </div>
             <div className={classes.megaBallsView}>
-                <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year}/>
+                <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year} />
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
-                <Sunburst onYearClicked={year}/>
-                <GrantsChart onYearClicked={year}/>
-                <Infobox onYearClicked={year}/>
+                <Sunburst onYearClicked={year} />
+                <GrantsChart onYearClicked={year} />
+                <Infobox onYearClicked={year} />
             </div>
             <div className={classes.footer}>
                 Developed as part of Information Visualization at KTH for KTH Innovation by Alex, Alvin, Christina, Hannah, Jacob and Mar.

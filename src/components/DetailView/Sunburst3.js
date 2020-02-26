@@ -87,6 +87,7 @@ const Sunburst = ({ onYearClicked }) => {
                     .attr("y", height / 2 + 5)
                     .text(year_choice.toString())
                     .style("text-anchor", "middle");
+
                 return;
             }
 
