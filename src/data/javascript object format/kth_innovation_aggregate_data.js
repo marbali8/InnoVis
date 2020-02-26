@@ -1,0 +1,11 @@
+const data =
+{
+    ideas_2008_2019: 2649,
+    researchers: 1100,
+    students_2008_2019: 1549,
+    funding_msek_2008_2019: 271,
+    patent_applications_2008_2019: 175,
+    novelty_searches_2008_2019: 284
+}
+
+export default data;

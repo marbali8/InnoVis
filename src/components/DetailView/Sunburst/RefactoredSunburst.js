@@ -4,11 +4,12 @@ import * as d3 from 'd3';
 // time for transition between state changes in milliseconds
 const transitionDuration = 900;
 
-/** sunburst component that updates everytime a prop changes with a transition animation, takes in a list of data + other optional props */
+/** Sunburst component that updates everytime a prop changes with a transition animation, takes in a list of data + other optional props 
+ data prop format example: [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] */
 const Sunburst = ({
     widthHeightValue = 400,
     margin = { top: 10, right: 10, bottom: 10, left: 10 },
-    data = [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }]
+    data = []
 }) => {
 
     const width = widthHeightValue - margin.left - margin.right;
