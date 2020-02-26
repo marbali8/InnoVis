@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import data from '../../../data/companies_yearly_data.json';
 import * as d3 from 'd3';
+import { getColorBySNICode } from '../../../utility_functions/ColorFunctions.js'
 
 const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true, margin = { left: 0, right: 0, top: 0, bottom: 0 }, onYearClicked }) => {
     const svgRef = useRef();

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import companyData from '../../data/companies_yearly_data.json';
 import * as _ from 'lodash'
@@ -32,12 +32,10 @@ const result = RELEVANT_YEARS.map(year => {
     return obj
 });
 
-const Sunburst = ({onYearClicked}) => {
+const Sunburst = ({ onYearClicked }) => {
 
-    console.log("Sun");
-    console.log(onYearClicked);
     const year_choice = onYearClicked;
-    const margin = {top: 10, right: 10, bottom: 10, left: 10};
+    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     const outerRadius = ((width + height) / 4) - margin.top;
@@ -67,7 +65,7 @@ const Sunburst = ({onYearClicked}) => {
                 .sort(null);
 
             if (!RELEVANT_YEARS.includes(year_choice.toString())) {
-                var emptyData = [{name: "", value: 1}];
+                var emptyData = [{ name: "", value: 1 }];
                 svg
                     .attr("width", width)
                     .attr("height", height)
@@ -120,6 +118,7 @@ const Sunburst = ({onYearClicked}) => {
                     .outerRadius(outerRadius)
                 )
                 .attr('fill', function (d) {
+                    console.log(d.data.key);
                     return colorScale2(d.data.key / numCategories);
                 })
                 .attr("stroke", "white")
@@ -158,7 +157,7 @@ const Sunburst = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice, innerRadius, outerRadius]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}/>
+        <svg height={height} width={width} ref={svgRef} />
     </React.Fragment>;
 };
 
