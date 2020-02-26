@@ -19,6 +19,10 @@ function App() {
         setYear(year);
     };
 
+
+
+
+
     /*
     const getFilteredBalls = () => {
         const filteredBalls = [];
@@ -51,7 +55,7 @@ function App() {
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
-                <Sunburst onYearClicked={year} />
+                <Sunburst data={[{ label: 'FirstObj', color: 'red', value: 1, key: 'uniqueKey1' }, { label: 'SecondObj', color: 'blue', value: 1, key: 'uniqueKey2' }]} onYearClicked={year} />
                 <GrantsChart onYearClicked={year} />
                 <Infobox onYearClicked={year} />
             </div>

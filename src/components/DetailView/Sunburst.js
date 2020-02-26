@@ -142,7 +142,6 @@ const Sunburst = ({ onYearClicked }) => {
                     d3.selectAll(".circletext").text(year_choice.toString());
                     d3.selectAll(".piece").style("opacity", 1);
                 });
-
         }
 
         return () => {

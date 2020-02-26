@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, bottom: 10, left: 10 }, textDisplayedAtCenter = "Default text", data = [{ label: 'FirstObj', color: 'red', value: 1, key: 'uniqueKey1' }, { label: 'SecondObj', color: 'blue', value: 1, key: 'uniqueKey2' }] }) => {
+const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, bottom: 10, left: 10 }, textDisplayedAtCenter = "Default text", data = [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] }) => {
 
     const width = widthHeightValue - margin.left - margin.right;
     const height = widthHeightValue - margin.top - margin.bottom;
@@ -17,62 +17,92 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
     }
 
     // setup pie and arc
-    var pie = d3.pie().value((d) => { return d.value });
+    var pie = d3.pie().sort(null).value((d) => d.value);
     var arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
     useEffect(() => {
         setupContainersOnMount();
         drawSunburst();
+        addTextInCenter();
         didMount.current = true;
-    }, [widthHeightValue, data, margin, textDisplayedAtCenter]);
 
-    function setupContainersOnMount() {
-        const anchorNode = d3.select(anchor.current);
+        function setupContainersOnMount() {
+            const anchorNode = d3.select(anchor.current);
 
-        if (!didMount.current) {
-            let canvas = anchorNode
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .classed('sunburst_outer_svg', true)
-                .append('g')
-                .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
-                .classed('sunburst_canvas', true);
+            if (!didMount.current) {
+                let canvas = anchorNode
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .classed('sunburst_outer_svg', true)
+                    .append('g')
+                    .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
+                    .classed('sunburst_canvas', true);
 
-            let sunburst_arcs_container = canvas.append('g').classed('arcs', true);
+                let sunburst_arcs_container = canvas.append('g').classed('arcs', true);
+            }
+        };
+
+        function drawSunburst() {
+
+            var arcs = d3.select('.arcs').selectAll("path").data(pie(data));
+
+            //transition arcs when data changes
+            arcs.transition().duration(300).attrTween("d", arcTween);
+
+            // enter
+            var enter = arcs.enter()
+                .append("path")
+                .attr("class", "arc")
+                .attr("d", arc)
+                .each(function (d) { this._current = d; })
+                .attr("fill", function (d) { return d.data.color })
+                .attr('stroke', 'black')
+                .each(function (d) { this._current = d; });
+
+            enter.on('mouseenter', function (d) {
+                d3.selectAll(".center_text").text(d.data.label);
+                d3.selectAll(".arc").style("opacity", .2);
+                d3.select(this).style("opacity", 1);
+            })
+                .on('mouseout', function (d) {
+                    d3.selectAll(".arc").style("opacity", 1);
+                    d3.selectAll(".center_text").text("");
+                })
+                .text((d) => d.data.label);
+
+            // exit
+            arcs.exit().remove();
+        };
+
+        function addTextInCenter() {
+
+            let center_text = d3.select('.sunburst_outer_svg').selectAll('.center_text').data([textDisplayedAtCenter], (d) => d.key);
+
+            // adds the center text only when mounting
+            center_text
+                .enter().append('text')
+                .attr('x', width / 2)
+                .attr('y', height / 2 + 5)
+                .attr('class', 'center_text')
+                .style("text-anchor", "middle")
+                .text("");
+
+            center_text.exit().remove();
         }
 
-    };
+        // used to interpolate between start and end angle when transitioning 
+        function arcTween(a) {
+            var i = d3.interpolate(this._current, a);
+            this._current = i(0);
+            return function (t) {
+                return arc(i(t));
+            };
+        }
 
-    function drawSunburst() {
+    }, [widthHeightValue, data, margin, textDisplayedAtCenter, width, height, pie, arc]);
 
-        var arcs = d3.select('.arcs').selectAll(".arc").data(pie(data), (d) => { console.log(d); return d.key });
 
-        // enter arcs
-        arcs.enter().append("path")
-            .attr("class", "arc")
-            .attr("d", arc)
-            .attr("fill", function (d) { return d.data.color })
-            .attr('stroke', 'black')
-            .append('title')
-            .text((d) => d.data.label);
-
-        // remove exiting elements
-        arcs.exit().remove();
-
-        // add center text
-        let center_text = d3.select('.sunburst_outer_svg').selectAll('.center_text').data([textDisplayedAtCenter], (d) => d);
-
-        center_text
-            .enter().append('text')
-            .attr('x', width / 2)
-            .attr('y', height / 2 + 5)
-            .attr('class', 'circletext')
-            .style("text-anchor", "middle")
-            .text(textDisplayedAtCenter);
-
-        center_text.exit().remove();
-    };
 
     return <React.Fragment>
         <div className="Sunburst" ref={anchor} />
@@ -81,19 +111,3 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
 }
 
 export default Sunburst;
-
-
-//old code: 
-// // create empty (completely white) sunburst to show while data is processing to show real sunuburst
-            // sunburst_slices_container
-            //     .selectAll('.arc')
-            //     .data(pie([{ label: "", value: 1, key: -1 }]), (d) => d.key)
-            //     .enter()
-            //     .append('path')
-            //     .attr('d', arc
-            //     )
-            //     .classed('arc', true)
-            //     .attr('fill', 'white')
-            //     .attr('stroke', "black")
-            //     .append('title')
-            //     .text('No data available.');
