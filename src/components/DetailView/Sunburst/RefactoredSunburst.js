@@ -57,7 +57,6 @@ const Sunburst = ({
 
         /** uses enter() and exit() to redraw the sunburst every time props change with transitions */
         function drawSunburst() {
-
             var arcs = d3.select('.arcs').selectAll("path").data(pie(data));
 
             // transition arcs when data changes
@@ -90,7 +89,6 @@ const Sunburst = ({
 
         /** draws the text in the center of the sunburst */
         function addTextInCenter() {
-
             let center_text = d3.select('.sunburst_outer_svg').selectAll('.center_text').data([0], (d) => d);
 
             // adds the center text only when mounting
