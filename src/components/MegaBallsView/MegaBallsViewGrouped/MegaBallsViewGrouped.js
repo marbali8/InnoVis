@@ -273,7 +273,6 @@ const MegaBallsView = ({
                 .on("end", dragended))
             .on('mouseover', function(d){
                 d3.selectAll('.details')
-                    .append('text')
                     .text(function (p) {
                         return d.name + ": " + (d.nr_employees === null ? '0' : d.nr_employees) + " employee(s) and " + d.revenue + 'SEK revenue in ' + year_choice;
                     });
