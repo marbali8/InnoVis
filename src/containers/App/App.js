@@ -20,9 +20,6 @@ function App() {
     };
 
 
-
-
-
     /*
     const getFilteredBalls = () => {
         const filteredBalls = [];

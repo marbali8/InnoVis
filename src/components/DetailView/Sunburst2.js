@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
+const transitionDuration = 900;
+
 const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, bottom: 10, left: 10 }, textDisplayedAtCenter = "Default text", data = [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] }) => {
 
     const width = widthHeightValue - margin.left - margin.right;
@@ -9,14 +11,15 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
     const innerRadius = outerRadius / 3;
 
     const anchor = useRef();
-    // set to true when the component has mounted for first time
+    // used to append objects only on first mount
     const didMount = useRef(false);
 
+    //draws a white donut if no data
     if (data.length === 0) {
-        data = [{ label: "", value: 1, key: -1, color: 'white' }];
+        data = [{ label: "", value: 1, color: 'white' }];
     }
 
-    // setup pie and arc
+    // set up pie and arc objects/functions
     var pie = d3.pie().sort(null).value((d) => d.value);
     var arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
@@ -26,6 +29,7 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
         addTextInCenter();
         didMount.current = true;
 
+        //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
         function setupContainersOnMount() {
             const anchorNode = d3.select(anchor.current);
 
@@ -39,16 +43,18 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
                     .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                     .classed('sunburst_canvas', true);
 
-                let sunburst_arcs_container = canvas.append('g').classed('arcs', true);
+                // container for arcs
+                canvas.append('g').classed('arcs', true);
             }
         };
 
+        // draws the sunburst using the enter and exit update 
         function drawSunburst() {
 
             var arcs = d3.select('.arcs').selectAll("path").data(pie(data));
 
             //transition arcs when data changes
-            arcs.transition().duration(300).attrTween("d", arcTween);
+            arcs.transition().duration(transitionDuration).attrTween("d", arcTween);
 
             // enter
             var enter = arcs.enter()
@@ -102,12 +108,7 @@ const Sunburst = ({ widthHeightValue = 400, margin = { top: 10, right: 10, botto
 
     }, [widthHeightValue, data, margin, textDisplayedAtCenter, width, height, pie, arc]);
 
-
-
-    return <React.Fragment>
-        <div className="Sunburst" ref={anchor} />
-    </React.Fragment>;
-
+    return <React.Fragment><div className="Sunburst" ref={anchor} /></React.Fragment>;
 }
 
 export default Sunburst;
