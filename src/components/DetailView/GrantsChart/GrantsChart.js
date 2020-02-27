@@ -90,7 +90,6 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr("cy", function (d) { return y_scale(d) })
                 .style("r", 3)
                 .on('mouseover', function (d) {
-                .on('mouseover', function(d) {
                     this.style.r = 5;
                 })
                 .on('mouseout', function (d) {
