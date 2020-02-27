@@ -31,6 +31,7 @@ const GrantsChart = ({ onYearClicked }) => {
             for (let i = 0; i < RELEVANT_YEARS.length; i++) {
                 if (monthly_funding_data[i].year === year_choice) {
                     yearData = monthly_funding_data[i];
+                    break;
                 }
             }
             var data_ready = yearData.values;
@@ -50,7 +51,8 @@ const GrantsChart = ({ onYearClicked }) => {
                 .call(x_axis)
                 .selectAll('g')
                 .selectAll('text')
-                .attr("transform", 'translate(' + -margin.bottom / 2 + ' ' + margin.bottom / 2 + ') rotate(-65)');
+                .attr("transform", 'translate(' + -margin.bottom / 2 + ' ' + margin.bottom / 2 + ') rotate(-65)')
+                .attr('font-family', 'Open Sans');
 
             //Y-AXIS
             var domain = [0, 26];
@@ -61,7 +63,8 @@ const GrantsChart = ({ onYearClicked }) => {
                 .scale(y_scale);
             svg.append("g")
                 .attr("transform", "translate(" + margin.left + " 0)")
-                .call(y_axis);
+                .call(y_axis)
+                .attr('font-family', 'Open Sans');
 
             //LINE
             var line = d3.line()
@@ -77,6 +80,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr("d", line)
                 .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')')
                 .style("stroke", '#005ec4')
+                .style("stroke-width", "2")
                 .style("fill", 'none');
 
             svg.selectAll(".dot")
@@ -86,6 +90,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr("cy", function (d) { return y_scale(d) })
                 .style("r", 3)
                 .on('mouseover', function (d) {
+                .on('mouseover', function(d) {
                     this.style.r = 5;
                 })
                 .on('mouseout', function (d) {
