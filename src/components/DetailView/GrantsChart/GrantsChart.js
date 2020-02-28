@@ -1,16 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import fundingData from '../../data/fundings_aggregate_monthly.json';
+import fundingData from '../../../data/fundings_aggregate_monthly.json';
 
 const RELEVANT_YEARS = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"];
 
 const monthly_funding_data = fundingData;
 
-const GrantsChart = ({onYearClicked}) => {
+const GrantsChart = ({ onYearClicked }) => {
 
     const year_choice = onYearClicked;
     // set dimensions of the graph
-    const margin = {top: 20, right: 20, bottom: 30, left: 20};
+    const margin = { top: 20, right: 20, bottom: 30, left: 20 };
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -66,7 +66,7 @@ const GrantsChart = ({onYearClicked}) => {
             //LINE
             var line = d3.line()
                 .x(function (d, i) {
-                    return x_scale(i * width/12);
+                    return x_scale(i * width / 12);
                 })
                 .y(function (d, i) {
                     return y_scale(d);
@@ -75,17 +75,17 @@ const GrantsChart = ({onYearClicked}) => {
             svg.append("path")
                 .datum(data_ready)
                 .attr("d", line)
-                .attr("transform", 'translate(' + margin.left + ' ' + 0 +')')
+                .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')')
                 .style("stroke", '#005ec4')
                 .style("fill", 'none');
 
             svg.selectAll(".dot")
                 .data(data_ready)
                 .enter().append("circle")
-                .attr("cx", function(d, i) { return x_scale(i * width/12) + margin.left })
-                .attr("cy", function(d) { return y_scale(d) })
+                .attr("cx", function (d, i) { return x_scale(i * width / 12) + margin.left })
+                .attr("cy", function (d) { return y_scale(d) })
                 .style("r", 3)
-                .on('mouseover', function(d){
+                .on('mouseover', function (d) {
                     this.style.r = 5;
                 })
                 .on('mouseout', function (d) {
@@ -107,7 +107,7 @@ const GrantsChart = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}/>
+        <svg height={height} width={width} ref={svgRef} />
     </React.Fragment>;
 };
 

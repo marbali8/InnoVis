@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import companyData from '../../data/companies_yearly_data.json';
+import companyData from '../../../data/companies_yearly_data.json';
 import * as _ from 'lodash'
 
 const RELEVANT_YEARS = ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"];
@@ -58,11 +58,7 @@ const Sunburst = ({ onYearClicked }) => {
 
         if (dataHasFetched) {
 
-            var pie = d3.pie()
-                .value(function (d) {
-                    return d.value;
-                })
-                .sort(null);
+            var pie = d3.pie().value((d) => { return d.value });
 
             if (!RELEVANT_YEARS.includes(year_choice.toString())) {
                 var emptyData = [{ name: "", value: 1 }];
@@ -91,7 +87,6 @@ const Sunburst = ({ onYearClicked }) => {
                     .attr("y", height / 2 + 5)
                     .text(year_choice.toString())
                     .style("text-anchor", "middle");
-
                 return;
             }
 
@@ -118,7 +113,6 @@ const Sunburst = ({ onYearClicked }) => {
                     .outerRadius(outerRadius)
                 )
                 .attr('fill', function (d) {
-                    console.log(d.data.key);
                     return colorScale2(d.data.key / numCategories);
                 })
                 .attr("stroke", "white")
@@ -147,7 +141,6 @@ const Sunburst = ({ onYearClicked }) => {
                     d3.selectAll(".circletext").text(year_choice.toString());
                     d3.selectAll(".piece").style("opacity", 1);
                 });
-
         }
 
         return () => {
