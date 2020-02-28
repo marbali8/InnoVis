@@ -10,11 +10,17 @@ import { getDataForSunburst } from '../../data/data_functions.js';
 function App() {
 
     const defaultYear = 2010;
+    const defaultCategory = 8;
     const [year, setYear] = useState(defaultYear);
+    const [category, setCategory] = useState(defaultCategory);
 
     const handleTimeSliderYearClicked = (year) => {
         setYear(year);
     };
+
+    const handleCategoryBallsHover = (category) => {
+        setCategory(category);
+    }
 
     return (
         <div className={classes.App}>
@@ -25,11 +31,14 @@ function App() {
                 Visualising the impact of KTH innovation
             </div>
             <div className={classes.megaBallsView}>
-                <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year} />
+                <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year} onBallMouseHover={handleCategoryBallsHover}/>
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
-                <Sunburst data={getDataForSunburst(year)} />
+                <Sunburst 
+                    data={getDataForSunburst(year)} 
+                    category={category} 
+                />
                 {/* <Sunburst onYearClicked={year}/> */}
                 <GrantsChart onYearClicked={year} />
                 <Infobox onYearClicked={year} />

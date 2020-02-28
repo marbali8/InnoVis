@@ -9,7 +9,8 @@ const transitionDuration = 900;
 const Sunburst = ({
     widthHeightValue = 400,
     margin = { top: 10, right: 10, bottom: 10, left: 10 },
-    data = []
+    data = [],
+    category = 0
 }) => {
 
     const width = widthHeightValue - margin.left - margin.right;
@@ -35,6 +36,8 @@ const Sunburst = ({
         drawSunburst();
         addTextInCenter();
         didMount.current = true;
+
+        console.log("The cat is: " + category)
 
         //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
         function setupContainersOnMount() {
