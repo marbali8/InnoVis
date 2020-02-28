@@ -28,32 +28,22 @@ function App() {
                 InnoVis
             </div>
             <div className={classes.subtitle}>
-<<<<<<< HEAD
-                Seeing how KTH Innovation helps
-=======
                 Visualising the impact of KTH innovation
->>>>>>> linking
             </div>
             <div className={classes.megaBallsView}>
                 <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year} onBallMouseHover={handleCategoryBallsHover}/>
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]}/>
             <div className={classes.aggregateKTHDataView}>
-<<<<<<< HEAD
-                <Sunburst onYearClicked={year}/>
-                <GrantsChart onYearClicked={year}/>
-                <div className={classes.infobox}>
-                    <Infobox onYearClicked={year}/>
-                </div>
-=======
                 <Sunburst 
                     data={getDataForSunburst(year)} 
                     category={category} 
                 />
                 {/* <Sunburst onYearClicked={year}/> */}
                 <GrantsChart onYearClicked={year} />
-                <Infobox onYearClicked={year} />
->>>>>>> linking
+                <div className={classes.infobox}>
+                    <Infobox onYearClicked={year} />
+                </div>
             </div>
 
             <div className={classes.footer}>
