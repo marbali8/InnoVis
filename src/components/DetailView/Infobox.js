@@ -69,7 +69,7 @@ const Infobox = ({onYearClicked}) => {
                 }
 
                 const largeFont = 24;
-                const smallFont = 12;
+                const smallFont = 16;
                 const smallSpace = 5;
                 const largeSpace = 20;
 
@@ -81,15 +81,11 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'ideastext')
                     .attr("x", width / 2)
                     .attr("y", y)
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "middle")
-                    .style("font-size", largeFont)
                     .text(yearData.ideas);
                 svg
                     .append('text')
                     .attr("x", width/2 + 40)
                     .attr("y", y)
-                    .style("text-anchor", "middle")
                     .style('fill', function () {
                         if (prevYearData !== undefined) {
                             diff = yearData.ideas - prevYearData.ideas;
@@ -108,7 +104,6 @@ const Infobox = ({onYearClicked}) => {
                     .append('text')
                     .attr("x", width / 2)
                     .attr("y", y + smallFont + smallSpace)
-                    .style("text-anchor", "middle")
                     .text("IDEAS");
 
                 //researchers
@@ -118,20 +113,16 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'researcherstext')
                     .attr("x", width / 2)
                     .attr("y", y)
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "middle")
-                    .style("font-size", largeFont)
                     .text(yearData.researchers);
                 svg
                     .append('text')
                     .attr("x", width/2 + 40)
                     .attr("y", y)
-                    .style("text-anchor", "middle")
                     .style('fill', function () {
                         if (prevYearData !== undefined) {
                             diff = yearData.researchers - prevYearData.researchers;
                             if (prevYearData.researchers > yearData.researchers) {
-                                return 'red';
+                                return 'red'
                             }
                             if (prevYearData.researchers < yearData.researchers) {
                                 return 'green';
@@ -144,7 +135,6 @@ const Infobox = ({onYearClicked}) => {
                     .append('text')
                     .attr("x", width / 2)
                     .attr("y", y + smallFont + smallSpace)
-                    .style("text-anchor", "middle")
                     .text("RESEARCHERS");
 
                 //students
@@ -154,15 +144,11 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'studentstext')
                     .attr("x", width / 2)
                     .attr("y", y)
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "middle")
-                    .style("font-size", largeFont)
                     .text(yearData.students);
                 svg
                     .append('text')
                     .attr("x", width/2 + 40)
                     .attr("y", y)
-                    .style("text-anchor", "middle")
                     .style('fill', function () {
                         if (prevYearData !== undefined) {
                             diff = yearData.students - prevYearData.students;
@@ -180,7 +166,6 @@ const Infobox = ({onYearClicked}) => {
                     .append('text')
                     .attr("x", width / 2)
                     .attr("y", y + smallFont + smallSpace)
-                    .style("text-anchor", "middle")
                     .text("STUDENTS");
 
                 //fundings
@@ -190,15 +175,11 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'fundingstext')
                     .attr("x", width / 2)
                     .attr("y", y)
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "middle")
-                    .style("font-size", largeFont)
                     .text(yearData.funding);
                 svg
                     .append('text')
                     .attr("x", width/2 + 40)
                     .attr("y", y)
-                    .style("text-anchor", "middle")
                     .style('fill', function () {
                         if (prevYearData !== undefined) {
                             diff = yearData.funding - prevYearData.funding;
@@ -216,7 +197,6 @@ const Infobox = ({onYearClicked}) => {
                     .append('text')
                     .attr("x", width / 2)
                     .attr("y", y + smallFont + smallSpace)
-                    .style("text-anchor", "middle")
                     .text("FUNDINGS");
 
                 //patent applications
@@ -229,15 +209,11 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'patentstext')
                     .attr("x", width / 2)
                     .attr("y", y)
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "middle")
-                    .style("font-size", largeFont)
                     .text(yearData.patent_applications);
                 svg
                     .append('text')
                     .attr("x", width/2 + 40)
                     .attr("y", y)
-                    .style("text-anchor", "middle")
                     .style('fill', function () {
                         if (prevYearData !== undefined) {
                             diff = yearData.patent_applications - prevYearData.patent_applications;
@@ -255,7 +231,6 @@ const Infobox = ({onYearClicked}) => {
                     .append('text')
                     .attr("x", width / 2)
                     .attr("y", y + smallFont + smallSpace)
-                    .style("text-anchor", "middle")
                     .text("PATENT APPLICATIONS");
 
                 //novelty searches
@@ -269,15 +244,11 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'noveltytext')
                     .attr("x", width / 2)
                     .attr("y", y)
-                    .style("font-weight", "bold")
-                    .style("text-anchor", "middle")
-                    .style("font-size", largeFont)
                     .text(yearData.novelty_searches);
                 svg
                     .append('text')
                     .attr("x", width/2 + 40)
                     .attr("y", y)
-                    .style("text-anchor", "middle")
                     .style('fill', function () {
                         if (prevYearData !== undefined) {
                             diff = yearData.novelty_searches - prevYearData.novelty_searches;
@@ -295,7 +266,6 @@ const Infobox = ({onYearClicked}) => {
                     .append('text')
                     .attr("x", width / 2)
                     .attr("y", y + smallFont + smallSpace)
-                    .style("text-anchor", "middle")
                     .text("NOVELTY SEARCHES");
 
             }
