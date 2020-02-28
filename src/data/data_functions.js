@@ -47,6 +47,30 @@ export function getDataForSunburst(year) {
     return categories.sort(compare);
 };
 
+export function getDataForMegaballs(year) 
+{
+    const numCompanies = companyData.length;
+    const anchorNodes = {};
+    const graph = [];
+    const nodeLinks = [];
+            
+    for (let i = 0; i < numCompanies; i++) {
+        let category = companyData[i].category;
+        
+        graph.push({size: Math.sqrt(Math.sqrt(getRevenueForCompanyObjectByYear(companyData[i], year))), id: companyData[i].category});
+        
+        if (category in anchorNodes) {
+            nodeLinks.push({ "source": anchorNodes[category], "target": i });
+            nodeLinks.push({ "source": i, "target": anchorNodes[category] });
+        }
+        else {
+            anchorNodes[category] = i;
+        }
+    }
+
+    const megaData = {nodes: graph, links: nodeLinks};
+    return megaData;
+}
 
 
   

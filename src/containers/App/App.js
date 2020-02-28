@@ -4,8 +4,8 @@ import Infobox from '../../components/DetailView/InfoBox/Infobox.js'
 import Sunburst from '../../components/DetailView/Sunburst/RefactoredSunburst.js'
 import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
-import GroupingBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js';
-import { getDataForSunburst } from '../../data/data_functions.js';
+import MegaBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBalls.js';
+import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
 function App() {
 
@@ -25,7 +25,7 @@ function App() {
                 Visualising the impact of KTH innovation
             </div>
             <div className={classes.megaBallsView}>
-                <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year} />
+                <MegaBalls showBorderOfBallBox={false} height={500} width={1000} data={getDataForMegaballs(year)} />
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
