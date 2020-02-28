@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import '../../global.module.scss';
 
 .App {
 
@@ -14,32 +14,33 @@
   .title {
     padding: 10px;
     text-align: center;
-    font-family: "Open Sans", sans-serif;
+    font-family: $font;
     font-weight: bold;
     // border-radius: 5px;
     font-size: 40px;
-    color: white;
-    background-color: #65656c;
-    opacity: 40%;
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    color: $black;
+    //background-color: #65656c;
   }
 
   .subtitle {
     padding: 10px;
     text-align: center;
-    font-family: "Open Sans", sans-serif;
+    font-family: $font;
     // border-radius: 5px;
     font-size: 25px;
     font-style: italic;
-    color: white;
-    background-color: #65656c;
-    opacity: 40%;
+    color: $black;
+    //background-color: #65656c;
+
     margin-bottom: 20px;
   }
 
   .footer {
     padding: 10px;
     text-align: center;
-    font-family: "Open Sans", sans-serif;
+    font-family: $font;
     // border-radius: 5px;
     font-size: 10px;
     font-style: italic;

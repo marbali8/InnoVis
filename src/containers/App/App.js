@@ -6,6 +6,7 @@ import GrantsChart from "../../components/DetailView/GrantsChart";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import GroupingBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBallsViewGrouped.js'
 
+
 function App() {
 
     // magic voodoo values for demo! they control how big the balls are, and the colour range used
@@ -41,10 +42,10 @@ function App() {
 
         <div className={classes.App}>
             <div className={classes.title}>
-                InnoVis
+                KTH Innovation
             </div>
             <div className={classes.subtitle}>
-                    Seeing how KTH Innovation helps
+                    Take a look at our alumni companies and ideas! 
             </div>
             <div className={classes.megaBallsView}>
                 <GroupingBalls showBorderOfBallBox={false} height={500} width={1000} onYearClicked={year}/>
