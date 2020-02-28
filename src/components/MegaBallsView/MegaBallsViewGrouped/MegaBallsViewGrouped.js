@@ -1,15 +1,9 @@
 import React, {useEffect, useRef} from "react";
 import data from '../../../data/companies_yearly_data.json';
 import * as d3 from 'd3';
+import { getColorBySNICode } from '../../../utility_functions/ColorFunctions.js'
 
-const MegaBallsView = ({
-                           height = 1000, width = 1000, showBorderOfBallBox = true, margin = {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-    }, onYearClicked
-                       }) => {
+const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true, margin = { left: 0, right: 0, top: 0, bottom: 0 }, onYearClicked , onBallMouseHover}) => {
     const svgRef = useRef();
     var year_choice = onYearClicked;
 
@@ -271,7 +265,10 @@ const MegaBallsView = ({
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended))
+
             .on('mouseover', function(d){
+                onBallMouseHover(d.id);
+                console.log("The id is: " + d.id);
                 d3.selectAll('.details')
                     .text(function (p) {
                         return d.name + ": " + (d.nr_employees === null ? '0' : d.nr_employees) + " employee(s) and " + d.revenue + 'SEK revenue in ' + year_choice;

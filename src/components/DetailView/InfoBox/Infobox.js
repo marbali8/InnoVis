@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import yearlyAggregateData from '../../data/kth_innovation_yearly_data.json';
 
@@ -280,7 +280,7 @@ const Infobox = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}/>
+        <svg height={height} width={width} ref={svgRef} />
     </React.Fragment>;
 };
 

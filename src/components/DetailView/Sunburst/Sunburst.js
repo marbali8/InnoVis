@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import companyData from '../../data/companies_yearly_data.json';
+import companyData from '../../../data/companies_yearly_data.json';
 import * as _ from 'lodash'
 
 const RELEVANT_YEARS = ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"];
@@ -32,12 +32,10 @@ const result = RELEVANT_YEARS.map(year => {
     return obj
 });
 
-const Sunburst = ({onYearClicked}) => {
+const Sunburst = ({ onYearClicked }) => {
 
-    console.log("Sun");
-    console.log(onYearClicked);
     const year_choice = onYearClicked;
-    const margin = {top: 10, right: 10, bottom: 10, left: 10};
+    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     const outerRadius = ((width + height) / 4) - margin.top;
@@ -60,14 +58,10 @@ const Sunburst = ({onYearClicked}) => {
 
         if (dataHasFetched) {
 
-            var pie = d3.pie()
-                .value(function (d) {
-                    return d.value;
-                })
-                .sort(null);
+            var pie = d3.pie().value((d) => { return d.value });
 
             if (!RELEVANT_YEARS.includes(year_choice.toString())) {
-                var emptyData = [{name: "", value: 1}];
+                var emptyData = [{ name: "", value: 1 }];
                 svg
                     .attr("width", width)
                     .attr("height", height)
@@ -93,7 +87,6 @@ const Sunburst = ({onYearClicked}) => {
                     .attr("y", height / 2 + 5)
                     .text(year_choice.toString())
                     .style("text-anchor", "middle");
-
                 return;
             }
 
@@ -148,7 +141,6 @@ const Sunburst = ({onYearClicked}) => {
                     d3.selectAll(".circletext").text(year_choice.toString());
                     d3.selectAll(".piece").style("opacity", 1);
                 });
-
         }
 
         return () => {
@@ -158,7 +150,7 @@ const Sunburst = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice, innerRadius, outerRadius]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}/>
+        <svg height={height} width={width} ref={svgRef} />
     </React.Fragment>;
 };
 
