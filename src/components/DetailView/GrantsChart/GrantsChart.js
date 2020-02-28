@@ -10,7 +10,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
     const year_choice = onYearClicked;
     // set dimensions of the graph
-    const margin = { top: 20, right: 20, bottom: 30, left: 20 };
+    const margin = { top: 0, right: 20, bottom: 50, left: 20 };
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -35,65 +35,61 @@ const GrantsChart = ({ onYearClicked }) => {
 
     // line
     var line = d3.line()
-        .x(function (d, i) { return x_scale(i * width / 12); })
-        .y(function (d, i) { return y_scale(d); });
-    
+        .x(function (_, i) { return x_scale(i * width / 12); })
+        .y(function (d, _) { return y_scale(d); });
+
     // code runs only if data has been fetched
     useEffect(() => {
-        
+
         setupContainersOnMount()
         drawLinePlot()
-        
         didMount.current = true;
-            
+
 
         //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
 
         function setupContainersOnMount() {
 
-            const svg = d3.select(svgRef.current);
-            // svg.selectAll("*").remove();
-
-            svg
-                .attr("width", width)
-                .attr("height", height);
-
             if (!didMount.current) {
+                const svg = d3.select(svgRef.current);
+                svg
+                    .attr("width", width)
+                    .attr("height", height);
+
                 let canvas = svg
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height)
                     .classed('linechart_outer_svg', true)
                     .append('g')
-                    // .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')') // TODO MAYBE CHANGE THIS
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                     .classed('linechart_canvas', true);
 
-                // container for plot
+                // containers for plot
                 canvas.append('g').classed('xaxis', true);
                 canvas.append('g').classed('yaxis', true);
-                canvas.append('g').classed('line', true);
-                canvas.append('g').classed('point', true);
+                canvas.append('g').classed('lines', true).append('path');
+                canvas.append('g').classed('points', true).append('path');
             }
         }
 
         function drawLinePlot() {
 
             d3.select('.xaxis')
-                .attr("transform", "translate(" + margin.left + " " + (height - margin.bottom) + ")")
+                //.attr("transform", "translate(" + margin.left + " " + (height - margin.bottom) + ")")
                 .call(x_axis)
-                .selectAll('g')
-                .selectAll('text')
-                .attr("transform", 'translate(' + -margin.bottom / 2 + ' ' + margin.bottom / 2 + ') rotate(-65)')
-                .attr('font-family', 'Open Sans');
-
+                // .selectAll('g')
+                // .selectAll('text')
+                .attr("transform", 'translate(' + 0 + ' ' + (height - margin.bottom) + ')')
+            // .attr('font-family', 'Open Sans');
 
             d3.select('.yaxis')
-                .attr("transform", "translate(" + margin.left + " 0)")
+                //.attr("transform", "translate(" + margin.left + " 0)")
                 .call(y_axis)
                 .attr('font-family', 'Open Sans');
 
-        
-            d3.select('.line')
+            d3.select('.lines')
+                .select('path')
                 .datum(data_ready)
                 .attr("d", line)
                 // .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')')
@@ -101,10 +97,12 @@ const GrantsChart = ({ onYearClicked }) => {
                 .style("stroke-width", "2")
                 .style("fill", 'none');
 
-            d3.select('.point')
+            d3.select('.points')
+                .selectAll("circle")
                 .data(data_ready)
-                .enter().append("circle")
-                .attr("cx", function (d, i) { return x_scale(i * width / 12) + margin.left })
+                .enter()
+                .append("circle")
+                .attr("cx", function (d, i) { return x_scale(i * width / 12) })
                 .attr("cy", function (d) { return y_scale(d) })
                 .style("r", 3)
                 .on('mouseover', function (d) {
@@ -120,18 +118,15 @@ const GrantsChart = ({ onYearClicked }) => {
                 });
         }
 
-        // return () => {
-        //     svg.selectAll("svg").exit().remove();
-        // }
-
-        d3.select('svg').exit().remove();
+        return () => {
+            d3.select(svgRef.current).selectAll("svg").exit().remove();
+        }
 
 
-    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice]);
+    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice, x_axis, y_axis, data_ready, line, x_scale, y_scale]);
 
     //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
     function getYearData() {
-
         for (let i = 0; i < RELEVANT_YEARS.length; i++) {
             if (monthly_funding_data[i].year === year_choice) {
                 return monthly_funding_data[i].values;
