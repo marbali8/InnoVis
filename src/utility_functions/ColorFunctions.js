@@ -23,7 +23,8 @@ var categorical = [
 
 //const colorScale2 = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
 //const colorScale = d3.interpolateSpectral;
-var colorScale = d3.scaleOrdinal(d3[categorical[0].name]);
+var colorScale = d3.scaleOrdinal(d3.quantize(d3.interpolateSpectral, numCategories+1));
+//var colorScale = d3.scaleOrdinal(d3[categorical[0].name]);
 
 
 export function getColorBySNICode(SNIcode) {
