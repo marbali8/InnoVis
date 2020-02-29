@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from 'd3';
-import { getColorByCompanyCategory } from '../../../utility_functions/ColorFunctions.js';
+import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
 
 const MegaBalls = ({
-    height = 1000, width = 1000, 
-    showBorderOfBallBox = true, 
+    height = 1000, width = 1000,
+    showBorderOfBallBox = true,
     margin = { left: 0, right: 0, top: 0, bottom: 0 },
     data = []
- }) => {
+}) => {
 
     const anchor = useRef();
     const didMount = useRef(false);
-    
+
     const graph = data.nodes;
     const nodeLinks = data.links;
 
@@ -23,7 +23,7 @@ const MegaBalls = ({
     //const width = 600 - margin.left - margin.right;
     //const height = 600 - margin.top - margin.bottom;
     // to be used!
-    
+
     // used to append objects only on first mount
     const bvm = 1 / 10 * height;
     const bhm = 1 / 10 * width;
@@ -36,13 +36,12 @@ const MegaBalls = ({
         setupContainersOnMount();
         drawBalls();
         didMount.current = true;
-        
+
         //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
-        function setupContainersOnMount()
-        {
+        function setupContainersOnMount() {
             const anchorNode = d3.select(anchor.current);
             anchorNode.selectAll("circle").remove();
-            
+
             if (!didMount.current) {
                 let canvas = anchorNode
                     .append("svg")
@@ -51,8 +50,7 @@ const MegaBalls = ({
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                if (showBorderOfBallBox)
-                {
+                if (showBorderOfBallBox) {
                     canvas.append("svg:rect")
                         .attr("width", width - bhm * 2)
                         .attr("height", height - bvm * 2)
@@ -65,14 +63,13 @@ const MegaBalls = ({
                 canvas.append('g').classed('balls', true);
             }
         };
-        
-        function drawBalls()
-        {      
+
+        function drawBalls() {
             var balls = d3.select('.balls')
                 .selectAll("path")
                 .data(graph);
 
-            
+
             // update the simulation based on the data
             var simulation = d3.forceSimulation()
                 .force("forceX", d3.forceX().strength(.5).x(width / 2 * 1))
@@ -88,25 +85,25 @@ const MegaBalls = ({
                         .attr("cy", function (d) { return d.y; })
                 })
                 .force("link", d3.forceLink(nodeLinks).strength(.1).distance(1).iterations(2).id(graph.id));
-               
+
             var enter = balls.enter()
-               .append("circle")
-               .attr("r", function (d) { return d.size; })
-               .attr("fill", function (d) { return getColorByCompanyCategory(d.id) })
-               .attr('fill-opacity', 0.8)
-               .style("stroke", d => d.error ? "red" : "black")
-               .attr('stroke-opacity', 0.2)
-               .attr("cx", function (d) { return d.x + width / 2; })
-               .attr("cy", function (d) { return d.y + height / 2; })
-               .call(d3.drag()
-               .on("start", dragstarted)
-               .on("drag", dragged)
-               .on("end", dragended));
-               
+                .append("circle")
+                .attr("r", function (d) { return d.size; })
+                .attr("fill", function (d) { return getColorByCompanyCategory(d.id) })
+                .attr('fill-opacity', 0.8)
+                .style("stroke", d => d.error ? "red" : "black")
+                .attr('stroke-opacity', 0.2)
+                .attr("cx", function (d) { return d.x + width / 2; })
+                .attr("cy", function (d) { return d.y + height / 2; })
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
             //Not working
             balls.exit().remove();
-            
- 
+
+
             function dragstarted(d) {
                 if (!d3.event.active) simulation.alphaTarget(.03).restart();
                 d.fx = d.x;
