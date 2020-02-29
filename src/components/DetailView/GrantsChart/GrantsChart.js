@@ -10,16 +10,15 @@ const GrantsChart = ({ onYearClicked }) => {
 
     const year_choice = onYearClicked;
     // set dimensions of the graph
-    const margin = { top: 0, right: 20, bottom: 50, left: 20 };
+    const margin = { top: 20, right: 20, bottom: 50, left: 20 };
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
     // state and ref to svg
     const svgRef = useRef();
     const didMount = useRef(false);
-    const data = useState([]);
 
-    var data_ready = getYearData();
+    var data = getYearData();
 
     // x axis
     var x_scale = d3.scaleOrdinal()
@@ -34,7 +33,7 @@ const GrantsChart = ({ onYearClicked }) => {
     var y_axis = d3.axisLeft().scale(y_scale);
 
     // line
-    var line = d3.line().curve(d3.curveCardinal)
+    var lineGenerator = d3.line().curve(d3.curveCardinal)
         .x(function (_, i) { return x_scale(i * width / 12); })
         .y(function (d, _) { return y_scale(d); });
 
@@ -61,16 +60,14 @@ const GrantsChart = ({ onYearClicked }) => {
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height)
-                    .classed('linechart_outer_svg', true)
-                    .append('g')
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + 10 + ")")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                     .classed('linechart_canvas', true);
 
                 // containers for plot
                 canvas.append('g').classed('xaxis', true);
                 canvas.append('g').classed('yaxis', true);
                 canvas.append('g').classed('lines', true).append('path');
-                canvas.append('g').classed('points', true).append('path');
+                canvas.append('g').classed('points', true);
             }
         }
 
@@ -86,20 +83,17 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr('font-family', 'Open Sans');
 
             d3.select('.lines')
-                .selectAll('path')
-                .data(data_ready)
-                // .attr("d", line)
+                .select('path')
                 .style("stroke", '#005ec4')
                 .style("stroke-width", "3")
                 .style("fill", 'none')
                 .transition().ease(d3.easeQuad)
                 .duration(500)
-                .attr("d", line(data_ready));
-            // .y(function (d, _) { return y_scale(d); });
+                .attr("d", lineGenerator(data));
 
             // d3.select('.points')
             //     .selectAll("circle")
-            //     .data(data_ready)
+            //     .data(data)
             //     .enter()
             //     .append("circle")
             //     .attr("cx", function (d, i) { return x_scale(i * width / 12) })
@@ -124,7 +118,7 @@ const GrantsChart = ({ onYearClicked }) => {
         }
 
 
-    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice, x_axis, y_axis, data_ready, line, x_scale, y_scale]);
+    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, year_choice, x_axis, y_axis, data, lineGenerator, x_scale, y_scale]);
 
     //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
     function getYearData() {
