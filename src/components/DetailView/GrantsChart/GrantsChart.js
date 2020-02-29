@@ -52,6 +52,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
             if (!didMount.current) {
                 const svg = d3.select(svgRef.current);
+                
                 svg
                     .attr("width", width)
                     .attr("height", height);
@@ -76,50 +77,50 @@ const GrantsChart = ({ onYearClicked }) => {
         function drawLinePlot() {
 
             d3.select('.xaxis')
-                //.attr("transform", "translate(" + margin.left + " " + (height - margin.bottom) + ")")
                 .call(x_axis)
-                // .selectAll('g')
-                // .selectAll('text')
                 .attr("transform", 'translate(' + 0 + ' ' + (height - margin.bottom) + ')')
-            // .attr('font-family', 'Open Sans');
+                .attr('font-family', 'Open Sans');
 
             d3.select('.yaxis')
-                //.attr("transform", "translate(" + margin.left + " 0)")
                 .call(y_axis)
                 .attr('font-family', 'Open Sans');
 
             d3.select('.lines')
-                .select('path')
-                .datum(data_ready)
-                .attr("d", line)
-                // .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')')
-                .style("stroke", '#005ec4')
-                .style("stroke-width", "2")
-                .style("fill", 'none');
-
-            d3.select('.points')
-                .selectAll("circle")
+                .selectAll('path')
                 .data(data_ready)
-                .enter()
-                .append("circle")
-                .attr("cx", function (d, i) { return x_scale(i * width / 12) })
-                .attr("cy", function (d) { return y_scale(d) })
-                .style("r", 3)
-                .on('mouseover', function (d) {
-                    this.style.r = 5;
-                })
-                .on('mouseout', function (d) {
-                    this.style.r = 3;
-                })
-                .style('fill', '#005ec4')
-                .append('title')
-                .text(function (d) {
-                    return d;
-                });
+                // .attr("d", line)
+                .style("stroke", '#005ec4')
+                .style("stroke-width", "3")
+                .style("fill", 'none')
+                .transition().ease(d3.easeQuad)
+                .duration(500)
+                .attr("d", line(data_ready));
+                // .y(function (d, _) { return y_scale(d); });
+                
+            // d3.select('.points')
+            //     .selectAll("circle")
+            //     .data(data_ready)
+            //     .enter()
+            //     .append("circle")
+            //     .attr("cx", function (d, i) { return x_scale(i * width / 12) })
+            //     .attr("cy", function (d) { return y_scale(d) })
+            //     .style("r", 3)
+            //     .on('mouseover', function (d) {
+            //         this.style.r = 5;
+            //     })
+            //     .on('mouseout', function (d) {
+            //         this.style.r = 3;
+            //     })
+            //     .style('fill', '#005ec4')
+            //     .append('title')
+            //     .text(function (d) {
+            //         return d;
+            //     });
         }
 
         return () => {
             d3.select(svgRef.current).selectAll("svg").exit().remove();
+            // d3.select('points').selectAll('circle').exit().remove();
         }
 
 
