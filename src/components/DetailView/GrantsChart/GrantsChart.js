@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import fundingData from '../../../data/fundings_aggregate_monthly.json';
+import ideasData from '../../../data/monthly_new_ideas.json';
 
 const RELEVANT_YEARS = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"];
 
-const monthly_funding_data = fundingData;
+const monthly_ideas_data = ideasData;
 
 const GrantsChart = ({ onYearClicked }) => {
 
@@ -29,7 +29,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
     // y axis
     var y_scale = d3.scaleLinear()
-        .domain([0, 26])
+        .domain([0, 60])
         .range([height - margin.bottom, margin.top]);
     var y_axis = d3.axisLeft().scale(y_scale);
 
@@ -63,7 +63,7 @@ const GrantsChart = ({ onYearClicked }) => {
                     .attr("height", height)
                     .classed('linechart_outer_svg', true)
                     .append('g')
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + 10 + ")")
                     .classed('linechart_canvas', true);
 
                 // containers for plot
@@ -129,11 +129,11 @@ const GrantsChart = ({ onYearClicked }) => {
     //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
     function getYearData() {
         for (let i = 0; i < RELEVANT_YEARS.length; i++) {
-            if (monthly_funding_data[i].year === year_choice) {
-                return monthly_funding_data[i].values;
+            if (monthly_ideas_data[i].year === year_choice) {
+                return monthly_ideas_data[i].values.total;
             }
         }
-        return monthly_funding_data[0].values;
+        return monthly_ideas_data[0].values.total;
     }
 
     return <React.Fragment>
