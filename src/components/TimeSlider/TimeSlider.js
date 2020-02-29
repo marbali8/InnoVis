@@ -4,6 +4,48 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import classes from './TimeSlider.module.scss';
+import Slider from '@material-ui/core/Slider';
+
+//<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+
+const marks = [
+    {
+        value: 0,
+        label: '2010',
+    },
+    {
+        value: 32,
+        label: '2011',
+    },
+    {
+        value: 64,
+        label: '2012',
+    },
+    {
+        value: 96,
+        label: '2013',
+    },
+    {
+        value: 128,
+        label: '2014',
+    },    
+    {
+        value: 160,
+        label: '2015',
+    },
+    {
+        value: 192,
+        label: '2016',
+    },
+    {
+        value: 224,
+        label: '2017',
+    },
+    {
+        value: 256,
+        label: '2018',
+    },
+  ];
 
 const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
 
@@ -111,7 +153,19 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
 
     }, []);
 
-    return <div ref={divRef} height={height} width={width} className={classes.timeSlider} />;
+    return <div ref={divRef} height={height} width={width} className={classes.timeSlider}>
+      <Slider
+        defaultValue={0}
+        track={false}
+        //getAriaValueText={valuetext}
+        aria-labelledby="range-slider"
+        valueLabelDisplay="off"
+        step={1}
+        marks = {marks}
+        min={0}
+        max={256}
+      />
+    </div>
 };
 
 export default TimeSlider;
