@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+// Our colors:
+$KTH-gray: rgb(101, 101, 108);
+$KTH-gray-medium: rgba(101, 101, 108, 0.8);
+$KTH-gray-light: rgba(101, 101, 108, 0.4);
+
+$KTH-pink: rgb(216, 84, 151);
+$KTH-pink-medium: rgba(216, 84,151, 0.8);
+$KTHpink-pink-light: rgba(216, 84,151, 0.4);
+
+$KTH-green: rgb(176, 201, 43);
+$KTH-green-medium: rgba(176, 201, 43, 0.8);
+$KTH-green-light: rgba(176, 201, 43, 0.4);
+
+$white: #fff;
+$black: #000;
+
+$font: "Open Sans", sans-serif;
+
+/* ------------------------
+* Custom styles go here
+---------------------------*/

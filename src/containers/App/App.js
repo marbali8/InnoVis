@@ -7,6 +7,7 @@ import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import MegaBalls from '../../components/MegaballsView/MegaBallsView.js';
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
+
 function App() {
 
     const defaultYear = 2010;
@@ -19,10 +20,10 @@ function App() {
     return (
         <div className={classes.App}>
             <div className={classes.title}>
-                InnoVis
+                KTH Innovation
             </div>
             <div className={classes.subtitle}>
-                Visualising the impact of KTH innovation
+                    Take a look at our alumni companies and ideas! 
             </div>
             <div className={classes.megaBallsView}>
                 <MegaBalls showBorderOfBallBox={false} height={500} width={1000} data={getDataForMegaballs(year)} />
