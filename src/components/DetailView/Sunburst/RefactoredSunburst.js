@@ -69,7 +69,8 @@ const Sunburst = ({
                 .attr("d", arc)
                 .each(function (d) { this._current = d; })
                 .attr("fill", function (d) { return d.data.color })
-                .attr("stroke", "transparent")
+                .attr("stroke", "black")
+                .attr("stroke-opacity", 0.1)
                 .each(function (d) { this._current = d; });
 
             enter.on('mouseenter', function (d) {
