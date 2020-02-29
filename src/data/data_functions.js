@@ -21,7 +21,6 @@ export function getRevenueForCompanyObjectByYear(companyObj, year) {
     return revenue;
 }
 
-// TO BE DONE: needs to be changed so we return category data instead of placeholder data
 export function getDataForSunburst(year) {
     const numCategories = 10;
     const numCompanies = companyData.length;
