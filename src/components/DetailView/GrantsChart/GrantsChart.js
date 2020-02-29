@@ -34,7 +34,7 @@ const GrantsChart = ({ onYearClicked }) => {
     var y_axis = d3.axisLeft().scale(y_scale);
 
     // line
-    var line = d3.line()
+    var line = d3.line().curve(d3.curveCardinal)
         .x(function (_, i) { return x_scale(i * width / 12); })
         .y(function (d, _) { return y_scale(d); });
 
@@ -52,7 +52,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
             if (!didMount.current) {
                 const svg = d3.select(svgRef.current);
-                
+
                 svg
                     .attr("width", width)
                     .attr("height", height);
@@ -95,8 +95,8 @@ const GrantsChart = ({ onYearClicked }) => {
                 .transition().ease(d3.easeQuad)
                 .duration(500)
                 .attr("d", line(data_ready));
-                // .y(function (d, _) { return y_scale(d); });
-                
+            // .y(function (d, _) { return y_scale(d); });
+
             // d3.select('.points')
             //     .selectAll("circle")
             //     .data(data_ready)
