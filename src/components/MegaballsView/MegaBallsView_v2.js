@@ -72,8 +72,15 @@ const MegaBalls = ({
                     .attr("overflow", 'visible')
                     .classed("svg-content", true);
 
+                /*anchorNode.append('text')
+                    .attr('class', 'details')
+                    .attr('x', width/2)
+                    .attr('y', height-20)
+                    .attr('text-anchor', 'start');*/
+
                 let canvas = anchorNode
                     .append('g');
+
                 canvas.append('g').classed('balls', true).attr("transform", "translate(" + 1 / 1.5 * width / 2 + "," + 1 / 1.5 * height / 1.8 + ")");
             }
         }

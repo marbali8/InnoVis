@@ -35,6 +35,8 @@ const Sunburst = ({
     useEffect(() => {
 
         console.log("the cat is " + category);
+        var clicked = category;
+        console.log("clicked " + clicked);
 
         setupContainersOnMount();
         drawSunburst(category);
@@ -86,7 +88,8 @@ const Sunburst = ({
                     this._current = d;
                 });
 
-            enter
+
+            arcs
                 .on('mouseenter', function (d) {
                     d3.selectAll(".center_text").text(d.data.label);
                 })
@@ -100,7 +103,8 @@ const Sunburst = ({
 
                     var opacity = d3.select(this).attr('opacity');
                     if (opacity === '0.2'){
-                        d3.selectAll('.center_text').text("category selected");
+                        //TODO: fix
+                        d3.selectAll('.center_text').text(category);
                     } else {
                         d3.selectAll('.center_text').text(d.data.label);
                     }
