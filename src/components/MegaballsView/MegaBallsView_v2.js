@@ -6,7 +6,9 @@ const MegaBalls = ({
     height = 500,
     width = 1000,
     margin = { left: 0, right: 0, top: 0, bottom: 0 },
-    data = []
+                       year = 2010,
+                       data = [],
+    onBallMouseHover
 }) => {
 
     const anchor = useRef();
@@ -67,7 +69,13 @@ const MegaBalls = ({
                     .attr("preserveAspectRatio", "xMinYMin meet")
                     .attr("viewBox", "0 0 " + width + " " + height)
                     .attr("overflow", 'visible')
-                    .classed("svg-content", true)
+                    .classed("svg-content", true);
+
+                anchorNode.append('text')
+                    .attr('class', 'details')
+                    .attr('x', width/2)
+                    .attr('y', height-20)
+                    .attr('text-anchor', 'middle');
 
                 let canvas = anchorNode.append('g').classed("canvas", true);
 
@@ -78,7 +86,7 @@ const MegaBalls = ({
                     anchorNode.select("g").attr("transform", d3.event.transform)
                 }))
             }
-        };
+        }
 
         function resetZoom() {
             var zoom = d3.zoom();
@@ -88,23 +96,38 @@ const MegaBalls = ({
 
         function drawBalls() {
 
-            var balls = d3.select('.balls').selectAll('circle').data(data.nodes, (d) => { return d.key })
+            var balls = d3.select('.balls').selectAll('circle').data(data.nodes, (d) => { return d.key });
+
 
             balls.transition()
                 .duration(500)
                 .attr("r", (d) => d.size);
 
-
-            var enter = balls.enter().append("circle")
+            var enter = balls.enter()
+                .append("circle")
                 .attr("id", (d) => d.key)
                 .attr("fill", function (d) { return getColorByCompanyCategory(d.id) })
                 .attr('fill-opacity', 0.8)
                 .attr("stroke", d => d.error ? "red" : "black")
                 .style("stroke-width", '1')
                 .attr("vector-effect", "non-scaling-stroke")
+                .attr('stroke-opacity', 0.2)
+                .on('mouseover', function(d){
+                    d3.selectAll('.details')
+                        .text(function () {
+                            return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) and " + d.revenue + 'SEK revenue in ' + year;
+                        });
+                })
+                .on('click', function (d){
+                    onBallMouseHover(d.id);
+                })
+                .on('mouseout', function () {
+                    d3.selectAll('.details')
+                        .text("");
+                })
                 .transition(d3.easeLinear)
                 .duration(700)
-                .attr("r", (d) => d.size)
+                .attr("r", (d) => d.size);
 
             balls.exit().transition(d3.easeLinear)
                 .duration(700)
@@ -129,7 +152,8 @@ const MegaBalls = ({
                 }))
                 .force("charge", d3.forceManyBody().strength(-3))
                 .velocityDecay(0.9)
-                .force("collide", d3.forceCollide().strength(1).radius(function (d) { return d.size }).iterations(10))
+                .force("collide", d3.forceCollide().strength(1).radius(function (d) { return d.size }).iterations(10));
+
 
             simulation.current.restart().alpha(1);
 
@@ -143,7 +167,7 @@ const MegaBalls = ({
 
     }, [data, height, margin.bottom, margin.left, margin.right, margin.top, width, nodes]); // useEffect
 
-    return <React.Fragment><svg overflow='visible' height={height} width={width} ref={anchor}></svg> </React.Fragment>;
+    return <React.Fragment><svg overflow='visible' height={height} width={width} ref={anchor}/> </React.Fragment>;
 };
 
 export default MegaBalls;

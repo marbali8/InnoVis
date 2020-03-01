@@ -59,7 +59,7 @@ const colorScale = d3.scaleOrdinal(d3.quantize(d3[sequential[4]], numCategories)
 //tbd
 export function getColorBySNICode(SNIcode) {
     return 'red';
-};
+}
 
 export function getColorByCompanyCategory(companyCategory) {
 

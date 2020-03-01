@@ -1,35 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import companyData from '../../../data/companies_yearly_data.json';
 import yearlyAggregateData from '../../../data/kth_innovation_yearly_data.json';
-import * as _ from 'lodash'
 
 const RELEVANT_YEARS = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"];
 
-const stack_company_data = _.mapValues(_.groupBy(companyData, "primary_code_in_NIC"), business_segment => {
-    let result = RELEVANT_YEARS.map(x => 0);
-    for (let company of business_segment) {
-        for (let i = 0; i < RELEVANT_YEARS.length; i++) {
-            if (company["revenue_" + RELEVANT_YEARS[i]] != null) {
-                result[i] += company["revenue_" + RELEVANT_YEARS[i]]
-            }
-        }
-    }
-    return result
-});
-
 const yearly_aggregate_data = yearlyAggregateData;
 
-// omitting companies without sni for now
-delete stack_company_data['null'];
-
-const Infobox = ({ onYearClicked }) => {
+const Infobox = ({onYearClicked}) => {
 
     const year_choice = onYearClicked;
     // set dimensions of the graph
-    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
-    const width = 200 - margin.left - margin.right;
-    const height = 175 - margin.top - margin.bottom;
+    const margin = {top: 20, right: 10, bottom: 20, left: 10};
+    const total_width = 200;
+    const total_height = 330;
+    const width = total_width - margin.left - margin.right;
+    const height = total_height - margin.top - margin.bottom;
 
     // state and ref to svg
     const svgRef = useRef();
@@ -39,7 +24,11 @@ const Infobox = ({ onYearClicked }) => {
     useEffect(() => {
 
         const dataHasFetched = data !== undefined && data.length !== 0;
-        const svg = d3.select(svgRef.current);
+        const svg = d3.select(svgRef.current)
+            .attr('width', total_width)
+            .attr('height', total_height);
+
+        svg.selectAll('text').remove();
 
         if (dataHasFetched) {
 
@@ -68,56 +57,217 @@ const Infobox = ({ onYearClicked }) => {
                     .text("no data available");
 
             } else {
+                var prevYearData;
                 var yearData;
                 for (let i = 0; i < RELEVANT_YEARS.length; i++) {
                     if (year_choice === yearly_aggregate_data[i].year) {
+                        if (yearly_aggregate_data[i - 1].year >= 2010) {
+                            prevYearData = yearly_aggregate_data[i - 1];
+                        }
                         yearData = yearly_aggregate_data[i];
                     }
                 }
 
+                const largeFont = 24;
+                const smallFont = 16;
+                const smallSpace = 5;
+                const largeSpace = 20;
+
+                //ideas
+                var y = margin.top + largeFont / 2;
+                var diff = 0;
                 svg
-                    .append('rect')
-                    .attr("width", width)
-                    .attr("height", height)
-                    .style("fill", 'white')
-                    .style("stroke", 'black');
+                    .append('text')
+                    .attr('class', 'ideastext')
+                    .attr("x", width / 2)
+                    .attr("y", y)
+                    .text(yearData.ideas);
+                svg
+                    .append('text')
+                    .attr("x", width/2 + 40)
+                    .attr("y", y)
+                    .style('fill', function () {
+                        if (prevYearData !== undefined) {
+                            diff = yearData.ideas - prevYearData.ideas;
+                            if (prevYearData.ideas > yearData.ideas) {
+                                return 'red';
+                            }
+                            if (prevYearData.ideas < yearData.ideas) {
+                                return 'green';
+                            }
+                        }
+                        return 'black';
+                    })
+                    .text(diff === 0 ? '\xB10' : diff > 0 ? '+' + diff : diff);
 
                 svg
                     .append('text')
-                    .attr("x", margin.top)
-                    .attr("y", margin.left + 10)
-                    .append('tspan')
-                    .attr('dy', 0)
-                    .style("font-weight", "bold")
-                    .text(year_choice);
+                    .attr("x", width / 2)
+                    .attr("y", y + smallFont + smallSpace)
+                    .text("IDEAS");
 
+                //researchers
+                y = margin.top + largeFont / 2 + largeSpace + largeSpace + smallSpace;
                 svg
                     .append('text')
-                    .attr("x", margin.top)
-                    .attr("y", margin.left + 10)
-                    .append('tspan')
-                    .attr('dy', 20)
-                    .text("ideas: " + yearData.ideas)
-                    .append('tspan')
-                    .attr('x', 10)
-                    .attr('dy', 20)
-                    .text("researchers: " + yearData.researchers)
-                    .append('tspan')
-                    .attr('x', 10)
-                    .attr('dy', 20)
-                    .text("students: " + yearData.students)
-                    .append('tspan')
-                    .attr('x', 10)
-                    .attr('dy', 20)
-                    .text("fundings: " + yearData.funding)
-                    .append('tspan')
-                    .attr('x', 10)
-                    .attr('dy', 20)
-                    .text("patent applications: " + yearData.patent_applications)
-                    .append('tspan')
-                    .attr('x', 10)
-                    .attr('dy', 20)
-                    .text("novelty searches: " + yearData.novelty_searches);
+                    .attr('class', 'researcherstext')
+                    .attr("x", width / 2)
+                    .attr("y", y)
+                    .text(yearData.researchers);
+                svg
+                    .append('text')
+                    .attr("x", width/2 + 40)
+                    .attr("y", y)
+                    .style('fill', function () {
+                        if (prevYearData !== undefined) {
+                            diff = yearData.researchers - prevYearData.researchers;
+                            if (prevYearData.researchers > yearData.researchers) {
+                                return 'red'
+                            }
+                            if (prevYearData.researchers < yearData.researchers) {
+                                return 'green';
+                            }
+                        }
+                        return 'black';
+                    })
+                    .text(diff === 0 ? '\xB10' : diff > 0 ? '+' + diff : diff);
+                svg
+                    .append('text')
+                    .attr("x", width / 2)
+                    .attr("y", y + smallFont + smallSpace)
+                    .text("RESEARCHERS");
+
+                //students
+                y = margin.top + largeFont / 2 + largeSpace + largeSpace + smallSpace + largeSpace + largeSpace + smallSpace;
+                svg
+                    .append('text')
+                    .attr('class', 'studentstext')
+                    .attr("x", width / 2)
+                    .attr("y", y)
+                    .text(yearData.students);
+                svg
+                    .append('text')
+                    .attr("x", width/2 + 40)
+                    .attr("y", y)
+                    .style('fill', function () {
+                        if (prevYearData !== undefined) {
+                            diff = yearData.students - prevYearData.students;
+                            if (prevYearData.students > yearData.students) {
+                                return 'red';
+                            }
+                            if (prevYearData.students < yearData.students) {
+                                return 'green';
+                            }
+                        }
+                        return 'black';
+                    })
+                    .text(diff === 0 ? '\xB10' : diff > 0 ? '+' + diff : diff);
+                svg
+                    .append('text')
+                    .attr("x", width / 2)
+                    .attr("y", y + smallFont + smallSpace)
+                    .text("STUDENTS");
+
+                //fundings
+                y = margin.top + largeFont / 2 + largeSpace + largeSpace + smallSpace + largeSpace + largeSpace + smallSpace + largeSpace + largeSpace + smallSpace;
+                svg
+                    .append('text')
+                    .attr('class', 'fundingstext')
+                    .attr("x", width / 2)
+                    .attr("y", y)
+                    .text(yearData.funding);
+                svg
+                    .append('text')
+                    .attr("x", width/2 + 40)
+                    .attr("y", y)
+                    .style('fill', function () {
+                        if (prevYearData !== undefined) {
+                            diff = yearData.funding - prevYearData.funding;
+                            if (prevYearData.funding > yearData.funding) {
+                                return 'red';
+                            }
+                            if (prevYearData.funding < yearData.funding) {
+                                return 'green';
+                            }
+                        }
+                        return 'black';
+                    })
+                    .text(diff === 0 ? '\xB10' : diff > 0 ? '+' + diff : diff);
+                svg
+                    .append('text')
+                    .attr("x", width / 2)
+                    .attr("y", y + smallFont + smallSpace)
+                    .text("FUNDINGS");
+
+                //patent applications
+                y = margin.top + largeFont / 2 + largeSpace + largeSpace + smallSpace
+                    + largeSpace + largeSpace + smallSpace
+                    + largeSpace + largeSpace + smallSpace
+                    + largeSpace + largeSpace + smallSpace;
+                svg
+                    .append('text')
+                    .attr('class', 'patentstext')
+                    .attr("x", width / 2)
+                    .attr("y", y)
+                    .text(yearData.patent_applications);
+                svg
+                    .append('text')
+                    .attr("x", width/2 + 40)
+                    .attr("y", y)
+                    .style('fill', function () {
+                        if (prevYearData !== undefined) {
+                            diff = yearData.patent_applications - prevYearData.patent_applications;
+                            if (prevYearData.patent_applications > yearData.patent_applications) {
+                                return 'red';
+                            }
+                            if (prevYearData.patent_applications < yearData.patent_applications) {
+                                return 'green';
+                            }
+                        }
+                        return 'black';
+                    })
+                    .text(diff === 0 ? '\xB10' : diff > 0 ? '+' + diff : diff);
+                svg
+                    .append('text')
+                    .attr("x", width / 2)
+                    .attr("y", y + smallFont + smallSpace)
+                    .text("PATENT APPLICATIONS");
+
+                //novelty searches
+                y = margin.top + largeFont / 2 + largeSpace + largeSpace + smallSpace
+                    + largeSpace + largeSpace + smallSpace
+                    + largeSpace + largeSpace + smallSpace
+                    + largeSpace + largeSpace + smallSpace
+                    + largeSpace + largeSpace + smallSpace;
+                svg
+                    .append('text')
+                    .attr('class', 'noveltytext')
+                    .attr("x", width / 2)
+                    .attr("y", y)
+                    .text(yearData.novelty_searches);
+                svg
+                    .append('text')
+                    .attr("x", width/2 + 40)
+                    .attr("y", y)
+                    .style('fill', function () {
+                        if (prevYearData !== undefined) {
+                            diff = yearData.novelty_searches - prevYearData.novelty_searches;
+                            if (prevYearData.novelty_searches > yearData.novelty_searches) {
+                                return 'red';
+                            }
+                            if (prevYearData.novelty_searches < yearData.novelty_searches) {
+                                return 'green';
+                            }
+                        }
+                        return 'black';
+                    })
+                    .text(diff === 0 ? '\xB10' : diff > 0 ? '+' + diff : diff);
+                svg
+                    .append('text')
+                    .attr("x", width / 2)
+                    .attr("y", y + smallFont + smallSpace)
+                    .text("NOVELTY SEARCHES");
+
             }
         }
 

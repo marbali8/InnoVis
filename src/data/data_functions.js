@@ -22,6 +22,14 @@ export function getRevenueForCompanyObjectByYear(companyObj, year) {
     return revenue;
 }
 
+export function getEmployeesForCompanyObjectByYear(companyObj, year) {
+    const employeesKey = "employees" + year;
+    const employees = companyObj[employeesKey];
+    if (employees === "null") return 0;
+    return employees;
+}
+
+// TO BE DONE: needs to be changed so we return category data instead of placeholder data
 export function getDataForSunburst(year) {
     const numCategories = 10;
     const numCompanies = companyData.length;
@@ -42,7 +50,7 @@ export function getDataForSunburst(year) {
     }
 
     return categories.sort(compare);
-};
+}
 
 export function getDataForMegaballs(year) {
     const numCompanies = companyData.length;
@@ -55,12 +63,15 @@ export function getDataForMegaballs(year) {
     for (let i = 0; i < numCompanies; i++) {
         let category = companyData[i].category;
 
-
         // graph.push({ size: Math.sqrt(Math.sqrt(getRevenueForCompanyObjectByYear(companyData[i], year))), id: companyData[i].category, key: companyData[i].snicode });
-        graph.push({ size: radiusScale(getRevenueForCompanyObjectByYear(companyData[i], year)), id: companyData[i].category, key: companyData[i].snicode });
-
-
-
+        graph.push({
+            size: radiusScale(getRevenueForCompanyObjectByYear(companyData[i], year)),
+            revenue: getRevenueForCompanyObjectByYear(companyData[i], year),
+            employees: getEmployeesForCompanyObjectByYear(companyData[i], year),
+            name: companyData[i].name,
+            id: companyData[i].category,
+            key: companyData[i].snicode
+        });
 
         if (category in anchorNodes) {
             nodeLinks.push({ "source": anchorNodes[category], "target": i });
@@ -74,6 +85,8 @@ export function getDataForMegaballs(year) {
     const megaData = { nodes: graph, links: nodeLinks };
     return megaData;
 }
+
+
 
 
 
