@@ -9,7 +9,7 @@ const MegaBalls = ({
     year = 2010,
     data = [],
     onBallMouseHover
- }) => {
+}) => {
 
     const anchor = useRef();
     const didMount = useRef(false);
@@ -54,7 +54,6 @@ const MegaBalls = ({
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-<<<<<<< HEAD:src/components/MegaBallsView/MegaBallsViewGrouped/MegaBalls.js
                 if (showBorderOfBallBox)
                 {
                     canvas.append("svg:rect")
@@ -90,16 +89,6 @@ const MegaBalls = ({
                 .data(graph);
 
             // update the simulation based on the data
-=======
-                canvas.append('g').classed('balls', true);
-            }
-        };
-
-        function drawBalls() {
-
-            var balls = d3.select('.balls').selectAll("path").data(graph);
-
->>>>>>> master:src/components/MegaballsView/MegaBallsView.js
             var simulation = d3.forceSimulation()
                 .force("forceX", d3.forceX().strength(.5).x(width / 2))
                 .force("forceY", d3.forceY().strength(.5).y(height / 2))
@@ -115,7 +104,6 @@ const MegaBalls = ({
                 })
                 .force("link", d3.forceLink(nodeLinks).strength(.1).distance(1).iterations(2).id(graph.id));
 
-<<<<<<< HEAD:src/components/MegaBallsView/MegaBallsViewGrouped/MegaBalls.js
             var enter = balls.enter()
                .append("circle")
                .attr("r", function (d) { return d.size; })
@@ -147,23 +135,6 @@ const MegaBalls = ({
             balls.exit().remove();
 
 
-=======
-            var enter = balls.enter().append("circle")
-                .attr("r", function (d) { return d.size; })
-                .attr("fill", function (d) { return getColorByCompanyCategory(d.id) })
-                .attr('fill-opacity', 0.8)
-                .style("stroke", d => d.error ? "red" : "black")
-                .attr('stroke-opacity', 0.2)
-                .attr("cx", function (d) { return d.x + width / 2; })
-                .attr("cy", function (d) { return d.y + height / 2; })
-                .call(d3.drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended));
-
-            balls.exit().remove();
-
->>>>>>> master:src/components/MegaballsView/MegaBallsView.js
             function dragstarted(d) {
                 if (!d3.event.active) simulation.alphaTarget(.03).restart();
                 d.fx = d.x;
@@ -184,7 +155,7 @@ const MegaBalls = ({
 
     }, [data, ballBox.min.x, ballBox.min.y, bhm, bvm, height, margin.bottom, margin.left, margin.right, margin.top, width, showBorderOfBallBox, graph, nodeLinks]); // useEffect
 
-    return <React.Fragment><svg height={height} width={width} ref={anchor}/> </React.Fragment>;
+    return <React.Fragment><svg height={height} width={width} ref={anchor} /> </React.Fragment>;
 };
 
 export default MegaBalls;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import classes from './App.module.scss';
 import Infobox from '../../components/DetailView/InfoBox/Infobox.js'
 import Sunburst from '../../components/DetailView/Sunburst/RefactoredSunburst.js'
@@ -33,7 +33,7 @@ function App() {
             <div className={classes.megaBallsView}>
                 <MegaBalls data={getDataForMegaballs(year)} category={category} onBallMouseHover={handleCategoryBallsHover}/>
             </div>
-            <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]}/>
+            <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
                 <Sunburst
                     data={getDataForSunburst(year)}
@@ -41,9 +41,9 @@ function App() {
                     onBallMouseHover={handleCategoryBallsHover}
                 />
                 {/* <Sunburst onYearClicked={year}/> */}
-                <GrantsChart onYearClicked={year}/>
+                <GrantsChart onYearClicked={year} />
                 <div className={classes.infobox}>
-                    <Infobox onYearClicked={year}/>
+                    <Infobox onYearClicked={year} />
                 </div>
             </div>
 
