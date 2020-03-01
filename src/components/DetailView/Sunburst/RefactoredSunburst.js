@@ -86,9 +86,6 @@ const Sunburst = ({
                     this._current = d;
                 });
 
-            console.log("category passed into function " + cat);
-            var clicked = cat;
-            console.log("bfore " + clicked);
             enter
                 .on('mouseenter', function (d) {
                     d3.selectAll(".center_text").text(d.data.label);
@@ -101,8 +98,6 @@ const Sunburst = ({
                         return;
                     }
 
-                    console.log("category in mouseout " + cat);
-                    console.log("clicked " + clicked);
                     var opacity = d3.select(this).attr('opacity');
                     if (opacity === '0.2'){
                         d3.selectAll('.center_text').text("category selected");

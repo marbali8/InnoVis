@@ -1,4 +1,4 @@
-/*import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
 
@@ -38,7 +38,7 @@ const MegaBalls = ({
 
     useEffect(() => {
 
-        setupContainersOnMount();
+        /*setupContainersOnMount();
         drawBalls();
         didMount.current = true;
 
@@ -181,11 +181,11 @@ const MegaBalls = ({
                 d.fx = null;
                 d.fy = null;
             }
-        }
+        }*/
 
     }, [data, ballBox.min.x, ballBox.min.y, bhm, bvm, height, margin.bottom, margin.left, margin.right, margin.top, width, showBorderOfBallBox, graph, nodeLinks]); // useEffect
 
     return <React.Fragment><svg height={height} width={width} ref={anchor}/> </React.Fragment>;
 };
 
-export default MegaBalls;*/
+export default MegaBalls;
