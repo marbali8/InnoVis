@@ -4,7 +4,7 @@ import Infobox from '../../components/DetailView/InfoBox/Infobox.js'
 import Sunburst from '../../components/DetailView/Sunburst/RefactoredSunburst.js'
 import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
-import MegaBalls from '../../components/MegaballsView/MegaBallsView_v2.js'
+import MegaBalls from '../../components/MegaBallsView/MegaBallsView_v2.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
 function App() {
