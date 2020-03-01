@@ -4,8 +4,8 @@ import Infobox from '../../components/DetailView/InfoBox/Infobox.js'
 import Sunburst from '../../components/DetailView/Sunburst/RefactoredSunburst.js'
 import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
-import MegaBalls from '../../components/MegaBallsView/MegaBallsViewGrouped/MegaBalls.js';
-import {getDataForSunburst, getDataForMegaballs} from '../../data/data_functions.js';
+import MegaBalls from '../../components/MegaballsView/MegaBallsView_v2.js';
+import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
 function App() {
 
@@ -25,14 +25,13 @@ function App() {
     return (
         <div className={classes.App}>
             <div className={classes.title}>
-                InnoVis
+                KTH Innovation
             </div>
             <div className={classes.subtitle}>
-                Visualising the impact of KTH innovation
+                Take a look at our alumni companies and ideas!
             </div>
             <div className={classes.megaBallsView}>
-                <MegaBalls showBorderOfBallBox={false} height={500} width={1000} year={year}
-                           data={getDataForMegaballs(year)} category={category}
+                <MegaBalls data={getDataForMegaballs(year)} category={category}
                            onBallMouseHover={handleCategoryBallsHover}/>
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]}/>

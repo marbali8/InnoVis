@@ -31,22 +31,22 @@ const sequential = [
     "interpolateTurbo",
     "interpolateViridis",
     "inteprolateInferno",
-    "interpolateMagma",             
+    "interpolateMagma",
     "interpolatePlasma",            //10
     "interpolateCividis",
     "interpolateWarm",
     "interpolateCool",
-    "interpolateCubehelixDefault",  
+    "interpolateCubehelixDefault",
     "interpolateBuPu",              //15
     "interpolateGnBu",
     "interpolateOrRd",
     "interpolatePuBuGn",
-    "interpolatePuBu",              
+    "interpolatePuBu",
     "interpolatePuRd",              //20
     "interpolateRdPu",
     "interpolateYlGnBu",
     "interpolateYlGnBu",
-    "interpolateYlOrBr",           
+    "interpolateYlOrBr",
     "interpolateYlOrRd",            //25
     "interpolateRainbow",
     "interpolateSinebow"            //27
@@ -56,16 +56,25 @@ const sequential = [
 const colorScale = d3.scaleOrdinal(d3.quantize(d3[sequential[4]], numCategories));
 //var colorScale = d3.scaleOrdinal(d3[categorical[0]]);
 
-
+//tbd
 export function getColorBySNICode(SNIcode) {
     return 'red';
 }
 
 export function getColorByCompanyCategory(companyCategory) {
-    return colorScale(companyCategory);
+
+    const color = colorScale(companyCategory)
+
+    if (color !== null && color !== undefined) {
+        return colorScale(companyCategory);
+    }
+
+    return 'black';
+
+
 }
 
-// each obj in data has a unique key which can be used to map a color
+//tbd
 export function getColorByCompanyKey(key) {
     return 'purple';
 }
