@@ -15,7 +15,7 @@ const MegaBalls = ({
     const simulation = useRef(null);
 
     // move the bigger balls a bit to the side so they
-    // don't bump the other balls in a jerky when simulation starts
+    // don't bump the other balls in a jerky way when simulation starts
     nodes = nodes.map((node) => {
 
         let copyNode;
