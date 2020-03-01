@@ -78,7 +78,7 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
             dragged(d3.event.x);
         }).on("start", (e) => {
             dragged(d3.event.x);
-        })
+        });
 
         // attach the drag handler to the track overlay 
         dragHandler(slider.select(".track-overlay"));

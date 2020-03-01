@@ -267,7 +267,9 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
                 .on("end", dragended))
 
             .on('mouseover', function(d){
+                console.log("first " + onBallMouseHover);
                 onBallMouseHover(d.id);
+                console.log("second " + onBallMouseHover);
                 console.log("The id is: " + d.id);
                 d3.selectAll('.details')
                     .text(function (p) {
