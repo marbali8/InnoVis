@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
 
@@ -15,7 +15,7 @@ const MegaBalls = ({
     const simulation = useRef(null);
 
     // move the bigger balls a bit to the side so they
-    // don't bump the other balls when simulation starts
+    // don't bump the other balls in a jerky when simulation starts
     nodes = nodes.map((node) => {
 
         let copyNode;
@@ -53,33 +53,42 @@ const MegaBalls = ({
 
     useEffect(() => {
         setupContainersOnMount();
+        resetZoom();
         drawBalls();
+
         didMount.current = true;
 
         //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
         function setupContainersOnMount() {
 
-            const scale = 2;
-
             if (!didMount.current) {
 
-
-                const anchorNode = d3.select(anchor.current).append("svg")
+                const anchorNode = d3.select(anchor.current)
                     .attr("preserveAspectRatio", "xMinYMin meet")
-                    .attr("viewBox", "0 0 " + width / 1.5 + " " + height / 1.5)
+                    .attr("viewBox", "0 0 " + width + " " + height)
                     .attr("overflow", 'visible')
                     .classed("svg-content", true)
 
-                let canvas = anchorNode
-                    .append('g')
-                canvas.append('g').classed('balls', true).attr("transform", "translate(" + 1 / 1.5 * width / 2 + "," + 1 / 1.5 * height / 1.8 + ")");
+                let canvas = anchorNode.append('g').classed("canvas", true);
+
+                canvas.append('g').classed('balls', true).attr("transform", "translate(" + width / 2 + "," + height / 1.8 + ")");
+
+                // setup zoom functionality
+                anchorNode.call(d3.zoom().on("zoom", function () {
+                    anchorNode.select("g").attr("transform", d3.event.transform)
+                }))
             }
         };
+
+        function resetZoom() {
+            var zoom = d3.zoom();
+            d3.select(anchor.current).selectAll(".canvas").transition().duration(1000).attr("transform", d3.zoomIdentity);
+            d3.select(anchor.current).call(d3.zoom().transform, d3.zoomIdentity);
+        }
 
         function drawBalls() {
 
             var balls = d3.select('.balls').selectAll('circle').data(data.nodes, (d) => { return d.key })
-
 
             balls.transition()
                 .duration(500)
@@ -90,8 +99,9 @@ const MegaBalls = ({
                 .attr("id", (d) => d.key)
                 .attr("fill", function (d) { return getColorByCompanyCategory(d.id) })
                 .attr('fill-opacity', 0.8)
-                .style("stroke", d => d.error ? "red" : "black")
-                .attr('stroke-opacity', 0.2)
+                .attr("stroke", d => d.error ? "red" : "black")
+                .style("stroke-width", '1')
+                .attr("vector-effect", "non-scaling-stroke")
                 .transition(d3.easeLinear)
                 .duration(700)
                 .attr("r", (d) => d.size)
@@ -119,11 +129,13 @@ const MegaBalls = ({
                 }))
                 .force("charge", d3.forceManyBody().strength(-3))
                 .velocityDecay(0.9)
-                // .alphaDecay(0)
-                // .force("theta", d3.forceManyBody().theta(1))
                 .force("collide", d3.forceCollide().strength(1).radius(function (d) { return d.size }).iterations(10))
 
             simulation.current.restart().alpha(1);
+
+
+
+
         }
 
 
