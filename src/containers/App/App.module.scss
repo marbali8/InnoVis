@@ -21,6 +21,7 @@
     border-top: 2px solid;
     border-bottom: 2px solid;
     color: $black;
+    z-index:1;
     //background-color: #65656c;
   }
 
@@ -48,8 +49,10 @@
   }
 
   .megaBallsView {
+    padding:20px;
     border-radius: 8px;
-    background-color: rgb(233, 229, 229)
+    background-color: rgb(233, 229, 229);
+    
   }
 
   .aggregateKTHDataView {

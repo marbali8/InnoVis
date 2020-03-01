@@ -62,7 +62,16 @@ export function getColorBySNICode(SNIcode) {
 };
 
 export function getColorByCompanyCategory(companyCategory) {
-    return colorScale(companyCategory);
+
+    const color = colorScale(companyCategory)
+
+    if (color !== null && color !== undefined) {
+        return colorScale(companyCategory);
+    }
+
+    return 'black';
+
+
 }
 
 //tbd
