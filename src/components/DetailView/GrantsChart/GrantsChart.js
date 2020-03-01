@@ -165,18 +165,17 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr("cx", function (d, i) { return x_scale(i * width / 12) })
                 .attr("cy", function (d) { return y_scale(d) })
                 .style("r", 3)
-                .on('mouseover', function (d) {
-                    this.style.r = 5;
-                })
-                .on('mouseout', function (d) {
-                    this.style.r = 3;
-                })
-                .style('fill', 'rgb(216, 84, 151)')
-                .append('title')
-                .text(function (d) {
-                    return d;
-                });
-
+                // .on('mouseover', function (d) {
+                //     this.style.r = 5;
+                // })
+                // .on('mouseout', function (d) {
+                //     this.style.r = 3;
+                // })
+                .style('fill', 'rgb(216, 84, 151)');
+            // .append('title')
+            // .text(function (d) {
+            //     return d;
+            // });
 
             d3.select('.students').select('.lines')
                 .select('path')
