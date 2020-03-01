@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+#ignore webstorm files
+.idea
+
 # ignore vs code workspace settings
 .vscode
 .vscode/*
