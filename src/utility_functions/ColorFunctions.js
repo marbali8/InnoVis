@@ -6,35 +6,75 @@ import * as d3 from 'd3';
 
 const numCategories = 10;
 
-var categorical = [
-    { "name" : "schemeAccent", "n": 8},
-    { "name" : "schemeDark2", "n": 8},
-    { "name" : "schemePastel2", "n": 8},
-    { "name" : "schemeSet2", "n": 8},
-    { "name" : "schemeSet1", "n": numCategories},
-    { "name" : "schemePastel1", "n": 9},
-    { "name" : "schemeCategory10", "n" : numCategories},
-    { "name" : "schemeSet3", "n" : 12 },
-    { "name" : "schemePaired", "n": 12},
-    { "name" : "schemeCategory20", "n" : 20 },
-    { "name" : "schemeCategory20b", "n" : 20},
-    { "name" : "schemeCategory20c", "n" : 20 }
+const categorical = [
+    "schemeAccent",
+    "schemeDark2",
+    "schemePastel2",
+    "schemeSet2",
+    "schemeSet1",
+    "schemePastel1",
+    "schemeCategory10",
+    "schemeSet3",
+    "schemePaired",
+    "schemeCategory20",
+    "schemeCategory20b",
+    "schemeCategory20c"
 ];
 
-//const colorScale2 = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(numCategories));
-//const colorScale = d3.interpolateSpectral;
-var colorScale = d3.scaleOrdinal(d3[categorical[0].name]);
+const sequential = [
+    "interpolateGreys",             //0
+    "interpolateRdBu",
+    "interpolateRdYlBu",
+    "interpolateRdYlGn",
+    "interpolateSpectral",
+    "interpolateOranges",           //5
+    "interpolateTurbo",
+    "interpolateViridis",
+    "inteprolateInferno",
+    "interpolateMagma",
+    "interpolatePlasma",            //10
+    "interpolateCividis",
+    "interpolateWarm",
+    "interpolateCool",
+    "interpolateCubehelixDefault",
+    "interpolateBuPu",              //15
+    "interpolateGnBu",
+    "interpolateOrRd",
+    "interpolatePuBuGn",
+    "interpolatePuBu",
+    "interpolatePuRd",              //20
+    "interpolateRdPu",
+    "interpolateYlGnBu",
+    "interpolateYlGnBu",
+    "interpolateYlOrBr",
+    "interpolateYlOrRd",            //25
+    "interpolateRainbow",
+    "interpolateSinebow"            //27
+];
 
 
+const colorScale = d3.scaleOrdinal(d3.quantize(d3[sequential[4]], numCategories));
+//var colorScale = d3.scaleOrdinal(d3[categorical[0]]);
+
+//tbd
 export function getColorBySNICode(SNIcode) {
     return 'red';
 };
 
 export function getColorByCompanyCategory(companyCategory) {
-    return colorScale(companyCategory);
+
+    const color = colorScale(companyCategory)
+
+    if (color !== null && color !== undefined) {
+        return colorScale(companyCategory);
+    }
+
+    return 'black';
+
+
 }
 
-// each obj in data has a unique key which can be used to map a color
+//tbd
 export function getColorByCompanyKey(key) {
     return 'purple';
 }
