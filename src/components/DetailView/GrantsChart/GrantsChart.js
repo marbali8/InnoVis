@@ -83,7 +83,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 canvas.append('g').classed('students', true);
                 d3.select('.students').append('g').classed('lines', true).append('path');
                 d3.select('.students').append('g').classed('points', true);
-                      
+
             }
         }
 
@@ -99,21 +99,21 @@ const GrantsChart = ({ onYearClicked }) => {
                 .text('Number of ideas')
 
             d3.select('.legend')
-                .attr("transform", 'translate(15, ' + 3*margin.top + ')')
+                .attr("transform", 'translate(15, ' + 3 * margin.top + ')')
                 .selectAll('text')
                 .data(["total", "researchers", "students"])
                 .enter()
                 .append('text')
-                .attr('x', function(_, i) { 
+                .attr('x', function (_, i) {
                     if (i == 0) { return 0; }
                     else if (i == 1) { return 35; }
                     else { return 110; }
                 })
-                .text(function(d) { return d + '\n'; })
+                .text(function (d) { return d + '\n'; })
                 .attr('font-size', '12')
                 .attr('font-family', 'Open Sans')
                 .attr('font-style', 'italic')
-                .attr('fill', function(_, i) { 
+                .attr('fill', function (_, i) {
                     if (i == 0) { return '#005ec4'; }
                     else if (i == 1) { return 'rgb(216, 84, 151)'; }
                     else { return 'rgb(179, 201, 43)'; }
@@ -156,6 +156,8 @@ const GrantsChart = ({ onYearClicked }) => {
             //     .attr("cx", function(_, i) { return x_scale(i * width / 12); })
             //     .attr("cy", function(d) { return y_scale(d); });
 
+            d3.select('.researchers').selectAll('circle').remove();
+
             d3.select('.researchers').select('.points')
                 .selectAll('point')
                 .data(data[1])
@@ -174,7 +176,6 @@ const GrantsChart = ({ onYearClicked }) => {
                 .text(function (d) {
                     return d;
                 });
-
 
 
             d3.select('.students').select('.lines')
