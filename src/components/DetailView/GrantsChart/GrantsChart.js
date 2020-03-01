@@ -101,7 +101,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr('font-family', 'Open Sans')
                 .attr('width', width)
                 .attr('align', 'center')
-                .text('Number of ideas')
+                .text('Number of ideas in ' + year_choice)
 
             d3.select('.legend')
                 .attr("transform", 'translate(15, ' + 3 * margin.top + ')')
