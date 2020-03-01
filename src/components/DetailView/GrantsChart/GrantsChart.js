@@ -142,6 +142,20 @@ const GrantsChart = ({ onYearClicked }) => {
                 .duration(500)
                 .attr("d", lineGenerator(data[0]));
 
+            d3.select('.total').selectAll('circle').remove();
+
+            d3.select('.total').select('.points')
+                .selectAll('point')
+                .data(data[0])
+                .enter().append("circle")
+                .style('opacity', '0')
+                .style('fill', '#005ec4')
+                .style("r", 5)
+                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
+                .attr("cy", function (d) { return y_scale(d) })
+                .append('title')
+                .text(function (d) { return d; });
+
             d3.select('.researchers').select('.lines')
                 .select('path')
                 .style("stroke", 'rgb(216, 84, 151)')
@@ -160,13 +174,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 .style('opacity', '0')
                 .style('fill', 'rgb(216, 84, 151)')
                 .style("r", 4)
-                .on('mouseover', function (d) {
-                    this.style.r = 6;
-                })
-                .on('mouseout', function (d) {
-                    this.style.r = 4;
-                })
-                .attr("cx", function (d, i) { return x_scale(i * width / 12) })
+                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
                 .attr("cy", function (d) { return y_scale(d) })
                 .append('title')
                 .text(function (d) { return d; });
@@ -180,7 +188,21 @@ const GrantsChart = ({ onYearClicked }) => {
                 .duration(500)
                 .attr("d", lineGenerator(data[2]));
 
-            d3.select('.click-capture')
+            d3.select('.students').selectAll('circle').remove();
+
+            d3.select('.students').select('.points')
+                .selectAll('point')
+                .data(data[2])
+                .enter().append("circle")
+                .style('opacity', '0')
+                .style('fill', 'rgb(179, 201, 43)')
+                .style("r", 4)
+                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
+                .attr("cy", function (d) { return y_scale(d) })
+                .append('title')
+                .text(function (d) { return d; });
+
+            d3.select(svgRef.current)
                 .on('mouseenter', function (d) {
                     d3.select('.linechart_canvas').selectAll('circle').style('opacity', '1');
                 })
