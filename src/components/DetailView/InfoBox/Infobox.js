@@ -81,6 +81,8 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'ideastext')
                     .attr("x", width / 2)
                     .attr("y", y)
+                    .attr('font-size', 24)
+                    .attr('font-weight', 'bold')
                     .text(yearData.ideas);
                 svg
                     .append('text')
@@ -113,6 +115,8 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'researcherstext')
                     .attr("x", width / 2)
                     .attr("y", y)
+                    .attr('font-size', 24)
+                    .attr('font-weight', 'bold')
                     .text(yearData.researchers);
                 svg
                     .append('text')
@@ -144,6 +148,8 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'studentstext')
                     .attr("x", width / 2)
                     .attr("y", y)
+                    .attr('font-size', 24)
+                    .attr('font-weight', 'bold')
                     .text(yearData.students);
                 svg
                     .append('text')
@@ -175,6 +181,8 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'fundingstext')
                     .attr("x", width / 2)
                     .attr("y", y)
+                    .attr('font-size', 24)
+                    .attr('font-weight', 'bold')
                     .text(yearData.funding);
                 svg
                     .append('text')
@@ -209,6 +217,8 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'patentstext')
                     .attr("x", width / 2)
                     .attr("y", y)
+                    .attr('font-size', 24)
+                    .attr('font-weight', 'bold')
                     .text(yearData.patent_applications);
                 svg
                     .append('text')
@@ -244,6 +254,8 @@ const Infobox = ({onYearClicked}) => {
                     .attr('class', 'noveltytext')
                     .attr("x", width / 2)
                     .attr("y", y)
+                    .attr('font-size', 24)
+                    .attr('font-weight', 'bold')
                     .text(yearData.novelty_searches);
                 svg
                     .append('text')
