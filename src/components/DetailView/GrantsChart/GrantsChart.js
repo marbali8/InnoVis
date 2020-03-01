@@ -37,8 +37,6 @@ const GrantsChart = ({ onYearClicked }) => {
         .x(function (_, i) { return x_scale(i * width / 12); })
         .y(function (d, _) { return y_scale(d); });
 
-    var pointGenerator = d3.scaleOrdinal(data[0], d3.symbols.map(s => d3.symbolCircle))
-
     // code runs only if data has been fetched
     useEffect(() => {
 
@@ -62,9 +60,16 @@ const GrantsChart = ({ onYearClicked }) => {
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height)
-                    .append('g')
+                    .append('g').attr('pointer-events', 'all')
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                     .classed('linechart_canvas', true);
+
+                canvas.append('g')
+                    .classed('click-capture', true)
+                    .append('rect')
+                    .style('visibility', 'hidden')
+                    .attr('x', 0).attr('y', 0)
+                    .attr('width', width).attr('height', height);
 
                 // containers for plot
                 canvas.append('g').classed('title', true).append('text');
@@ -146,36 +151,25 @@ const GrantsChart = ({ onYearClicked }) => {
                 .duration(500)
                 .attr("d", lineGenerator(data[1]));
 
-            // d3.select('.researchers').select('.points')
-            //     .data(data[1])
-            //     .enter()
-            //     .append('circle')
-            //     .style("r", 3)
-            //     .attr("fill", 'black')
-            //     .attr("d", d => pointGenerator(d))
-            //     .attr("cx", function(_, i) { return x_scale(i * width / 12); })
-            //     .attr("cy", function(d) { return y_scale(d); });
-
             d3.select('.researchers').selectAll('circle').remove();
 
             d3.select('.researchers').select('.points')
                 .selectAll('point')
                 .data(data[1])
                 .enter().append("circle")
+                .style('opacity', '0')
+                .style('fill', 'rgb(216, 84, 151)')
+                .style("r", 4)
+                .on('mouseover', function (d) {
+                    this.style.r = 6;
+                })
+                .on('mouseout', function (d) {
+                    this.style.r = 4;
+                })
                 .attr("cx", function (d, i) { return x_scale(i * width / 12) })
                 .attr("cy", function (d) { return y_scale(d) })
-                .style("r", 3)
-                // .on('mouseover', function (d) {
-                //     this.style.r = 5;
-                // })
-                // .on('mouseout', function (d) {
-                //     this.style.r = 3;
-                // })
-                .style('fill', 'rgb(216, 84, 151)');
-            // .append('title')
-            // .text(function (d) {
-            //     return d;
-            // });
+                .append('title')
+                .text(function (d) { return d; });
 
             d3.select('.students').select('.lines')
                 .select('path')
@@ -186,35 +180,13 @@ const GrantsChart = ({ onYearClicked }) => {
                 .duration(500)
                 .attr("d", lineGenerator(data[2]));
 
-            // d3.select('.total').select('.points')
-            //     .selectAll('cicle')
-            //     .data(data)
-            //     .enter()
-            //     .append('circle')
-            //     .style("r", 3)
-            //     .style('fill', '#005ec4')
-            //     // .transition().ease(d3.easeQuad)
-            //     // .duration(500)
-            //     .attr("cx", function (d, i) { return x_scale(i * width / 12) })
-            //     .attr("cy", function (d) { return y_scale(d) });
-
-            // d3.select('.total').select('.points')
-            //     .data(data)
-            //     .enter().append("circle")
-            //     .attr("cx", function (_, i) { return x_scale(i * width / 12) })
-            //     .attr("cy", function (d) { return y_scale(d) })
-            //     .style("r", 3);
-            //     // .on('mouseover', function (d) {
-            //     //     this.style.r = 5;
-            //     // })
-            //     // .on('mouseout', function (d) {
-            //     //     this.style.r = 3;
-            //     // })
-            //     // .style('fill', '#005ec4')
-            //     // .append('title')
-            //     // .text(function (d) {
-            //     //     return d;
-            //     // });
+            d3.select('.click-capture')
+                .on('mouseenter', function (d) {
+                    d3.select('.linechart_canvas').selectAll('circle').style('opacity', '1');
+                })
+                .on('mouseleave', function (d) {
+                    d3.select('.linechart_canvas').selectAll('circle').style('opacity', '0');
+                });
         }
 
         return () => {
