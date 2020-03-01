@@ -38,6 +38,7 @@ function App() {
                 <Sunburst
                     data={getDataForSunburst(year)}
                     category={category}
+                    onBallMouseHover={handleCategoryBallsHover}
                 />
                 {/* <Sunburst onYearClicked={year}/> */}
                 <GrantsChart onYearClicked={year}/>

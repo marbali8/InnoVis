@@ -11,7 +11,8 @@ const Sunburst = ({
                       widthHeightValue = 350,
                       margin = {top: 10, right: 10, bottom: 10, left: 10},
                       data = [],
-                      category = -1
+                      category = -1,
+                      onBallMouseHover
                   }) => {
 
     const width = widthHeightValue - margin.left - margin.right;
@@ -109,6 +110,10 @@ const Sunburst = ({
                         d3.selectAll('.center_text').text(d.data.label);
                     }
 
+                })
+                .on('contextmenu', function(){
+                    d3.event.preventDefault();
+                    onBallMouseHover(-1);
                 })
                 .text((d) => d.data.label);
             console.log("category after enter " + cat);
