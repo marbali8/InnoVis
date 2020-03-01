@@ -1,4 +1,5 @@
 import companyData from '../data/companies.json';
+import categoryMapping from '../data/category_label_mapping'
 import { getColorByCompanyCategory } from '../utility_functions/ColorFunctions.js';
 import * as d3 from 'd3';
 
@@ -86,6 +87,17 @@ export function getDataForMegaballs(year) {
     return megaData;
 }
 
+export function getLabelForCategory(categoryID) {
+    var label = "";
+
+    for (let i = 0; i < categoryMapping.length; i++) {
+        if (categoryMapping[i].id === categoryID){
+            label = categoryMapping[i].label;
+        }
+    }
+
+    return label;
+}
 
 
 

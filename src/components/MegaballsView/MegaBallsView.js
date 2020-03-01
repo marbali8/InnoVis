@@ -16,7 +16,6 @@ const MegaBalls = ({
 
     const graph = data.nodes;
 
-    console.log(graph);
     const nodeLinks = data.links;
 
 

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import * as d3 from 'd3';
 import {getColorByCompanyCategory} from "../../../utility_functions/ColorFunctions";
+import {getLabelForCategory} from "../../../data/data_functions"
 
 // time for transition between state changes in milliseconds
 const transitionDuration = 900;
@@ -34,10 +35,6 @@ const Sunburst = ({
     var arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
     useEffect(() => {
-
-        console.log("the cat is " + category);
-        var clicked = category;
-        console.log("clicked " + clicked);
 
         setupContainersOnMount();
         drawSunburst(category);
@@ -104,19 +101,20 @@ const Sunburst = ({
 
                     var opacity = d3.select(this).attr('opacity');
                     if (opacity === '0.2'){
-                        //TODO: fix
-                        d3.selectAll('.center_text').text(category);
+                        d3.selectAll('.center_text').text(getLabelForCategory(category));
                     } else {
                         d3.selectAll('.center_text').text(d.data.label);
                     }
 
+                })
+                .on('click', function (d) {
+                    onBallMouseHover(d.index);
                 })
                 .on('contextmenu', function(){
                     d3.event.preventDefault();
                     onBallMouseHover(-1);
                 })
                 .text((d) => d.data.label);
-            console.log("category after enter " + cat);
 
             // exit
             arcs.exit().remove();

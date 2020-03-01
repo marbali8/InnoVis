@@ -31,7 +31,7 @@ function App() {
                 Take a look at our alumni companies and ideas!
             </div>
             <div className={classes.megaBallsView}>
-                <MegaBalls data={getDataForMegaballs(year)} onBallMouseHover={handleCategoryBallsHover}/>
+                <MegaBalls data={getDataForMegaballs(year)} category={category} onBallMouseHover={handleCategoryBallsHover}/>
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]}/>
             <div className={classes.aggregateKTHDataView}>
