@@ -1,17 +1,16 @@
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import * as d3 from 'd3';
-import {getColorByCompanyCategory} from '../../utility_functions/ColorFunctions.js';
-import {getLabelForCategory} from "../../data/data_functions";
+import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
+import { getLabelForCategory } from "../../data/data_functions";
 
 const MegaBalls = ({
-                       height = 500,
-                       width = 1000,
-                       margin = {left: 0, right: 0, top: 0, bottom: 0},
-                       year = 2010,
-                       data = [],
-                       category,
-                       onBallMouseHover
-                   }) => {
+    height = 500,
+    width = 1000,
+    margin = { left: 0, right: 0, top: 0, bottom: 0 },
+    year = 2010,
+    data = [],
+    category,
+}) => {
 
     const anchor = useRef();
     const didMount = useRef(false);
@@ -44,7 +43,7 @@ const MegaBalls = ({
         if (node.key === 72190) {
 
             const copyNode = node;
-            copyNode.x = -width / 10;
+            copyNode.x = -width / 8;
             copyNode.y = 0;
             return node;
         }
@@ -60,7 +59,7 @@ const MegaBalls = ({
         setupContainersOnMount();
         resetZoom();
         drawBalls();
-        brush(category);
+        // brush(category);
 
         didMount.current = true;
 
@@ -68,6 +67,20 @@ const MegaBalls = ({
         function setupContainersOnMount() {
 
             if (!didMount.current) {
+
+                simulation.current = d3.forceSimulation()
+                    .force("forceX", d3.forceX().strength(-0.01).x(0))
+                    .force("forceY", d3.forceY().strength(-0.01).y(0))
+                    .force("charge", d3.forceManyBody().strength(-1))
+                    .force('collision', d3.forceCollide().radius(function (d) {
+                        return d.size;
+                    }))
+                    // .alphaDecay(0.08)
+                    .force("charge", d3.forceManyBody().strength(-3))
+                    .velocityDecay(0.9)
+                    .force("collide", d3.forceCollide().strength(1).radius(function (d) {
+                        return d.size
+                    }).iterations(10));
 
                 const anchorNode = d3.select(anchor.current)
                     .attr("preserveAspectRatio", "xMinYMin meet")
@@ -118,10 +131,11 @@ const MegaBalls = ({
             var enter = balls.enter()
                 .append("circle")
                 .attr("id", (d) => d.key)
+                .attr("class", (d) => "_" + d.id)
                 .attr("fill", function (d) {
                     return getColorByCompanyCategory(d.id)
                 })
-                .attr('fill-opacity', 0.8)
+                .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
                 .style("stroke-width", '1')
                 .attr("vector-effect", "non-scaling-stroke")
@@ -136,13 +150,7 @@ const MegaBalls = ({
                     d3.selectAll('.details')
                         .text("");
                 })
-                .on('click', function (d) {
-                    onBallMouseHover(d.id);
-                })
-                .on('contextmenu', function () {
-                    d3.event.preventDefault();
-                    onBallMouseHover(-1);
-                })
+
                 .transition(d3.easeLinear)
                 .duration(700)
                 .attr("r", (d) => d.size);
@@ -153,7 +161,6 @@ const MegaBalls = ({
 
             var enterAndUpdateBalls = balls.merge(enter);
 
-            simulation.current = d3.forceSimulation();
 
             simulation.current.nodes(data.nodes)
                 .on("tick", (d) => {
@@ -164,48 +171,53 @@ const MegaBalls = ({
                         .attr("cy", function (d) {
                             return d.y
                         });
-                })
-
-                .force("forceX", d3.forceX().strength(-0.01).x(0))
-                .force("forceY", d3.forceY().strength(-0.01).y(0))
-                .force("charge", d3.forceManyBody().strength(-1))
-                .force('collision', d3.forceCollide().radius(function (d) {
-                    return d.size;
-                }))
-                .force("charge", d3.forceManyBody().strength(-3))
-                .velocityDecay(0.9)
-                .force("collide", d3.forceCollide().strength(1).radius(function (d) {
-                    return d.size
-                }).iterations(10));
+                });
 
 
-            simulation.current.restart().alpha(1);
-
+            console.log("hello");
+            simulation.current.alpha(1).restart();
 
         }
 
-        function brush(cat) {
-            if (cat !== -1) {
-                var color = getColorByCompanyCategory(cat);
-                d3.selectAll('.categorydetails').text(getLabelForCategory(cat));
-                d3.select('.balls').selectAll('circle').attr('opacity', 0.2);
-                d3.selectAll("[fill='" + color + "']").attr('opacity', 1);
-            } else {
-                d3.selectAll('.categorydetails').text("");
-                d3.select('.balls').selectAll('circle').attr('opacity', 1);
-            }
-        }
-
+        // function brush(cat) {
+        //     if (cat !== -1) {
+        //         var color = getColorByCompanyCategory(cat);
+        //         d3.selectAll('.categorydetails').text(getLabelForCategory(cat));
+        //         d3.select('.balls').selectAll('circle').attr('opacity', 0.2);
+        //         d3.selectAll("[fill='" + color + "']").attr('opacity', 1);
+        //     } else {
+        //         d3.selectAll('.categorydetails').text("");
+        //         d3.select('.balls').selectAll('circle').attr('opacity', 1);
+        //     }
+        // }
 
         return () => {
-            simulation.current.stop()
+            simulation.current.stop();
         }
 
-    }, [data, height, margin.bottom, margin.left, margin.right, margin.top, width, nodes]); // useEffect
+    }, [data, year]); // useEffect
 
-    return <React.Fragment>
-        <svg overflow='visible' height={height} width={width} ref={anchor}/>
-    </React.Fragment>;
+
+    useEffect(() => {
+        if (category !== -2 && category !== -1 && category !== null) {
+
+            d3.select(anchor.current).selectAll('circle').attr('opacity', (d) => {
+                if (d.id === category) return 1;
+                else { return 0.2 }
+            });
+        }
+
+        else if (category === -2) {
+            d3.select(anchor.current).selectAll('circle').attr('opacity', 0.8);
+        }
+    }, [category]);
+
+
+    return useMemo(() => {
+        return (<React.Fragment>
+            <svg overflow='visible' height={height} width={width} ref={anchor} />
+        </React.Fragment>)
+    }, [])
 };
 
 export default MegaBalls;

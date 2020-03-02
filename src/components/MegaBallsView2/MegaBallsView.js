@@ -18,8 +18,6 @@ const MegaBalls = ({
 
     const nodeLinks = data.links;
 
-
-
     if (data.length === 0) {
         data = [{ label: "", value: 1, color: 'white' }];
     }
