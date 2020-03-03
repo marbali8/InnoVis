@@ -4,6 +4,7 @@ import { getColorByCompanyCategory } from '../../utility_functions/ColorFunction
 import styles from '../../global.module.scss';
 
 const fontSizeOfCompanyDetail = 30;
+const maxZoomScale = 9;
 
 const MegaBalls = ({
     height = 500,
@@ -57,18 +58,7 @@ const MegaBalls = ({
         function setupContainersOnMount() {
 
             if (!didMount.current) {
-                simulation.current = d3.forceSimulation()
-                    .force("forceX", d3.forceX().strength(-0.01).x(0))
-                    .force("forceY", d3.forceY().strength(-0.01).y(0))
-                    .force("charge", d3.forceManyBody().strength(-1))
-                    .force('collision', d3.forceCollide().radius(function (d) {
-                        return d.size;
-                    }))
-                    .force("charge", d3.forceManyBody().strength(-3))
-                    .velocityDecay(0.9)
-                    .force("collide", d3.forceCollide().strength(1).radius(function (d) {
-                        return d.size
-                    }).iterations(10));
+                setupSimulation();
 
                 const anchorNode = d3.select(anchor.current)
                     .attr("preserveAspectRatio", "xMinYMin meet")
@@ -79,11 +69,13 @@ const MegaBalls = ({
                 let canvas = anchorNode.append('g').classed("canvas", true);
 
                 zoom.current = d3.zoom();
+                zoom.current.scaleExtent([1, maxZoomScale]);
                 canvas.append('g').classed('balls', true).attr("transform", "translate(" + width / 2 + "," + height / 1.8 + ")");
 
                 canvas.append('g').classed('tooltip', true).attr("transform", "translate(" + width / 2 + "," + height / 1.8 + ")")
                     .append('text')
-                    .attr('class', 'details')
+                    .attr('class', 'companyTooltip')
+                    .attr("font-weight", 450)
                     .attr('x', 0)
                     .attr('y', 0)
                     .attr('text-anchor', 'middle')
@@ -95,9 +87,10 @@ const MegaBalls = ({
                     .append('tspan');
 
                 // setup zoom functionality
-                anchorNode.call(d3.zoom().on("zoom", function () {
-                    anchorNode.select("g").attr("transform", d3.event.transform);
-                    d3.select('.details').attr("font-size", (fontSizeOfCompanyDetail / d3.event.transform.k) + "px");
+                anchorNode.call(zoom.current.on("zoom", function () {
+                    anchorNode.select(".canvas").attr("transform", d3.event.transform);
+                    const fontSize = d3.event.transform.k >= 1 ? fontSizeOfCompanyDetail / d3.event.transform.k : fontSizeOfCompanyDetail;
+                    d3.select('.companyTooltip').attr("font-size", (fontSize) + "px");
                 }));
             }
         }
@@ -107,13 +100,25 @@ const MegaBalls = ({
             d3.select(anchor.current).call(zoom.current.transform, d3.zoomIdentity);
         }
 
+        function setupSimulation() {
+            simulation.current = d3.forceSimulation()
+                .force("forceX", d3.forceX().strength(-0.01).x(0))
+                .force("forceY", d3.forceY().strength(-0.01).y(0))
+                .force("charge", d3.forceManyBody().strength(-1))
+                .force('collision', d3.forceCollide().radius((d) => { return d.size; }))
+                .force("charge", d3.forceManyBody().strength(-3))
+                .velocityDecay(0.9)
+                .force("collide", d3.forceCollide().strength(1).radius((d) => { return d.size })
+                    .iterations(10));
+        }
+
         function drawBalls() {
             var balls = d3.select('.balls').selectAll('circle').data(data.nodes, (d) => {
                 return d.key
             })
 
             balls.on('mouseover', function (d) {
-                d3.selectAll('.details')
+                d3.selectAll('.companyTooltip')
                     .text(function () {
                         return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d.revenue + 'SEK revenue in ' + year;
                     });
@@ -135,9 +140,7 @@ const MegaBalls = ({
                     const x = self.attr('cx');
                     const y = self.attr('cy');
 
-                    d3.select('.details')
-                        .attr("font-weight", 500)
-                        .attr("font", "Open Sans")
+                    d3.select('.companyTooltip')
                         .attr("x", (x + width / 2))
                         .attr("y", y)
                         .text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s), " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
@@ -146,19 +149,17 @@ const MegaBalls = ({
                         .attr("opacity", 1).select("tspan")
                         .attr("font-weight", 300)
                         .text(" but this is not.");
-
+                })
+                .on('mouseout', function (d) {
+                    d3.select('.companyTooltip')
+                        .attr("opacity", 0)
+                        .text("");
                 })
                 .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
                 .style("stroke-width", '3px')
                 .attr("vector-effect", "non-scaling-stroke")
                 .attr('stroke-opacity', 0.2)
-                .on('mouseout', function (d) {
-                    d3.select('.details')
-                        .attr("opacity", 0)
-                        .text("");
-
-                })
                 .transition(d3.easeLinear)
                 .duration(700)
                 .attr("r", (d) => d.size);
