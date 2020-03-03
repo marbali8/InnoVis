@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
+import styles from '../../global.module.scss';
+
+const fontSizeOfCompanyDetail = 30;
 
 const MegaBalls = ({
     height = 500,
@@ -14,6 +17,7 @@ const MegaBalls = ({
     const anchor = useRef();
     const didMount = useRef(false);
     const simulation = useRef(null);
+    const zoom = useRef(null);
 
     // move the bigger balls a bit to the side so they
     // don't bump the other balls in a jerky way when simulation starts
@@ -47,7 +51,6 @@ const MegaBalls = ({
         setupContainersOnMount();
         resetZoom();
         drawBalls();
-        // brush(category);
         didMount.current = true;
 
         //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
@@ -61,7 +64,6 @@ const MegaBalls = ({
                     .force('collision', d3.forceCollide().radius(function (d) {
                         return d.size;
                     }))
-                    // .alphaDecay(0.08)
                     .force("charge", d3.forceManyBody().strength(-3))
                     .velocityDecay(0.9)
                     .force("collide", d3.forceCollide().strength(1).radius(function (d) {
@@ -72,41 +74,50 @@ const MegaBalls = ({
                     .attr("preserveAspectRatio", "xMinYMin meet")
                     .attr("viewBox", "0 0 " + width + " " + height)
                     .attr("overflow", 'visible')
-                    .classed("svg-content", true);
+                    .classed("svg-content", true)
 
                 let canvas = anchorNode.append('g').classed("canvas", true);
 
+                zoom.current = d3.zoom();
                 canvas.append('g').classed('balls', true).attr("transform", "translate(" + width / 2 + "," + height / 1.8 + ")");
 
-                anchorNode.append('text')
+                canvas.append('g').classed('tooltip', true).attr("transform", "translate(" + width / 2 + "," + height / 1.8 + ")")
+                    .append('text')
                     .attr('class', 'details')
-                    .attr('x', width / 2)
-                    .attr('y', height - 20)
-                    .attr('text-anchor', 'middle');
-                anchorNode.append('text')
-                    .attr('class', 'categorydetails')
-                    .attr('x', width / 2)
-                    .attr('y', 20)
+                    .attr('x', 0)
+                    .attr('y', 0)
                     .attr('text-anchor', 'middle')
-                    .style('font-weight', 'bold');
+                    .style('font', styles.font)
+                    .attr("font-size", fontSizeOfCompanyDetail)
+                    .attr("cursor", "none")
+                    .attr("pointer-events", "none")
+                    .attr("opacity", 0)
+                    .append('tspan');
 
                 // setup zoom functionality
                 anchorNode.call(d3.zoom().on("zoom", function () {
-                    anchorNode.select("g").attr("transform", d3.event.transform)
+                    anchorNode.select("g").attr("transform", d3.event.transform);
+                    d3.select('.details').attr("font-size", (fontSizeOfCompanyDetail / d3.event.transform.k) + "px");
                 }));
             }
         }
 
         function resetZoom() {
-            var zoom = d3.zoom();
             d3.select(anchor.current).selectAll(".canvas").transition().duration(1000).attr("transform", d3.zoomIdentity);
-            d3.select(anchor.current).call(d3.zoom().transform, d3.zoomIdentity);
+            d3.select(anchor.current).call(zoom.current.transform, d3.zoomIdentity);
         }
 
         function drawBalls() {
             var balls = d3.select('.balls').selectAll('circle').data(data.nodes, (d) => {
                 return d.key
-            });
+            })
+
+            balls.on('mouseover', function (d) {
+                d3.selectAll('.details')
+                    .text(function () {
+                        return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d.revenue + 'SEK revenue in ' + year;
+                    });
+            })
 
             balls.transition()
                 .duration(500)
@@ -119,22 +130,35 @@ const MegaBalls = ({
                 .attr("fill", function (d) {
                     return getColorByCompanyCategory(d.id)
                 })
+                .on('mouseenter', function (d) {
+                    var self = d3.select(this);
+                    const x = self.attr('cx');
+                    const y = self.attr('cy');
+
+                    d3.select('.details')
+                        .attr("font-weight", 500)
+                        .attr("font", "Open Sans")
+                        .attr("x", (x + width / 2))
+                        .attr("y", y)
+                        .text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s), " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
+                        .transition()
+                        .delay(20)
+                        .attr("opacity", 1).select("tspan")
+                        .attr("font-weight", 300)
+                        .text(" but this is not.");
+
+                })
                 .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
-                .style("stroke-width", '1')
+                .style("stroke-width", '3px')
                 .attr("vector-effect", "non-scaling-stroke")
                 .attr('stroke-opacity', 0.2)
-                .on('mouseover', function (d) {
-                    d3.selectAll('.details')
-                        .text(function () {
-                            return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) and " + d.revenue + 'SEK revenue in ' + year;
-                        });
-                })
                 .on('mouseout', function (d) {
-                    d3.selectAll('.details')
+                    d3.select('.details')
+                        .attr("opacity", 0)
                         .text("");
-                })
 
+                })
                 .transition(d3.easeLinear)
                 .duration(700)
                 .attr("r", (d) => d.size);
@@ -157,14 +181,13 @@ const MegaBalls = ({
                 });
 
             simulation.current.alpha(1).restart();
-
         }
 
         return () => {
             simulation.current.stop();
         }
 
-    }, [data, year]); // useEffect
+    }, [data, year, height, width]); // useEffect
 
     useEffect(() => {
         if (category !== -1 && category !== -1 && category !== null) {
@@ -173,20 +196,36 @@ const MegaBalls = ({
                 else { return 0.2 }
             });
         }
-        // -2 means no category is currently hovered
+        // -1 means no category is currently hovered
         else if (category === -1) {
             d3.select(anchor.current).selectAll('circle').attr('opacity', 0.8);
         }
-    }, [category]);
+    }, [category, year]);
 
 
-    return (<React.Fragment>
+    return useMemo(() => (<React.Fragment>
         <svg overflow='visible' height={height} width={width} ref={anchor} />
-    </React.Fragment>)
+    </React.Fragment>), [height, width]);
 
 };
 
 export default MegaBalls;
+
+                    // old code that might be used later, storing here for now! Don't remove!
+// function brush(cat) {
+        //     if (cat !== -1) {
+        //         var color = getColorByCompanyCategory(cat);
+        //         d3.selectAll('.categorydetails').text(getLabelForCategory(cat));
+        //         d3.select('.balls').selectAll('circle').attr('opacity', 0.2);
+        //         d3.selectAll("[fill='" + color + "']").attr('opacity', 1);
+        //     } else {
+        //         d3.selectAll('.categorydetails').text("");
+        //         d3.select('.balls').selectAll('circle').attr('opacity', 1);
+        //     }
+        // }
+
+ // brush(category);
+
 
 
 // code that might be used later, storing here for now! 
