@@ -83,6 +83,9 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
         // attach the drag handler to the track overlay 
         dragHandler(slider.select(".track-overlay"));
 
+        // set default year to 2018.
+        dragged(1000);
+
         function dragged(value) {
 
             var x = xScale.invert(value), index = null, midPoint, year;
@@ -107,8 +110,6 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
             if (handle.attr('cx') !== xScale(year)) { onYearClicked(year); }
             handle.attr('cx', xScale(year));
         }
-
-
     }, []);
 
     return <div ref={divRef} height={height} width={width} className={classes.timeSlider} />;
