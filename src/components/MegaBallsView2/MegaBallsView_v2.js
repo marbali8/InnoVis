@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
-import { getLabelForCategory } from "../../data/data_functions";
 
 const MegaBalls = ({
     height = 500,
@@ -14,17 +13,13 @@ const MegaBalls = ({
 
     const anchor = useRef();
     const didMount = useRef(false);
-    let nodes = data.nodes;
     const simulation = useRef(null);
 
     // move the bigger balls a bit to the side so they
-    // don't bump the other balls in a jerky when simulation starts
-    nodes = nodes.map((node) => {
-
+    // don't bump the other balls in a jerky way when simulation starts
+    const nodes = data.nodes.map((node) => {
         let copyNode;
-
         if (node.key === 3812) {
-
             const copyNode = node;
             copyNode.x = width / 7;
             copyNode.y = 0;
@@ -32,42 +27,33 @@ const MegaBalls = ({
         }
 
         if (node.key === 26110) {
-
             const copyNode = node;
             copyNode.x = 0;
             copyNode.y = -height / 10;
             return node;
         }
 
-
         if (node.key === 72190) {
-
             const copyNode = node;
             copyNode.x = -width / 8;
             copyNode.y = 0;
             return node;
         }
-
         copyNode = node;
         return copyNode;
-
     });
 
-
     useEffect(() => {
-
         setupContainersOnMount();
         resetZoom();
         drawBalls();
         // brush(category);
-
         didMount.current = true;
 
         //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
         function setupContainersOnMount() {
 
             if (!didMount.current) {
-
                 simulation.current = d3.forceSimulation()
                     .force("forceX", d3.forceX().strength(-0.01).x(0))
                     .force("forceY", d3.forceY().strength(-0.01).y(0))
@@ -118,11 +104,9 @@ const MegaBalls = ({
         }
 
         function drawBalls() {
-
             var balls = d3.select('.balls').selectAll('circle').data(data.nodes, (d) => {
                 return d.key
             });
-
 
             balls.transition()
                 .duration(500)
@@ -161,7 +145,6 @@ const MegaBalls = ({
 
             var enterAndUpdateBalls = balls.merge(enter);
 
-
             simulation.current.nodes(data.nodes)
                 .on("tick", (d) => {
                     enterAndUpdateBalls
@@ -173,13 +156,42 @@ const MegaBalls = ({
                         });
                 });
 
-
-            console.log("hello");
             simulation.current.alpha(1).restart();
 
         }
 
-        // function brush(cat) {
+        return () => {
+            simulation.current.stop();
+        }
+
+    }, [data, year]); // useEffect
+
+    useEffect(() => {
+        if (category !== -1 && category !== -1 && category !== null) {
+            d3.select(anchor.current).selectAll('circle').attr('opacity', (d) => {
+                if (d.id === category) return 1;
+                else { return 0.2 }
+            });
+        }
+        // -2 means no category is currently hovered
+        else if (category === -1) {
+            d3.select(anchor.current).selectAll('circle').attr('opacity', 0.8);
+        }
+    }, [category]);
+
+
+    return (<React.Fragment>
+        <svg overflow='visible' height={height} width={width} ref={anchor} />
+    </React.Fragment>)
+
+};
+
+export default MegaBalls;
+
+
+// code that might be used later, storing here for now! 
+
+// function brush(cat) {
         //     if (cat !== -1) {
         //         var color = getColorByCompanyCategory(cat);
         //         d3.selectAll('.categorydetails').text(getLabelForCategory(cat));
@@ -190,37 +202,3 @@ const MegaBalls = ({
         //         d3.select('.balls').selectAll('circle').attr('opacity', 1);
         //     }
         // }
-
-        return () => {
-            simulation.current.stop();
-        }
-
-    }, [data, year]); // useEffect
-
-
-    useEffect(() => {
-        if (category !== -2 && category !== -1 && category !== null) {
-
-            d3.select(anchor.current).selectAll('circle').attr('opacity', (d) => {
-                if (d.id === category) return 1;
-                else { return 0.2 }
-            });
-        }
-
-        else if (category === -2) {
-            d3.select(anchor.current).selectAll('circle').attr('opacity', 0.8);
-        }
-    }, [category]);
-
-
-    return useMemo(() => {
-        return (<React.Fragment>
-            <svg overflow='visible' height={height} width={width} ref={anchor} />
-        </React.Fragment>)
-    }, [])
-};
-
-export default MegaBalls;
-
-
-//anchorNode.selectAll("circle").remove();

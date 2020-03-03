@@ -9,20 +9,16 @@ import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functio
 
 function App() {
 
-    const defaultYear = 2010;
-    const defaultCategory = -1;
-    const [year, setYear] = useState(defaultYear);
-    const [category, setCategory] = useState(defaultCategory);
+    const [year, setYear] = useState(2018);
+    const [category, setCategory] = useState(-1);
 
     const handleTimeSliderYearClicked = (year) => {
         setYear(year);
     };
 
     const handleCategoryBallsHover = (category) => {
-        console.log("hello2");
         setCategory(category);
     };
-
 
     const megaballData = useMemo(() => { return getDataForMegaballs(year) }, [year]);
     const dataForSunburst = useMemo(() => { return getDataForSunburst(year) }, [year]);
