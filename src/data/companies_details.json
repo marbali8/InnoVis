@@ -1,5 +1,12 @@
 [
   {
+    "name": "AIRMIZ AB",
+    "founded": 2016,
+    "founders": "Adrian C. Prelipcean, Julian Lee, Yadwinder Paul Singh, Dmitry Deplov",
+    "info": "Airmee is a logistics technological platform with the vision of optimizing every transport in every city in the world. The mission is to create the best and most environmentally sustainable delivery experience in the world by leveraging our research-based technology. They partner with online retailers and logistics providers to bring your purchases to you.",
+    "website": "https://www.airmee.com/"
+  },
+  {
     "name": "DEGOO BACKUP AB",
     "founded": 2012,
     "founders": "Carl Hasselskog, Mattias Nylitz",
@@ -27,4 +34,5 @@
     "info": "Volumental helps millions of people find perfectly fitting shoes. In one click and less than five seconds, our 3D scanner gathers ten different foot measurements and all the data needed for our AI-powered Fit Engine to offer you personalized footwear recommendations.",
     "website": "https://www.volumental.com/"
   }
+
 ]
