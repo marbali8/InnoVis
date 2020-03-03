@@ -94,7 +94,7 @@ const Sunburst = ({
                 .on('mouseleave', function (d) {
                     d3.selectAll('.arc').attr("opacity", 1.0);
                     d3.event.preventDefault();
-                    onBallMouseHover(-2);
+                    onBallMouseHover(-1);
                 })
                 .on('contextmenu', function () {
                     d3.event.preventDefault();
