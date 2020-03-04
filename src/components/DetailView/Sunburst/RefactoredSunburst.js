@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import * as d3 from 'd3';
-import { getColorByCompanyCategory } from "../../../utility_functions/ColorFunctions";
-import { getLabelForCategory } from "../../../data/data_functions"
+import {getColorByCompanyCategory} from "../../../utility_functions/ColorFunctions";
+import {getLabelForCategory} from "../../../data/data_functions"
 
 // time for transition between state changes in milliseconds
 const transitionDuration = 900;
@@ -9,12 +9,12 @@ const transitionDuration = 900;
 /** Sunburst component that updates everytime a prop changes with a transition animation, takes in a list of data + other optional props
  data prop format example: [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] */
 const Sunburst = ({
-    widthHeightValue = 350,
-    margin = { top: 10, right: 10, bottom: 10, left: 10 },
-    data = [],
-    category = -1,
-    onBallMouseHover
-}) => {
+                      widthHeightValue = 350,
+                      margin = {top: 10, right: 10, bottom: 10, left: 10},
+                      data = [],
+                      category = -1,
+                      onBallMouseHover
+                  }) => {
 
     const width = widthHeightValue - margin.left - margin.right;
     const height = widthHeightValue - margin.top - margin.bottom;
@@ -27,7 +27,7 @@ const Sunburst = ({
 
     // draws a white donut if no data
     if (data.length === 0) {
-        data = [{ label: "", value: 1, color: 'white' }];
+        data = [{label: "", value: 1, color: 'white'}];
     }
 
     // set up pie and arc objects/functions
@@ -38,8 +38,9 @@ const Sunburst = ({
 
         setupContainersOnMount();
         drawSunburst(category);
-        //brush(category);
+        brush(category);
         addTextInCenter();
+
         didMount.current = true;
 
         //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
@@ -80,50 +81,40 @@ const Sunburst = ({
                     return d.data.color;
                 })
                 .attr("stroke", "black")
-                .attr("opacity", 1.0)
                 .attr("stroke-opacity", 0.1)
                 .each(function (d) {
                     this._current = d;
-                })
+                });
+
+
+            arcs
                 .on('mouseenter', function (d) {
-                    d3.event.preventDefault();
-                    d3.selectAll('.arc').attr("opacity", 0.5);
-                    d3.select(this).attr("opacity", 1.0);
+                    d3.selectAll(".center_text").text(d.data.label);
+                })
+                .on('mouseout', function (d, cat, i) {
+                    d3.selectAll(".center_text").text("");
+                    //normal behaviour
+                    if (d3.selectAll('.arc').attr('opacity') !== '0.2'){
+                        d3.selectAll('.center_text').text("");
+                        return;
+                    }
+
+                    var opacity = d3.select(this).attr('opacity');
+                    if (opacity === '0.2'){
+                        d3.selectAll('.center_text').text(getLabelForCategory(category));
+                    } else {
+                        d3.selectAll('.center_text').text(d.data.label);
+                    }
+
+                })
+                .on('click', function (d) {
                     onBallMouseHover(d.index);
                 })
-                .on('mouseleave', function (d) {
-                    d3.selectAll('.arc').attr("opacity", 1.0);
-                    d3.event.preventDefault();
-                    onBallMouseHover(-1);
-                })
-                .on('contextmenu', function () {
+                .on('contextmenu', function(){
                     d3.event.preventDefault();
                     onBallMouseHover(-1);
                 })
                 .text((d) => d.data.label);
-
-
-            // arcs
-            //     .on('mouseenter', function (d) {
-            //         d3.selectAll(".center_text").text(d.data.label);
-            //     })
-            //     .on('mouseout', function (d, cat, i) {
-            //         d3.selectAll(".center_text").text("");
-            //         //normal behaviour
-            //         if (d3.selectAll('.arc').attr('opacity') !== '0.2') {
-            //             d3.selectAll('.center_text').text("");
-            //             return;
-            //         }
-
-            //         var opacity = d3.select(this).attr('opacity');
-            //         if (opacity === '0.2') {
-            //             d3.selectAll('.center_text').text(getLabelForCategory(category));
-            //         } else {
-            //             d3.selectAll('.center_text').text(d.data.label);
-            //         }
-
-            //     });
-
 
             // exit
             arcs.exit().remove();
@@ -145,22 +136,22 @@ const Sunburst = ({
             center_text.exit().remove();
         }
 
-        // function brush(cat) {
-        //     if (cat === -1) {
-        //         d3.selectAll('.arc').attr('opacity', 1);
-        //         d3.selectAll('.center_text').text("");
-        //     }
-        //     else {
-        //         d3.selectAll('.arc').attr('opacity', function (d) {
-        //             if (getColorByCompanyCategory(cat) === d.data.color) {
-        //                 d3.selectAll('.center_text').text(d.data.label);
-        //                 return 1;
-        //             } else {
-        //                 return 0.2;
-        //             }
-        //         });
-        //     }
-        // }
+        function brush(cat) {
+            if (cat === -1) {
+                d3.selectAll('.arc').attr('opacity', 1);
+                d3.selectAll('.center_text').text("");
+            }
+            else {
+                d3.selectAll('.arc').attr('opacity', function (d) {
+                    if (getColorByCompanyCategory(cat) === d.data.color) {
+                        d3.selectAll('.center_text').text(d.data.label);
+                        return 1;
+                    } else {
+                        return 0.2;
+                    }
+                });
+            }
+        }
 
         // used to interpolate between start and end angle when transitioning 
         function arcTween(a) {
@@ -171,10 +162,10 @@ const Sunburst = ({
             };
         }
 
-    }, [category, data]);
+    }, [arc, data, height, pie, width]);
 
     return <React.Fragment>
-        <div className="Sunburst" ref={anchor} />
+        <div className="Sunburst" ref={anchor}/>
     </React.Fragment>;
 };
 
