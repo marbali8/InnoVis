@@ -91,7 +91,7 @@ export function getLabelForCategory(categoryID) {
     var label = "";
 
     for (let i = 0; i < categoryMapping.length; i++) {
-        if (categoryMapping[i].id === categoryID){
+        if (categoryMapping[i].id === categoryID) {
             label = categoryMapping[i].label;
         }
     }
