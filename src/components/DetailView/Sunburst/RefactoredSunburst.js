@@ -89,7 +89,9 @@ const Sunburst = ({
                     d3.event.preventDefault();
                     d3.selectAll('.arc').attr("opacity", 0.5);
                     d3.select(this).attr("opacity", 1.0);
-                    d3.selectAll(".center_text").text(d.data.fractional);
+                    d3.selectAll(".center_text").text(d.data.fractional)
+                    .style("font-size", "30px")
+                    .style("font-weight", 750);
                     onBallMouseHover(d.index);
                 })
                 .on('mouseleave', function (d) {
@@ -139,7 +141,7 @@ const Sunburst = ({
             center_text
                 .enter().append('text')
                 .attr('x', width / 2)
-                .attr('y', height / 2 + 5)
+                .attr('y', height / 2 + 12)
                 .attr('class', 'center_text')
                 .style("text-anchor", "middle")
                 .text("");
