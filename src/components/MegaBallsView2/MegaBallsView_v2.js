@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
-import styles from '../../globalStyle.module.scss';
+// import styles from '../../globalStyle.module.scss';
 
 const fontSizeOfCompanyDetail = 30;
 const maxZoomScale = 9;
@@ -79,7 +79,7 @@ const MegaBalls = ({
                     .attr('x', 0)
                     .attr('y', 0)
                     .attr('text-anchor', 'middle')
-                    .style('font', styles.font)
+                    .style('font', "Open Sans")
                     .attr("font-size", fontSizeOfCompanyDetail)
                     .attr("cursor", "none")
                     .attr("pointer-events", "none")
