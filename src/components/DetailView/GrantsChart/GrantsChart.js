@@ -14,6 +14,7 @@ const GrantsChart = ({ onYearClicked }) => {
     const margin = { top: 10, right: 20, bottom: 50, left: 20 };
     const width = 400 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
+    const axis_height = height - 50;
 
     // state and ref to svg
     const svgRef = useRef();
@@ -30,7 +31,7 @@ const GrantsChart = ({ onYearClicked }) => {
     // y axis
     var y_scale = d3.scaleLinear()
         .domain([0, 60])
-        .range([height - margin.bottom, margin.top]);
+        .range([axis_height - margin.bottom, margin.top]);
     var y_axis = d3.axisLeft().scale(y_scale);
 
     // line
@@ -70,13 +71,17 @@ const GrantsChart = ({ onYearClicked }) => {
                     .append('rect')
                     .style('visibility', 'hidden')
                     .attr('x', 0).attr('y', 0)
-                    .attr('width', width).attr('height', height);
+                    .attr('width', width).attr('height', axis_height);
 
                 // containers for plot
                 canvas.append('g').classed('title', true).append('text');
                 canvas.append('g').classed('legend', true);
                 canvas.append('g').classed('xaxis', true);
                 canvas.append('g').classed('yaxis', true);
+
+                d3.select('.legend').append('g').classed('legend_total', true);
+                d3.select('.legend').append('g').classed('legend_researchers', true);
+                d3.select('.legend').append('g').classed('legend_students', true);
 
                 canvas.append('g').classed('total', true);
                 d3.select('.total').append('g').classed('lines', true).append('path');
@@ -95,6 +100,8 @@ const GrantsChart = ({ onYearClicked }) => {
 
         function drawLinePlot() {
 
+            // title
+            
             d3.select('.title').select('text')
                 .attr("transform", 'translate(15, ' + margin.top + ')')
                 .attr('font-size', '14')
@@ -104,112 +111,93 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr('align', 'center')
                 .text('Number of ideas')
 
-            d3.select('.legend')
-                .attr("transform", 'translate(15, ' + 3 * margin.top + ')')
-                .selectAll('text')
-                .data(["total", "researchers", "students"])
-                .enter()
-                .append('text')
-                .attr('x', function (_, i) {
-                    if (i == 0) { return 0; }
-                    else if (i == 1) { return 35; }
-                    else { return 110; }
-                })
-                .text(function (d) { return d + '\n'; })
-                .attr('font-size', '12')
-                .attr('font-family', 'Open Sans')
-                .attr('font-style', 'italic')
-                .attr('fill', function (_, i) {
-                    if (i == 0) { return '#005ec4'; }
-                    else if (i == 1) { return 'rgb(216, 84, 151)'; }
-                    else { return 'rgb(179, 201, 43)'; }
-                });
+            // legend
+            
+            d3.select('.legend').attr("transform", 'translate(0, ' + axis_height + ')')
 
+            drawLegend('total', 0, '#005ec4')
+            drawLegend('researchers', 1, 'rgb(216, 84, 151)')
+            drawLegend('students', 2, 'rgb(179, 201, 43)')
+
+            // axis
+            
             d3.select('.xaxis')
                 .call(x_axis)
-                .attr("transform", 'translate(' + 0 + ' ' + (height - margin.bottom) + ')')
+                .attr("transform", 'translate(' + 0 + ' ' + (axis_height - margin.bottom) + ')')
                 .attr('font-family', 'Open Sans');
 
             d3.select('.yaxis')
                 .call(y_axis)
                 .attr('font-family', 'Open Sans');
 
-            d3.select('.total').select('.lines')
-                .select('path')
-                .style("stroke", '#005ec4')
-                .style("stroke-width", "5")
-                .style("fill", 'none')
-                .transition().ease(d3.easeQuad)
-                .duration(500)
-                .attr("d", lineGenerator(data[0]));
-
-            d3.select('.total').selectAll('circle').remove();
-
-            d3.select('.total').select('.points')
-                .selectAll('point')
-                .data(data[0])
-                .enter().append("circle")
-                .style('opacity', '0')
-                .style('fill', '#005ec4')
-                .style("r", 5)
-                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
-                .attr("cy", function (d) { return y_scale(d) })
-                .append('title')
-                .text(function (d) { return d; });
-
-            d3.select('.researchers').select('.lines')
-                .select('path')
-                .style("stroke", 'rgb(216, 84, 151)')
-                .style("stroke-width", "3")
-                .style("fill", 'none')
-                .transition().ease(d3.easeQuad)
-                .duration(500)
-                .attr("d", lineGenerator(data[1]));
-
-            d3.select('.researchers').selectAll('circle').remove();
-
-            d3.select('.researchers').select('.points')
-                .selectAll('point')
-                .data(data[1])
-                .enter().append("circle")
-                .style('opacity', '0')
-                .style('fill', 'rgb(216, 84, 151)')
-                .style("r", 4)
-                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
-                .attr("cy", function (d) { return y_scale(d) })
-                .append('title')
-                .text(function (d) { return d; });
-
-            d3.select('.students').select('.lines')
-                .select('path')
-                .style("stroke", 'rgb(179, 201, 43)')
-                .style("stroke-width", "3")
-                .style("fill", 'none')
-                .transition().ease(d3.easeQuad)
-                .duration(500)
-                .attr("d", lineGenerator(data[2]));
-
-            d3.select('.students').selectAll('circle').remove();
-
-            d3.select('.students').select('.points')
-                .selectAll('point')
-                .data(data[2])
-                .enter().append("circle")
-                .style('opacity', '0')
-                .style('fill', 'rgb(179, 201, 43)')
-                .style("r", 4)
-                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
-                .attr("cy", function (d) { return y_scale(d) })
-                .append('title')
-                .text(function (d) { return d; });
+            // lines and points
+            
+            drawLine('total', 0, '#005ec4')
+            drawLine('researchers', 1, 'rgb(216, 84, 151)')
+            drawLine('students', 2, 'rgb(179, 201, 43)')
 
             d3.select(svgRef.current)
                 .on('mouseenter', function (d) {
-                    d3.select('.linechart_canvas').selectAll('circle').style('opacity', '1');
+                    d3.selectAll('.points').selectAll('circle').style('opacity', '1');
                 })
                 .on('mouseleave', function (d) {
-                    d3.select('.linechart_canvas').selectAll('circle').style('opacity', '0');
+                    d3.selectAll('.points').selectAll('circle').style('opacity', '0');
                 });
+        }
+
+        function drawLine(class_name, data_index, color) {
+
+            d3.select('.' + class_name).select('.lines')
+                .select('path')
+                .style("stroke", color)
+                .style("stroke-width", "3")
+                .style("fill", 'none')
+                .transition().ease(d3.easeQuad)
+                .duration(500)
+                .attr("d", lineGenerator(data[data_index]));
+
+            d3.select('.' + class_name).selectAll('circle').remove();
+
+            d3.select('.' + class_name).select('.points')
+                .selectAll('point')
+                .data(data[data_index])
+                .enter().append("circle")
+                .style('opacity', '0')
+                .style('fill', color)
+                .style("r", 4)
+                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
+                .attr("cy", function (d) { return y_scale(d) })
+                .append('title')
+                .text(function (d) { return d; });
+
+        }
+
+        function drawLegend(class_name, data_index, color) {
+
+            const where_y = data_index*15;
+
+            d3.select('.legend_' + class_name)
+                .append('circle')
+                .style('fill', color)
+                .style('r', 3)
+                .attr('cx', 10)
+                .attr('cy', -4 + where_y);
+
+            d3.select('.legend_' + class_name)
+                .append('line')
+                .attr('x1', 0).attr('x2', 20)
+                .attr('y1', -4 + where_y).attr('y2', -4 + where_y)
+                .style('stroke', color)
+
+            d3.select('.legend_' + class_name)
+                .append('text')
+                .attr('x', 30)
+                .attr('y', where_y)
+                .attr('font-size', '12')
+                .attr('font-family', 'Open Sans')
+                .attr('font-style', 'italic')
+                .text(class_name);
+
         }
 
         return () => {
