@@ -193,7 +193,7 @@ const MegaBalls = ({
     useEffect(() => {
         if (category !== -1 && category !== -1 && category !== null) {
             // adds a little bit of time so balls don't end up inside other balls
-            simulation.current.alpha(simulation.current.alpha() + 0.05);
+            simulation.current.alpha(simulation.current.alpha() + 0.01);
             d3.select(anchor.current).selectAll('circle').attr('opacity', (d) => {
                 if (d.id === category) return 1;
                 else { return 0.2 }
