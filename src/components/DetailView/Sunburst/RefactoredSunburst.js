@@ -16,6 +16,7 @@ const Sunburst = ({
     onBallMouseHover
 }) => {
 
+
     const width = widthHeightValue - margin.left - margin.right;
     const height = widthHeightValue - margin.top - margin.bottom;
     const outerRadius = ((width + height) / 4) - margin.top;
@@ -27,7 +28,7 @@ const Sunburst = ({
 
     // draws a white donut if no data
     if (data.length === 0) {
-        data = [{ label: "", value: 1, color: 'white' }];
+        data = [{ label: "", value: 1, color: 'white', fractional: "100%" }];
     }
 
     // set up pie and arc objects/functions
@@ -35,6 +36,17 @@ const Sunburst = ({
     var arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
     useEffect(() => {
+
+        let valueSum = 0;
+        for (let i = 0; i < data.length; i++) {
+            valueSum += data[i].value;
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        data = data.map((d) => {
+            let copyData = d;
+            copyData.fractional = Math.round((d.value / valueSum) * 100) + '%';
+            return copyData;
+        });
 
         setupContainersOnMount();
         drawSunburst(category);
@@ -89,10 +101,14 @@ const Sunburst = ({
                     d3.event.preventDefault();
                     d3.selectAll('.arc').attr("opacity", 0.5);
                     d3.select(this).attr("opacity", 1.0);
+                    d3.selectAll(".center_text").text(d.data.fractional)
+                        .style("font-size", "30px")
+                        .style("font-weight", 750);
                     onBallMouseHover(d.index);
                 })
                 .on('mouseleave', function (d) {
                     d3.selectAll('.arc').attr("opacity", 1.0);
+                    d3.selectAll(".center_text").text("");
                     d3.event.preventDefault();
                     onBallMouseHover(-1);
                 })
@@ -137,7 +153,7 @@ const Sunburst = ({
             center_text
                 .enter().append('text')
                 .attr('x', width / 2)
-                .attr('y', height / 2 + 5)
+                .attr('y', height / 2 + 12)
                 .attr('class', 'center_text')
                 .style("text-anchor", "middle")
                 .text("");
