@@ -5,6 +5,7 @@ import Sunburst from '../../components/DetailView/Sunburst/RefactoredSunburst.js
 import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import MegaBalls from '../../components/MegaBallsView2/MegaBallsView_v2.js'
+import BallsLegend from '../../components/MegaBallsView2/legend.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
             </div>
             <div className={classes.megaBallsView}>
                 <MegaBalls data={megaballData} year={year} category={category} />
+            </div>
+            <div className={classes.legend}>
+                <BallsLegend />
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
