@@ -13,9 +13,9 @@ const BallsLegend = ({
 
 
     var circleData = [
-         { "cy": height/2 - 20, "radius": maxR}, 
-         { "cy": height/2 - 10, "radius": maxR-10},
-         { "cy": height/2 - 0, "radius": maxR-20}];
+        { "cy": height / 2 - 20, "radius": maxR },
+        { "cy": height / 2 - 10, "radius": maxR - 10 },
+        { "cy": height / 2 - 0, "radius": maxR - 20 }];
 
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const BallsLegend = ({
                     .attr("height", height - margin.top - margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-                
+
                 var circles = canvas.selectAll("g")
                     .data(circleData)
                     .enter()
@@ -49,18 +49,18 @@ const BallsLegend = ({
                     .attr("stroke-width", 2)
                     .style("stroke-dasharray", ("4,2"));
 
-          
+
                 canvas
                     .append('text')
                     .attr('class', 'details')
-                    .attr('x', (circleX + maxR*4 + 20))
+                    .attr('x', (circleX + maxR * 4 + 20))
                     .attr('y', height / 2 - 12)
                     .style("font-size", "21px")
                     .attr("font-weight", 500)
                     .attr('text-anchor', 'middle');
 
                 d3.selectAll('.details')
-                    .text("Revenue of company");
+                    .text("company revenue");
 
             }
         }
