@@ -168,6 +168,7 @@ const StreamGraph = () => {
                 .append("path")
                 .attr("class", "myArea")
                 .style("fill", function (d) {
+                    //console.log(d.key);
                     return keyToColorMap(d.key);
                 })
                 .attr("d", area)

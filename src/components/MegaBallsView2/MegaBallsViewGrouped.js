@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef} from "react";
 import data from '../../../data/companies_yearly_data.json';
 import * as d3 from 'd3';
 import { getColorBySNICode } from '../../../utility_functions/ColorFunctions.js'
 
-const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true, margin = { left: 0, right: 0, top: 0, bottom: 0 }, onYearClicked, onBallMouseHover }) => {
+const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true, margin = { left: 0, right: 0, top: 0, bottom: 0 }, onYearClicked , onBallMouseHover}) => {
     const svgRef = useRef();
     var year_choice = onYearClicked;
 
@@ -15,8 +15,8 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
     const bvm = 1 / 10 * height;
     const bhm = 1 / 10 * width;
     const ballBox = {
-        min: { x: bhm, y: bvm },
-        max: { x: width - bhm, y: height - bvm }
+        min: {x: bhm, y: bvm},
+        max: {x: width - bhm, y: height - bvm}
     };
 
     //const sim = useRef();
@@ -191,8 +191,8 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
             }
             graph.push(ball);
             if (tempID in anchorNodes) {
-                nodeLinks.push({ "source": anchorNodes[tempID], "target": i });
-                nodeLinks.push({ "source": i, "target": anchorNodes[tempID] });
+                nodeLinks.push({"source": anchorNodes[tempID], "target": i});
+                nodeLinks.push({"source": i, "target": anchorNodes[tempID]});
             } else {
                 anchorNodes[tempID] = i;
                 anchorNodesIndex[tempID] = idx;
@@ -266,8 +266,11 @@ const MegaBallsView = ({ height = 1000, width = 1000, showBorderOfBallBox = true
                 .on("drag", dragged)
                 .on("end", dragended))
 
-            .on('mouseover', function (d) {
+            .on('mouseover', function(d){
+                console.log("first " + onBallMouseHover);
                 onBallMouseHover(d.id);
+                console.log("second " + onBallMouseHover);
+                console.log("The id is: " + d.id);
                 d3.selectAll('.details')
                     .text(function (p) {
                         return d.name + ": " + (d.nr_employees === null ? '0' : d.nr_employees) + " employee(s) and " + d.revenue + 'SEK revenue in ' + year_choice;
