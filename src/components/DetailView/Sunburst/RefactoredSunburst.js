@@ -44,7 +44,7 @@ const Sunburst = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         data = data.map((d) => {
             let copyData = d;
-            copyData.fractional = Math.round((d.value / valueSum) * 100) + '%';
+            copyData.fractional = (Math.round(d.value / valueSum * 100 * 10) / 10) + '%';
             return copyData;
         });
 
