@@ -27,7 +27,7 @@ const Sunburst = ({
 
     // draws a white donut if no data
     if (data.length === 0) {
-        data = [{ label: "", value: 1, color: 'white' }];
+        data = [{ label: "", value: 1, color: 'white' , fractional: "100%"}];
     }
 
     // set up pie and arc objects/functions
@@ -89,10 +89,12 @@ const Sunburst = ({
                     d3.event.preventDefault();
                     d3.selectAll('.arc').attr("opacity", 0.5);
                     d3.select(this).attr("opacity", 1.0);
+                    d3.selectAll(".center_text").text(d.data.fractional);
                     onBallMouseHover(d.index);
                 })
                 .on('mouseleave', function (d) {
                     d3.selectAll('.arc').attr("opacity", 1.0);
+                    d3.selectAll(".center_text").text("");
                     d3.event.preventDefault();
                     onBallMouseHover(-1);
                 })

@@ -46,8 +46,11 @@ export function getDataForSunburst(year) {
         }
     }
 
+    const arrSum = arr => arr.reduce((a,b) => a+b, 0);
+    const totalValue = arrSum(catValue);
+    
     for (let i = 0; i < numCategories; ++i) {
-        categories.push({ label: catNames[i], color: getColorByCompanyCategory(i), value: catValue[i] });
+        categories.push({ label: catNames[i], color: getColorByCompanyCategory(i), value: catValue[i], fractional: ((Math.round(catValue[i] / totalValue * 100 * 10)/10 + '%')) });
     }
 
     return categories.sort(compare);
