@@ -46,7 +46,8 @@ const BallsLegend = ({
                     .attr("r", function (d) { return d.radius; })
                     .style("fill", "transparent")
                     .attr("stroke", "black")
-                    .attr("stroke-width", 2);
+                    .attr("stroke-width", 2)
+                    .style("stroke-dasharray", ("4,2"));
 
           
                 canvas
