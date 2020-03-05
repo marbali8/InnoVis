@@ -167,6 +167,12 @@ const GrantsChart = ({ onYearClicked }) => {
                 .style("r", class_name == 'total' ? 5 : 4)
                 .attr("cx", function (_, i) { return x_scale(i * width / 12) })
                 .attr("cy", function (d) { return y_scale(d) })
+                .on('mouseover', function (d) {
+                    this.style.r = class_name == 'total' ? 7 : 6;
+                })
+                .on('mouseout', function (d) {
+                    this.style.r = class_name == 'total' ? 5 : 4;
+                })
                 .append('title')
                 .text(function (d) { return d; });
 
