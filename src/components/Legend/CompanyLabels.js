@@ -1,25 +1,74 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from "react";
+import * as d3 from 'd3';
 import classes from './CompanyLabels.module.scss';
+import { getColorByCompanyCategory } from "../../utility_functions/ColorFunctions";
+import { getLabelForCategory } from "../../data/data_functions";
 
-// this is made so you can copy paste this code to create a simple functional component
 
-/** EXAMPLE OF A STANDARD FUNCTIONAL COMPONENT that takes in a props object that looks like this {height:__,width:__}
- *  
- * -()=>{} is E6 arrow notation instead of traditiona function (){}
- * -you could also write const exampleComponent = (props)=>{} but then you have to refer to prop properties with prop.height prop.width
- * so we use something called 'destructuring' to decompose the object so we can access height, width, directly
- * -setting height=10 gives the prop a default value if it is undefined
- * -name of component has to start with capital letter, and the folder should also be named as such. 
-*/
-const CompanyLabels = ({ height, width }) => {
+const CompanyLabel = ({
+    data = []
+}) => {
 
-    // useEfect has to do with rendering, can be used in many ways.
-    // This one simply runs after the intial mount to the DOM, and then never again, as it has an empty dependency array.
-    //you might not need this for all components, especially if they are dumb components
-    useEffect(() => { console.log("useEffect for CompanyLabel called") }, []);
+    const margin = {top: 20, right: 80, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+    const anchor = useRef();
+    const didMount = useRef(false);
+
+     useEffect(() => { 
+        
+        console.log("useEffect for CompanyLabel called");
+
+        setupContainersOnMount();
+        didMount.current = true;
+
+        function setupContainersOnMount() {
+            const anchorNode = d3.select(anchor.current);
+
+            if(didMount.current) {
+                let canvas = anchorNode
+                    .append("svg")
+                    .attr("width", width - margin.left - margin.right)
+                    .attr("height", height - margin.top - margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                    anchorNode.selectAll("mydots")
+                        .data((data.nodes, (d) => {
+                            return d.key
+                        })
+                        .enter()
+                        .append("circle")
+                            .attr("cx", 100)
+                            .attr("cy", data.nodes, function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+                            .attr("r", 7)
+                            .style("fill", data.nodes, function (d) {
+                                return getColorByCompanyCategory(d.id)
+                            }));
+
+                    anchorNode.selectAll("mylabels")
+                        .data((data.nodes, (d) => {
+                            return d.key
+                        })
+                        .enter()
+                        .append("text")
+                          .attr("x", 120)
+                          .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+                          .style("fill", "fill", data.nodes, function (d) {
+                            return getColorByCompanyCategory(d.id)
+                          })
+                          .text("hello")
+                          .attr("text-anchor", "left")
+                          .style("alignment-baseline", "middle"));
+            
+                }
+        }
+    
+    }, [data, height, margin.bottom, margin.left, margin.right, margin.top, width]);
 
     // style property is passed an object with height and width converted to strings using template literals
-    return <div style={{ height: `${height}`, width: `${width}` }} className={classes.CompanyLabels}></div>;
+    return <React.Fragment><svg height={height} width={width} ref={anchor} /> </React.Fragment>;
 };
 
-export default CompanyLabels;
+export default CompanyLabel;
