@@ -20,7 +20,10 @@ const GrantsChart = ({ onYearClicked }) => {
     const svgRef = useRef();
     const didMount = useRef(false);
 
-    var data = getYearData();
+    const data = getYearData();
+    const summary = [{ title: 'total', color: 'black'}, 
+                     { title: 'researchers', color: '#696969'},
+                     { title: 'students', color: '#C0C0C0'}];
 
     // x axis
     var x_scale = d3.scaleOrdinal()
@@ -107,10 +110,7 @@ const GrantsChart = ({ onYearClicked }) => {
             // legend
             
             d3.select('.legend').attr("transform", 'translate(0, ' + axis_height + ')')
-
-            drawLegend('total', 0, '#005ec4')
-            drawLegend('researchers', 1, 'rgb(216, 84, 151)')
-            drawLegend('students', 2, 'rgb(179, 201, 43)')
+            drawLegend(0); drawLegend(1); drawLegend(2);
 
             // axis
             
@@ -125,9 +125,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
             // lines and points
             
-            drawLine('total', 0, '#005ec4')
-            drawLine('researchers', 1, 'rgb(216, 84, 151)')
-            drawLine('students', 2, 'rgb(179, 201, 43)')
+            drawLine(0); drawLine(1); drawLine(2);
 
             d3.select(svgRef.current)
                 .on('mouseenter', function (d) {
@@ -138,7 +136,10 @@ const GrantsChart = ({ onYearClicked }) => {
                 });
         }
 
-        function drawLine(class_name, data_index, color) {
+        function drawLine(data_index) {
+
+            const class_name = summary[data_index].title;
+            const color = summary[data_index].color;
 
             d3.select('.' + class_name).select('.lines')
                 .select('path')
@@ -171,8 +172,10 @@ const GrantsChart = ({ onYearClicked }) => {
 
         }
 
-        function drawLegend(class_name, data_index, color) {
+        function drawLegend(data_index) {
 
+            const class_name = summary[data_index].title;
+            const color = summary[data_index].color;
             const where_y = data_index*15;
 
             d3.select('.legend_' + class_name)
@@ -196,25 +199,25 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr('font-family', 'Open Sans')
                 .attr('font-style', 'italic')
                 .text(class_name)
-                .on('mouseover', function (d) {
+                .on('mouseover', function (_) {
 
                     this.style.fontWeight = 'bold';
-                    const data = ['total', 'researchers', 'students'];
+                    const data = summary.map(function(d) { return d.title; } );
                     data.forEach(function(da) {
 
-                        if (da === class_name) { return; }
-                        d3.select('.' + da).select('.lines').select('path').style("opacity", 0.2); 
-                        d3.select('.' + da).select('.points').selectAll('circle').style("opacity", 0.2);
+                        if (da !== class_name) { return; }
+                        d3.select('.' + da).select('.lines').select('path').style("stroke", 'rgb(25, 84, 166)'); 
+                        d3.select('.' + da).select('.points').selectAll('circle').style("fill", 'rgb(25, 84, 166)');
                     })
                 })
-                .on('mouseout', function (d) {
-                    this.style.fontWeight = 'normal';
-                    const data = ['total', 'researchers', 'students'];
-                    data.forEach(function(da) {
+                .on('mouseout', function (_) {
 
-                        if (da === class_name) { return; }
-                        d3.select('.' + da).select('.lines').select('path').style("opacity", 1); 
-                        d3.select('.' + da).select('.points').selectAll('circle').style("opacity", 1); 
+                    this.style.fontWeight = 'normal';
+                    summary.forEach(function(da) {
+
+                        if (da.title !== class_name) { return; }
+                        d3.select('.' + da.title).select('.lines').select('path').style("stroke", da.color); 
+                        d3.select('.' + da.title).select('.points').selectAll('circle').style("fill", da.color);
                     })
                 });
 
