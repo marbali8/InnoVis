@@ -53,7 +53,7 @@
     padding:20px;
     border-radius: 8px;
     //background-color: rgb(233, 229, 229);
-    
+
   }
 
   .aggregateKTHDataView {
@@ -85,6 +85,16 @@
       font-size: 16px;
       text-anchor: middle;
     }*/
+  }
+
+  .companyInfoBox {
+    font-family: $font;
+    .card{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    }
   }
 
 }

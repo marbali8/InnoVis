@@ -6,12 +6,14 @@ import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js"
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import MegaBalls from '../../components/MegaBallsView2/MegaBallsView_v2.js'
 import BallsLegend from '../../components/MegaBallsView2/legend.js'
+import CompanyInfoBox from '../../components/CompanyInfoBox/CompanyInfoBox.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
 function App() {
 
     const [year, setYear] = useState(2018);
     const [category, setCategory] = useState(-1);
+    const [selectedCompany, setSelectedCompany] = useState(undefined);
 
     const handleTimeSliderYearClicked = (year) => {
         setYear(year);
@@ -23,7 +25,7 @@ function App() {
 
     const megaballData = useMemo(() => { return getDataForMegaballs(year) }, [year]);
     const dataForSunburst = useMemo(() => { return getDataForSunburst(year) }, [year]);
-
+    console.log(megaballData.nodes);
     return (
         <div className={classes.App}>
             <div className={classes.title}>
@@ -33,12 +35,20 @@ function App() {
                 Take a look at our alumni companies and ideas!
             </div>
             <div className={classes.megaBallsView}>
-                <MegaBalls data={megaballData} year={year} category={category} />
+                <MegaBalls
+                  data={megaballData}
+                  year={year}
+                  category={category}
+                  onBallsMouseEnter={(d) => setSelectedCompany(d)}
+                  onBallsMouseOut={(d) => setSelectedCompany(undefined)}/>
             </div>
             <div className={classes.legend}>
                 <BallsLegend />
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
+            <div className={classes.companyInfoBox}>
+                <CompanyInfoBox selectedCompany={selectedCompany}/>
+            </div>
             <div className={classes.aggregateKTHDataView}>
                 <Sunburst
                     data={dataForSunburst}
@@ -61,4 +71,3 @@ function App() {
 }
 
 export default App;
-

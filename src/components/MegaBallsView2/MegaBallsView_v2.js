@@ -13,6 +13,8 @@ const MegaBalls = ({
     year = 2010,
     data = [],
     category,
+    onBallsMouseEnter,
+    onBallsMouseOut
 }) => {
 
     const anchor = useRef();
@@ -54,7 +56,7 @@ const MegaBalls = ({
         drawBalls();
         didMount.current = true;
 
-        //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
+        //----- FUNCTION DEFINITIONS ------------------------------------------------------//
         function setupContainersOnMount() {
 
             if (!didMount.current) {
@@ -136,6 +138,7 @@ const MegaBalls = ({
                     return getColorByCompanyCategory(d.id)
                 })
                 .on('mouseenter', function (d) {
+                    onBallsMouseEnter(d);
                     var self = d3.select(this);
                     const x = self.attr('cx');
                     const y = self.attr('cy');
@@ -151,6 +154,7 @@ const MegaBalls = ({
                         .text(" but this is not.");
                 })
                 .on('mouseout', function (d) {
+                    onBallsMouseOut(d);
                     d3.select('.companyTooltip')
                         .attr("opacity", 0)
                         .text("");
@@ -231,7 +235,7 @@ export default MegaBalls;
 
 
 
-// code that might be used later, storing here for now! 
+// code that might be used later, storing here for now!
 
 // function brush(cat) {
         //     if (cat !== -1) {
