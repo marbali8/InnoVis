@@ -107,7 +107,7 @@ const MegaBalls = ({
                 .force("charge", d3.forceManyBody().strength(-1))
                 .force('collision', d3.forceCollide().radius((d) => { return d.size; }))
                 .force("charge", d3.forceManyBody().strength(-3))
-                .velocityDecay(0.9)
+                .velocityDecay(0.87)
                 .force("collide", d3.forceCollide().strength(1).radius((d) => { return d.size })
                     .iterations(10));
         }
@@ -192,6 +192,8 @@ const MegaBalls = ({
 
     useEffect(() => {
         if (category !== -1 && category !== -1 && category !== null) {
+            // adds a little bit of time so balls don't end up inside other balls
+            simulation.current.alpha(simulation.current.alpha() + 0.01);
             d3.select(anchor.current).selectAll('circle').attr('opacity', (d) => {
                 if (d.id === category) return 1;
                 else { return 0.2 }
