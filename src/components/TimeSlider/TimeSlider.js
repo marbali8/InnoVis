@@ -11,7 +11,7 @@ const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range }) => {
     // TODO: will need to call a drag event of main view
     // TODO: be able to upload svg's width and height
 
-    var margin = { left: 30, right: 30 },
+    var margin = { left: 100, right: 100 },
         step = 1,
         stroke_width = 20;
 
@@ -61,23 +61,24 @@ const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range }) => {
                 .attr('font-size', 13)
                 .attr('color', 'black');
             */
-        const text = slider.append("text")
-                        .attr('x', 955/2)
-                        .attr('y', '-30')
+        const text = svg_.append("text")
+                        .attr('x', width/2)
+                        .attr('y', 60)
                         .attr('font-size', '60pt')
                         .attr('font-family', 'open sans, sans-serif')
                         .attr('text-anchor', 'middle')
 
-        const start = slider.append("text")
-                        .attr('x', 15)
-                        .attr('y', 30)
+        const start = svg_.append("text")
+                        .attr('x', 50)
+                        .attr('y', 97)
                         .attr('font-size','16pt')
+                        .attr('font-family', 'open sans, sans-serif')
                         .attr('text-anchor','middle')
                         .text('2010');
 
-        const end = slider.append("text")
-                        .attr('x', 930)
-                        .attr('y', 30)
+        const end = svg_.append("text")
+                        .attr('x', 950)
+                        .attr('y', 97)
                         .attr('font-size','16pt')
                         .attr('font-family', 'open sans, sans-serif')
                         .attr('text-anchor','middle')
