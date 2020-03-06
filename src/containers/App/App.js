@@ -1,26 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import classes from './App.module.scss';
 import Infobox from '../../components/DetailView/InfoBox/Infobox.js'
 import Sunburst from '../../components/DetailView/Sunburst/RefactoredSunburst.js'
 import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import MegaBalls from '../../components/MegaBallsView2/MegaBallsView_v2.js'
+import BallsLegend from '../../components/MegaBallsView2/legend.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
 function App() {
 
-    const defaultYear = 2010;
-    const defaultCategory = -1;
-    const [year, setYear] = useState(defaultYear);
-    const [category, setCategory] = useState(defaultCategory);
+    const [year, setYear] = useState(2018);
 
     const handleTimeSliderYearClicked = (year) => {
         setYear(year);
     };
 
-    const handleCategoryBallsHover = (category) => {
-        setCategory(category);
-    };
+    const megaballData = useMemo(() => { return getDataForMegaballs(year) }, [year]);
+    const dataForSunburst = useMemo(() => { return getDataForSunburst(year) }, [year]);
 
     return (
         <div className={classes.App}>
@@ -31,16 +28,14 @@ function App() {
                 Take a look at our alumni companies and ideas!
             </div>
             <div className={classes.megaBallsView}>
-                <MegaBalls data={getDataForMegaballs(year)} category={category} onBallMouseHover={handleCategoryBallsHover} />
+                <MegaBalls data={megaballData} year={year} />
+            </div>
+            <div className={classes.legend}>
+                <BallsLegend />
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
-                <Sunburst
-                    data={getDataForSunburst(year)}
-                    category={category}
-                    onBallMouseHover={handleCategoryBallsHover}
-                />
-                {/* <Sunburst onYearClicked={year}/> */}
+                <Sunburst data={dataForSunburst} />
                 <GrantsChart onYearClicked={year} />
                 <div className={classes.infobox}>
                     <Infobox onYearClicked={year} />
