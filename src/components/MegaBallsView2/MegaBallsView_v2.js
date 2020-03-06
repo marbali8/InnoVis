@@ -190,7 +190,7 @@ const MegaBalls = ({
             simulation.current.stop();
         }
 
-    }, [data, year, height, width]); // useEffect
+    }, [year]); // useEffect
 
     return <React.Fragment>
         <svg overflow='visible' height={height} width={width} ref={anchor} />
