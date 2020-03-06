@@ -55,7 +55,7 @@ function App() {
             </div>
 
             <div className={classes.CompanyLabel}> 
-                <CompanyLabel data = {megaballData}></CompanyLabel>
+                <CompanyLabel data = {megaballData} year = {year}></CompanyLabel>
             </div>
 
             <div className={classes.footer}>

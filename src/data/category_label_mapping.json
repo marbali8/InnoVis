@@ -7,27 +7,27 @@
   {
     "id": 1,
     "label": "Finans- och försäkringsverksamhet",
-    "labelEn": "Financial and Insurence" 
+    "labelEn": "Treasury and Insurance" 
   },
   {
     "id": 2,
     "label": "Handel; reparation av motorfordon och motorcyklar",
-    "labelEn": "Comerse, Veacile Reperation"
+    "labelEn": "Commerce, Repair of motor cehicles and motorbikes"
   },
   {
     "id": 3,
     "label": "Informations- och kommunikationsverksamhet",
-    "labelEn": "Information and communication"
+    "labelEn": "Information and communication activities"
   },
   {
     "id": 4,
     "label": "Jordbruk, skogsbruk, fiske och utvinning av mineral",
-    "labelEn": "uhh farming look up"
+    "labelEn": "Agriculture, forestry, fishing and mineral extraction"
   },
   {
     "id": 5,
     "label": "Tillverkning",
-    "labelEn": "Assembly" 
+    "labelEn": "Manufacturing" 
   },
   {
     "id": 6,
@@ -37,12 +37,12 @@
   {
     "id": 7,
     "label": "Uthyrning, fastighetsservice, resetjänster och andra stödtjänster",
-    "labelEn": "Rental, Travel and Support"
+    "labelEn": "Rental, estate service and other support services"
   },
   {
     "id": 8,
     "label": "Verksamhet inom juridik, ekonomi, vetenskap och teknik",
-    "labelEn": "Law, Economy, Science and Technology"
+    "labelEn": "Legal, finance, science and technological activies"
   },
   {
     "id": 9,
