@@ -22,8 +22,8 @@ const GrantsChart = ({ onYearClicked }) => {
 
     const data = getYearData();
     const summary = [{ title: 'total', color: 'black'}, 
-                     { title: 'researchers', color: '#696969'},
-                     { title: 'students', color: '#C0C0C0'}];
+                     { title: 'students', color: '#696969'},
+                     { title: 'researchers', color: '#C0C0C0'}];
 
     // x axis
     var x_scale = d3.scaleOrdinal()
@@ -202,12 +202,16 @@ const GrantsChart = ({ onYearClicked }) => {
                 .on('mouseover', function (_) {
 
                     this.style.fontWeight = 'bold';
-                    const data = summary.map(function(d) { return d.title; } );
-                    data.forEach(function(da) {
+                    const titles = summary.map(function(d) { return d.title; } );
+                    titles.forEach(function(da) {
 
-                        if (da !== class_name) { return; }
-                        d3.select('.' + da).select('.lines').select('path').style("stroke", 'rgb(25, 84, 166)'); 
-                        d3.select('.' + da).select('.points').selectAll('circle').style("fill", 'rgb(25, 84, 166)');
+                        if (da !== class_name) { 
+                            d3.select('.' + da).select('.lines').select('path').style("opacity", 0.3); 
+                        } else {
+                            d3.select('.' + da).select('.lines').select('path').style("stroke", 'rgb(25, 84, 166)'); 
+                            d3.select('.' + da).select('.points').selectAll('circle').style("fill", 'rgb(25, 84, 166)');
+                        }
+                        d3.select('.' + da).select('.points').selectAll('circle').style("opacity", 0);
                     })
                 })
                 .on('mouseout', function (_) {
@@ -215,9 +219,13 @@ const GrantsChart = ({ onYearClicked }) => {
                     this.style.fontWeight = 'normal';
                     summary.forEach(function(da) {
 
-                        if (da.title !== class_name) { return; }
-                        d3.select('.' + da.title).select('.lines').select('path').style("stroke", da.color); 
-                        d3.select('.' + da.title).select('.points').selectAll('circle').style("fill", da.color);
+                        if (da.title !== class_name) {
+                            d3.select('.' + da.title).select('.lines').select('path').style("opacity", 1); 
+                        } else {
+                            d3.select('.' + da.title).select('.lines').select('path').style("stroke", da.color); 
+                            d3.select('.' + da.title).select('.points').selectAll('circle').style("fill", da.color);  
+                        }
+                        d3.select('.' + da.title).select('.points').selectAll('circle').style("opacity", 1);
                     })
                 });
 
@@ -242,7 +250,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
     function arrayData(i) {
 
-        return [monthly_ideas_data[i].values.total, monthly_ideas_data[i].values.researcher, monthly_ideas_data[i].values.student];
+        return [monthly_ideas_data[i].values.total, monthly_ideas_data[i].values.student, monthly_ideas_data[i].values.researcher];
     }
 
     return <React.Fragment>
