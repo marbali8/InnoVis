@@ -14,14 +14,9 @@ import './App.module.scss';
 function App() {
 
     const [year, setYear] = useState(2018);
-    const [category, setCategory] = useState(-1);
 
     const handleTimeSliderYearClicked = (year) => {
         setYear(year);
-    };
-
-    const handleCategoryBallsHover = (category) => {
-        setCategory(category);
     };
 
     const megaballData = useMemo(() => { return getDataForMegaballs(year) }, [year]);
@@ -36,7 +31,7 @@ function App() {
                 Take a look at our alumni companies and ideas!
             </div>
             <div className={classes.megaBallsView}>
-                <MegaBalls data={megaballData} year={year} category={category} />
+                <MegaBalls data={megaballData} year={year} />
             </div>
             <div className={classes.legend}>
                 <BallsLegend />
@@ -45,8 +40,6 @@ function App() {
             <div className={classes.aggregateKTHDataView}>
                 <Sunburst
                     data={dataForSunburst}
-
-                    onBallMouseHover={handleCategoryBallsHover}
                 />
                 {/* <Sunburst onYearClicked={year}/> */}
                 <GrantsChart onYearClicked={year} />

@@ -107,7 +107,7 @@ const MegaBalls = ({
                 .force("charge", d3.forceManyBody().strength(-1))
                 .force('collision', d3.forceCollide().radius((d) => { return d.size; }))
                 .force("charge", d3.forceManyBody().strength(-3))
-                .velocityDecay(0.87)
+                .velocityDecay(0.83)
                 .force("collide", d3.forceCollide().strength(1).radius((d) => { return d.size })
                     .iterations(10));
         }
@@ -190,57 +190,10 @@ const MegaBalls = ({
 
     }, [data, year, height, width]); // useEffect
 
-    useEffect(() => {
-        if (category !== -1 && category !== -1 && category !== null) {
-            // adds a little bit of time so balls don't end up inside other balls
-            simulation.current.alpha(simulation.current.alpha() + 0.01);
-            d3.select(anchor.current).selectAll('circle').attr('opacity', (d) => {
-                if (d.id === category) return 1;
-                else { return 0.2 }
-            });
-        }
-        // -1 means no category is currently hovered
-        else if (category === -1) {
-            d3.select(anchor.current).selectAll('circle').attr('opacity', 0.8);
-        }
-    }, [category, year]);
-
-
-    return useMemo(() => (<React.Fragment>
+    return <React.Fragment>
         <svg overflow='visible' height={height} width={width} ref={anchor} />
-    </React.Fragment>), [height, width]);
-
+    </React.Fragment>
 };
 
 export default MegaBalls;
 
-                    // old code that might be used later, storing here for now! Don't remove!
-// function brush(cat) {
-        //     if (cat !== -1) {
-        //         var color = getColorByCompanyCategory(cat);
-        //         d3.selectAll('.categorydetails').text(getLabelForCategory(cat));
-        //         d3.select('.balls').selectAll('circle').attr('opacity', 0.2);
-        //         d3.selectAll("[fill='" + color + "']").attr('opacity', 1);
-        //     } else {
-        //         d3.selectAll('.categorydetails').text("");
-        //         d3.select('.balls').selectAll('circle').attr('opacity', 1);
-        //     }
-        // }
-
- // brush(category);
-
-
-
-// code that might be used later, storing here for now! 
-
-// function brush(cat) {
-        //     if (cat !== -1) {
-        //         var color = getColorByCompanyCategory(cat);
-        //         d3.selectAll('.categorydetails').text(getLabelForCategory(cat));
-        //         d3.select('.balls').selectAll('circle').attr('opacity', 0.2);
-        //         d3.selectAll("[fill='" + color + "']").attr('opacity', 1);
-        //     } else {
-        //         d3.selectAll('.categorydetails').text("");
-        //         d3.select('.balls').selectAll('circle').attr('opacity', 1);
-        //     }
-        // }
