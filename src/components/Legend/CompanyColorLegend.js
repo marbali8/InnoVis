@@ -19,7 +19,7 @@ const CompanyLabels = (dat = [], { height, width }) => {
         return <div className={classes.categoryRow}>
             {circle}
             <div className={classes.label}>
-                <div><pre>{JSON.stringify(category.label,null, 2)}</pre></div>
+                <div><pre>{JSON.stringify(category.labelEn,null,2)}</pre></div>
             </div>
         </div>
     };

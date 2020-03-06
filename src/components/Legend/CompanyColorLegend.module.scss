@@ -1,19 +1,20 @@
+@import '../../globalStyle.module.scss';
 
 .container{
 
     display:flex;
     flex-direction:column;
 
-
     .categoryRow{
 
-        height:1px;
+        height:25px;
         width:550px;
         // use margin to make space between the rows
-        margin-top:20px;
-        margin-left:30px;
-        margin-right:50px;
-        margin-bottom:25px;
+        //margin-top:1px;
+        //margin-left:1px;
+        //margin-right:50px;
+        //margin-bottom:25px;
+        line-height: 0px;
 
         display:flex;
         flex-direction:row;
@@ -25,8 +26,10 @@
 
              // import kth font from globalStyles and use it to set font and font size here as well
 
-             // font: _____ 
-             // font-size: ______ 
+             font-family: $font;
+             font-size: 4vw;
+             display: 'inline-block';
+             vertical-align: middle;
 
         }
     }

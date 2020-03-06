@@ -1,42 +1,52 @@
 [
   {
     "id": 0,
-    "label": "Byggverksamhet"
+    "label": "Byggverksamhet",
+    "labelEn": "Construction" 
   },
   {
     "id": 1,
-    "label": "Finans- och försäkringsverksamhet"
+    "label": "Finans- och försäkringsverksamhet",
+    "labelEn": "Financial and Insurence" 
   },
   {
     "id": 2,
-    "label": "Handel; reparation av motorfordon och motorcyklar"
+    "label": "Handel; reparation av motorfordon och motorcyklar",
+    "labelEn": "Comerse, Veacile Reperation"
   },
   {
     "id": 3,
-    "label": "Informations- och kommunikationsverksamhet"
+    "label": "Informations- och kommunikationsverksamhet",
+    "labelEn": "Information and communication"
   },
   {
     "id": 4,
-    "label": "Jordbruk, skogsbruk, fiske och utvinning av mineral"
+    "label": "Jordbruk, skogsbruk, fiske och utvinning av mineral",
+    "labelEn": "uhh farming look up"
   },
   {
     "id": 5,
-    "label": "Tillverkning"
+    "label": "Tillverkning",
+    "labelEn": "Assembly" 
   },
   {
     "id": 6,
-    "label": "Utbildning"
+    "label": "Utbildning",
+    "labelEn": "Education" 
   },
   {
     "id": 7,
-    "label": "Uthyrning, fastighetsservice, resetjänster och andra stödtjänster"
+    "label": "Uthyrning, fastighetsservice, resetjänster och andra stödtjänster",
+    "labelEn": "Rental, Travel and Support"
   },
   {
     "id": 8,
-    "label": "Verksamhet inom juridik, ekonomi, vetenskap och teknik"
+    "label": "Verksamhet inom juridik, ekonomi, vetenskap och teknik",
+    "labelEn": "Law, Economy, Science and Technology"
   },
   {
     "id": 9,
-    "label": "Övrigt"
+    "label": "Övrigt", 
+    "labelEn": "Other"
   }
 ]
