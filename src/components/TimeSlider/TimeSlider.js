@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import classes from './TimeSlider.module.scss';
 
-const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
+const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range }) => {
 
     // TODO: will need also data for the graph behind, w/h for the graph
     // TODO: will need to call a drag event of main view
@@ -15,7 +15,7 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
         step = 1,
         stroke_width = 20;
 
-    // state and ref to svg 
+    // state and ref to svgI guess I don't really understand everything, but it does sound like we're not doing it as one sho
     let divRef = useRef();
 
     // called only on first mount to fetch data and set it to state
@@ -50,20 +50,44 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
 
         // bar that's inside the main track to make it look like a rect with a border
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-inset')
-            .attr('stroke', '#bccee7')
-            .attr('stroke-width', stroke_width)
+            .attr('stroke', 'rgba(101, 101, 108, 0.4)')
+            .attr('stroke-width', 5)
             .attr('stroke-linecap', 'round');
 
-        slider.append('g').attr('class', 'ticks')
-            .attr('transform', 'translate(0, ' + (stroke_width / 2 + 5) + ')')
-            .call(xAxis)
-            .attr('font-size', 13)
-            .attr('color', 'black');
+            /*
+            slider.append('g').attr('class', 'ticks')
+                .attr('transform', 'translate(0, ' + (stroke_width / 2 + 5) + ')')
+                .call(xAxis)
+                .attr('font-size', 13)
+                .attr('color', 'black');
+            */
+        const text = slider.append("text")
+                        .attr('x', 955/2)
+                        .attr('y', '-30')
+                        .attr('font-size', '60pt')
+                        .attr('font-family', 'open sans, sans-serif')
+                        .attr('text-anchor', 'middle')
+
+        const start = slider.append("text")
+                        .attr('x', 15)
+                        .attr('y', 30)
+                        .attr('font-size','16pt')
+                        .attr('text-anchor','middle')
+                        .text('2010');
+
+        const end = slider.append("text")
+                        .attr('x', 930)
+                        .attr('y', 30)
+                        .attr('font-size','16pt')
+                        .attr('font-family', 'open sans, sans-serif')
+                        .attr('text-anchor','middle')
+                        .text('2018');
+
 
         // drag handle
         var handle = slider.append('circle').classed('handle', true)
-            .attr('r', stroke_width / 3)
-            .attr('fill', '#1954a6');
+            .attr('r', stroke_width / 2)
+            .attr('fill', 'rgb(101, 101, 108)');
 
         // bar on top with stroke = transparent and on which the drag behaviour is actually called
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
@@ -80,7 +104,7 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
             dragged(d3.event.x);
         });
 
-        // attach the drag handler to the track overlay 
+        // attach the drag handler to the track overlay
         dragHandler(slider.select(".track-overlay"));
 
         // set default year to 2018.
@@ -107,8 +131,11 @@ const TimeSlider = ({ height = 100, width = 1000, onYearClicked, range }) => {
                 // if step is null or 0, return the drag value as is
                 year = x;
             }
-            if (handle.attr('cx') !== xScale(year)) { onYearClicked(year); }
+            if (handle.attr('cx') !== xScale(year)) {
+              onYearClicked(year);
+            }
             handle.attr('cx', xScale(year));
+            text.text(year);
         }
     }, []);
 
