@@ -1,0 +1,38 @@
+
+.container{
+
+    display:flex;
+    flex-direction:column;
+
+
+    .categoryRow{
+
+        height:1px;
+        width:550px;
+        // use margin to make space between the rows
+        margin-top:20px;
+        margin-left:30px;
+        margin-right:50px;
+        margin-bottom:25px;
+
+        display:flex;
+        flex-direction:row;
+
+        // spreads out the contents of the row in diff ways, use this!
+        justify-content: flex-start;
+
+        .companyLabel{
+
+             // import kth font from globalStyles and use it to set font and font size here as well
+
+             // font: _____ 
+             // font-size: ______ 
+
+        }
+    }
+
+    
+
+
+
+}

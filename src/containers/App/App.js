@@ -5,7 +5,8 @@ import Sunburst from '../../components/DetailView/Sunburst/RefactoredSunburst.js
 import GrantsChart from "../../components/DetailView/GrantsChart/GrantsChart.js";
 import TimeSlider from '../../components/TimeSlider/TimeSlider.js';
 import MegaBalls from '../../components/MegaBallsView2/MegaBallsView_v2.js'
-import CompanyLabel from '../../components/Legend/CompanyLabels.js'
+//import CompanyLabel from '../../components/Legend/CompanyLabels.js'
+import CompanyLabel from '../../components/Legend/CompanyColorLegend.js'
 import BallsLegend from '../../components/MegaBallsView2/legend.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 
@@ -53,8 +54,8 @@ function App() {
                 </div>
             </div>
 
-            <div className = {classes.CompanyLabels}>
-                <CompanyLabel data={megaballData}></CompanyLabel>
+            <div className={classes.CompanyLabel}> 
+                <CompanyLabel data = {megaballData}></CompanyLabel>
             </div>
 
             <div className={classes.footer}>
@@ -64,6 +65,10 @@ function App() {
         </div>
     );
 }
+
+/*            <div className = {classes.CompanyLabel}>
+                <CompanyLabel data={megaballData}></CompanyLabel>
+            </div>*/
 
 export default App;
 
