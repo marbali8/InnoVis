@@ -19,10 +19,6 @@ function App() {
         setYear(year);
     };
 
-    const handleCategoryBallsHover = (category) => {
-        setCategory(category);
-    };
-
     const megaballData = useMemo(() => { return getDataForMegaballs(year) }, [year]);
     const dataForSunburst = useMemo(() => { return getDataForSunburst(year) }, [year]);
     console.log(megaballData.nodes);
@@ -50,12 +46,7 @@ function App() {
                 <CompanyInfoBox selectedCompany={selectedCompany}/>
             </div>
             <div className={classes.aggregateKTHDataView}>
-                <Sunburst
-                    data={dataForSunburst}
-
-                    onBallMouseHover={handleCategoryBallsHover}
-                />
-                {/* <Sunburst onYearClicked={year}/> */}
+                <Sunburst data={dataForSunburst} />
                 <GrantsChart onYearClicked={year} />
                 <div className={classes.infobox}>
                     <Infobox onYearClicked={year} />

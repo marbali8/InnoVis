@@ -1,0 +1,38 @@
+[
+  {
+    "name": "AIRMIZ AB",
+    "founded": 2016,
+    "founders": "Adrian C. Prelipcean, Julian Lee, Yadwinder Paul Singh, Dmitry Deplov",
+    "info": "Airmee is a logistics technological platform with the vision of optimizing every transport in every city in the world. The mission is to create the best and most environmentally sustainable delivery experience in the world by leveraging our research-based technology. They partner with online retailers and logistics providers to bring your purchases to you.",
+    "website": "https://www.airmee.com/"
+  },
+  {
+    "name": "DEGOO BACKUP AB",
+    "founded": 2012,
+    "founders": "Carl Hasselskog, Mattias Nylitz",
+    "info": "If Dropbox is your bookshelf Degoo is your secure bank vault. Our top secret feature encrypts your files with a passphrase known only by you, not stored in Degoo, encoded into chunks and spread out to data centers in different countries. 100% NSA proof. For real.",
+    "website": "https://degoo.com/"
+  },
+  {
+    "name": "PILLOXA AB",
+    "founded": 2015,
+    "founders": "Francesco Mazzotta, Per Nilsson, Helena Rönnqvist, Niclas Nilsson",
+    "info": "People coming into the emergency department with their medications in large grocery bags and surgeries being aborted due to wrongfully taking medication. Pilloxa saw that the younger population was the group that struggled the most with taking their medication. Their first product is a smart pillbox with embedded sensors connected to a mobile app.",
+    "website": "https://pilloxa.com/"
+  },
+  {
+    "name": "SHORTCUT LABS AB",
+    "founded": 2014,
+    "founders": "Joacim Westlund, Pranav Kosuri, Amir Sharifat",
+    "info": "Pushing a button is the most intuitive, quick and simple way to send a command. Flic is the world-leading Smart Button for both end consumers and large corporations with almost half a million units sold globally.",
+    "website": "https://flic.io/"
+  },
+  {
+    "name": "VOLUMENTAL AB",
+    "founded": 2012,
+    "founders": "Caroline Walerud, Alper Aydemir, Miroslav Kobetski, Rasmus Göransson",
+    "info": "Volumental helps millions of people find perfectly fitting shoes. In one click and less than five seconds, our 3D scanner gathers ten different foot measurements and all the data needed for our AI-powered Fit Engine to offer you personalized footwear recommendations.",
+    "website": "https://www.volumental.com/"
+  }
+
+]
