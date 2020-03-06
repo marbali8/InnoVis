@@ -35,10 +35,7 @@ function App() {
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.aggregateKTHDataView}>
-                <Sunburst
-                    data={dataForSunburst}
-                />
-                {/* <Sunburst onYearClicked={year}/> */}
+                <Sunburst data={dataForSunburst} />
                 <GrantsChart onYearClicked={year} />
                 <div className={classes.infobox}>
                     <Infobox onYearClicked={year} />
