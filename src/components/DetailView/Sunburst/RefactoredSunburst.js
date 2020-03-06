@@ -11,11 +11,8 @@ const transitionDuration = 900;
 const Sunburst = ({
     widthHeightValue = 350,
     margin = { top: 10, right: 10, bottom: 10, left: 10 },
-    data = [],
-    category = -1,
-    onBallMouseHover
+    data = []
 }) => {
-
 
     const width = widthHeightValue - margin.left - margin.right;
     const height = widthHeightValue - margin.top - margin.bottom;
@@ -49,7 +46,7 @@ const Sunburst = ({
         });
 
         setupContainersOnMount();
-        drawSunburst(category);
+        drawSunburst();
         //brush(category);
         addTextInCenter();
         didMount.current = true;
@@ -104,42 +101,18 @@ const Sunburst = ({
                     d3.selectAll(".center_text").text(d.data.fractional)
                         .style("font-size", "30px")
                         .style("font-weight", 750);
-                    onBallMouseHover(d.index);
+                    d3.select('.balls').selectAll("._" + d.index).attr('opacity', 0.1);
                 })
                 .on('mouseleave', function (d) {
                     d3.selectAll('.arc').attr("opacity", 1.0);
                     d3.selectAll(".center_text").text("");
                     d3.event.preventDefault();
-                    onBallMouseHover(-1);
+                    d3.select('.balls').selectAll('circle').attr('opacity', 0.8);
                 })
                 .on('contextmenu', function () {
                     d3.event.preventDefault();
-                    onBallMouseHover(-1);
                 })
                 .text((d) => d.data.label);
-
-
-            // arcs
-            //     .on('mouseenter', function (d) {
-            //         d3.selectAll(".center_text").text(d.data.label);
-            //     })
-            //     .on('mouseout', function (d, cat, i) {
-            //         d3.selectAll(".center_text").text("");
-            //         //normal behaviour
-            //         if (d3.selectAll('.arc').attr('opacity') !== '0.2') {
-            //             d3.selectAll('.center_text').text("");
-            //             return;
-            //         }
-
-            //         var opacity = d3.select(this).attr('opacity');
-            //         if (opacity === '0.2') {
-            //             d3.selectAll('.center_text').text(getLabelForCategory(category));
-            //         } else {
-            //             d3.selectAll('.center_text').text(d.data.label);
-            //         }
-
-            //     });
-
 
             // exit
             arcs.exit().remove();
@@ -161,23 +134,6 @@ const Sunburst = ({
             center_text.exit().remove();
         }
 
-        // function brush(cat) {
-        //     if (cat === -1) {
-        //         d3.selectAll('.arc').attr('opacity', 1);
-        //         d3.selectAll('.center_text').text("");
-        //     }
-        //     else {
-        //         d3.selectAll('.arc').attr('opacity', function (d) {
-        //             if (getColorByCompanyCategory(cat) === d.data.color) {
-        //                 d3.selectAll('.center_text').text(d.data.label);
-        //                 return 1;
-        //             } else {
-        //                 return 0.2;
-        //             }
-        //         });
-        //     }
-        // }
-
         // used to interpolate between start and end angle when transitioning 
         function arcTween(a) {
             var i = d3.interpolate(this._current, a);
@@ -187,7 +143,7 @@ const Sunburst = ({
             };
         }
 
-    }, [category, data]);
+    }, [data]);
 
     return <React.Fragment>
         <div className="Sunburst" ref={anchor} />
