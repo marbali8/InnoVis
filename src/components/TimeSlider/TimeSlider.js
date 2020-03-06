@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import classes from './TimeSlider.module.scss';
 
-const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range }) => {
+const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range = [0, 100] }) => {
 
     // TODO: will need also data for the graph behind, w/h for the graph
     // TODO: will need to call a drag event of main view
@@ -54,41 +54,44 @@ const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range }) => {
             .attr('stroke-width', 5)
             .attr('stroke-linecap', 'round');
 
-            /*
-            slider.append('g').attr('class', 'ticks')
-                .attr('transform', 'translate(0, ' + (stroke_width / 2 + 5) + ')')
-                .call(xAxis)
-                .attr('font-size', 13)
-                .attr('color', 'black');
-            */
+        /*
+        slider.append('g').attr('class', 'ticks')
+            .attr('transform', 'translate(0, ' + (stroke_width / 2 + 5) + ')')
+            .call(xAxis)
+            .attr('font-size', 13)
+            .attr('color', 'black');
+        */
         const text = svg_.append("text")
-                        .attr('x', width/2)
-                        .attr('y', 60)
-                        .attr('font-size', '60pt')
-                        .attr('font-family', 'open sans, sans-serif')
-                        .attr('text-anchor', 'middle')
+            .attr('x', width / 2)
+            .attr('y', 60)
+            .attr('font-size', '60pt')
+            .attr('font-family', 'open sans, sans-serif')
+            .attr('text-anchor', 'middle')
 
         const start = svg_.append("text")
-                        .attr('x', 50)
-                        .attr('y', 97)
-                        .attr('font-size','16pt')
-                        .attr('font-family', 'open sans, sans-serif')
-                        .attr('text-anchor','middle')
-                        .text('2010');
+            .attr("font-weight", function () { return 600; })
+            .attr('x', 50)
+            .attr('y', 97)
+            .attr('font-size', '16pt')
+            .attr('font-family', 'open sans, sans-serif')
+            .attr('text-anchor', 'middle')
+            .text('2010');
 
         const end = svg_.append("text")
-                        .attr('x', 950)
-                        .attr('y', 97)
-                        .attr('font-size','16pt')
-                        .attr('font-family', 'open sans, sans-serif')
-                        .attr('text-anchor','middle')
-                        .text('2018');
+            .attr("font-weight", function () { return 600; })
+            .attr('x', 950)
+            .attr('y', 97)
+            .attr('font-size', '16pt')
+            .attr('font-family', 'open sans, sans-serif')
+            .attr('text-anchor', 'middle')
+            .text('2018');
 
 
         // drag handle
         var handle = slider.append('circle').classed('handle', true)
             .attr('r', stroke_width / 2)
-            .attr('fill', 'rgb(101, 101, 108)');
+            .attr('fill', 'rgb(101, 101, 108)')
+            .attr('fill', 'black');
 
         // bar on top with stroke = transparent and on which the drag behaviour is actually called
         d3.select(slider.node().appendChild(track.node().cloneNode())).attr('class', 'track-overlay')
@@ -101,19 +104,18 @@ const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range }) => {
         // create drag handler function
         var dragHandler = d3.drag().on("drag", (e) => {
             dragged(d3.event.x);
-        }).on("start", (e) => {
+        }).on("start", e => {
             dragged(d3.event.x);
         });
 
         // attach the drag handler to the track overlay
         dragHandler(slider.select(".track-overlay"));
 
-        // set default year to 2018.
+        // set default year to max value, corresponds to 2018
         dragged(1000);
 
         function dragged(value) {
-
-            var x = xScale.invert(value), index = null, midPoint, year;
+            var x = xScale.invert(value), index = null, midPoint, timeSliderValue;
             if (step) {
                 // if step has a value, compute the midpoint based on range values and reposition the slider based on the mouse position
                 for (var i = 0; i < rangeValues.length - 1; i++) {
@@ -124,21 +126,26 @@ const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range }) => {
                 }
                 midPoint = (rangeValues[index] + rangeValues[index + 1]) / 2;
                 if (x < midPoint) {
-                    year = rangeValues[index];
+                    timeSliderValue = rangeValues[index];
                 } else {
-                    year = rangeValues[index + 1];
+                    timeSliderValue = rangeValues[index + 1];
                 }
             } else {
                 // if step is null or 0, return the drag value as is
-                year = x;
+                timeSliderValue = x;
             }
-            if (handle.attr('cx') !== xScale(year)) {
-              onYearClicked(year);
+            if (handle.attr('cx') !== xScale(timeSliderValue)) {
+                onYearClicked(getYearFromValue(timeSliderValue));
             }
-            handle.attr('cx', xScale(year));
-            text.text(year);
+            handle.attr('cx', xScale(timeSliderValue));
+            text.text(getYearFromValue(timeSliderValue));
         }
     }, []);
+
+    function getYearFromValue(value) {
+        const fraction = value / 100;
+        return Math.round(2010 + (2018 - 2010) * fraction);
+    }
 
     return <div ref={divRef} height={height} width={width} className={classes.timeSlider} />;
 };
