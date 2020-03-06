@@ -88,7 +88,7 @@ const MegaBalls = ({
 
                 // setup zoom functionality
                 anchorNode.call(zoom.current.on("zoom", function () {
-                    anchorNode.select(".canvas").attr("transform", d3.event.transform);
+                    anchorNode.select("g").attr("transform", d3.event.transform);
                     const fontSize = d3.event.transform.k >= 1 ? fontSizeOfCompanyDetail / d3.event.transform.k : fontSizeOfCompanyDetail;
                     d3.select('.companyTooltip').attr("font-size", (fontSize) + "px");
                 }));
@@ -96,6 +96,8 @@ const MegaBalls = ({
         }
 
         function resetZoom() {
+            zoom.current = d3.zoom();
+            zoom.current.scaleExtent([1, maxZoomScale]);
             d3.select(anchor.current).selectAll(".canvas").transition().duration(1000).attr("transform", d3.zoomIdentity);
             d3.select(anchor.current).call(zoom.current.transform, d3.zoomIdentity);
         }
