@@ -19,8 +19,8 @@ function App() {
         setYear(year);
     };
 
-    const megaballData = useMemo(() => { return getDataForMegaballs(year) }, [year]);
-    const dataForSunburst = useMemo(() => { return getDataForSunburst(year) }, [year]);
+    const megaballData = useMemo(() => { return getDataForMegaballs(debouncedYear) }, [debouncedYear]);
+    const dataForSunburst = useMemo(() => { return getDataForSunburst(debouncedYear) }, [debouncedYear]);
 
     return (
         <div className={classes.App}>
