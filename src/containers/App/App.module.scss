@@ -10,6 +10,10 @@
   flex-direction: column;
   align-items: center;
 
+  .companyLabel{
+    background-color:white;
+  }
+
 
   .title {
     padding: 10px;
@@ -67,6 +71,21 @@
       fill: black;
       font-family: "Open Sans", sans-serif;
       font-size: 16px;
+  }
+
+ 
+  .timeSlider{
+    padding:10px;
+    border-radius:10px;
+    
+ //adds blur effect to background
+ @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  // opacity set to 1 for now since people hate blur :( 
+  background-color: rgba(255, 255, 255, 1.0);  
+}
+
   }
 
 }

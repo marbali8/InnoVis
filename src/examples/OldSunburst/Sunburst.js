@@ -147,7 +147,7 @@ const Sunburst = ({ onYearClicked }) => {
             svg.selectAll("svg").exit().remove();
         }
 
-    }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice, innerRadius, outerRadius]);
+    }, [data]);
 
     return <React.Fragment>
         <svg height={height} width={width} ref={svgRef} />
