@@ -21,7 +21,6 @@ function App() {
 
     const megaballData = useMemo(() => { return getDataForMegaballs(year) }, [year]);
     const dataForSunburst = useMemo(() => { return getDataForSunburst(year) }, [year]);
-    console.log(megaballData.nodes);
     return (
         <div className={classes.App}>
             <div className={classes.title}>
@@ -32,18 +31,18 @@ function App() {
             </div>
             <div className={classes.megaBallsView}>
                 <MegaBalls
-                  data={megaballData}
-                  year={year}
-                  category={category}
-                  onBallsMouseEnter={(d) => setSelectedCompany(d)}
-                  onBallsMouseOut={(d) => setSelectedCompany(undefined)}/>
+                    data={megaballData}
+                    year={year}
+                    category={category}
+                    onBallsMouseEnter={(d) => setSelectedCompany(d)}
+                    onBallsMouseOut={(d) => setSelectedCompany(undefined)} />
             </div>
             <div className={classes.legend}>
                 <BallsLegend />
             </div>
             <TimeSlider onYearClicked={handleTimeSliderYearClicked} range={[2010, 2018]} />
             <div className={classes.companyInfoBox}>
-                <CompanyInfoBox selectedCompany={selectedCompany}/>
+                <CompanyInfoBox />
             </div>
             <div className={classes.aggregateKTHDataView}>
                 <Sunburst data={dataForSunburst} />

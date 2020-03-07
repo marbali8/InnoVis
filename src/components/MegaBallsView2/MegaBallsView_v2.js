@@ -13,8 +13,6 @@ const MegaBalls = ({
     year = 2010,
     data = [],
     category,
-    onBallsMouseEnter,
-    onBallsMouseOut
 }) => {
 
     const anchor = useRef();
@@ -56,7 +54,7 @@ const MegaBalls = ({
         drawBalls();
         didMount.current = true;
 
-        //----- FUNCTION DEFINITIONS ------------------------------------------------------//
+        //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
         function setupContainersOnMount() {
 
             if (!didMount.current) {
@@ -67,6 +65,10 @@ const MegaBalls = ({
                     .attr("viewBox", "0 0 " + width + " " + height)
                     .attr("overflow", 'visible')
                     .classed("svg-content", true)
+
+
+                // when clicking background the company infobox disappears
+                anchorNode.on('click', () => { console.log("clickBackground-of-megaballs handler called.") });
 
                 let canvas = anchorNode.append('g').classed("canvas", true);
 
@@ -140,7 +142,6 @@ const MegaBalls = ({
                     return getColorByCompanyCategory(d.id)
                 })
                 .on('mouseenter', function (d) {
-                    onBallsMouseEnter(d);
                     var self = d3.select(this);
                     const x = self.attr('cx');
                     const y = self.attr('cy');
@@ -156,10 +157,22 @@ const MegaBalls = ({
                         .text(" but this is not.");
                 })
                 .on('mouseout', function (d) {
-                    onBallsMouseOut(d);
                     d3.select('.companyTooltip')
                         .attr("opacity", 0)
                         .text("");
+                })
+                // show info box and change opacity and the text inside here;
+                .on('click', (d) => {
+                    // use these to see what information should be displayed in company infobox
+                    console.log("ball click handler for ball called.")
+                    console.log("cateogry id: " + d.id);
+                    console.log("company name: " + d.name);
+
+                    // stops the background click handler from running!
+                    d3.event.stopPropagation();
+
+                    // change the text of the children elems you created ,e.g. year, founded, description
+                    d3.select('.CompanyInfoBox').append('div');
                 })
                 .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
@@ -169,6 +182,10 @@ const MegaBalls = ({
                 .transition(d3.easeLinear)
                 .duration(700)
                 .attr("r", (d) => d.size);
+
+
+
+
 
             balls.exit().transition(d3.easeLinear)
                 .duration(700)
