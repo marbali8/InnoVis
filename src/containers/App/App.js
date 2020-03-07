@@ -47,8 +47,7 @@ function App() {
                     <Infobox onYearClicked={debouncedYear} />
                 </div>
             </div>
-
-            <div className={classes.CompanyLabel}>
+            <div className={classes.companyLabel}>
                 <CompanyLabel data={megaballData} year={year}></CompanyLabel>
             </div>
 
