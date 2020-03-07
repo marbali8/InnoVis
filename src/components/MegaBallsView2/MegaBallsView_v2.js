@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
+import company_data from '../../data/company_details'
+import {keyBy} from 'lodash'
 // import styles from '../../globalStyle.module.scss';
 
 const fontSizeOfCompanyDetail = 30;
@@ -48,13 +50,15 @@ const MegaBalls = ({
         return copyNode;
     });
 
+    const companies = keyBy(company_data, 'name');
+
     useEffect(() => {
         setupContainersOnMount();
         resetZoom();
         drawBalls();
         didMount.current = true;
 
-        //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
+        //----- FUNCTION DEFINITIONS ------------------------------------------------------//
         function setupContainersOnMount() {
 
             if (!didMount.current) {
@@ -168,11 +172,24 @@ const MegaBalls = ({
                     console.log("cateogry id: " + d.id);
                     console.log("company name: " + d.name);
 
+
                     // stops the background click handler from running!
                     d3.event.stopPropagation();
 
                     // change the text of the children elems you created ,e.g. year, founded, description
-                    d3.select('.CompanyInfoBox').append('div');
+                    // have to check that d is defined in each .text, could probably be done much more elegantly someplace else?
+                    d3.select('.companyInfoBox_companyName').text(d.name);
+                    d3.select('.companyInfoBox_founders')
+                               .text((d && Object.keys(companies).includes(d.name))?"Founded by: " + companies[d.name].founders : " ")
+                    d3.select('.companyInfoBox_year')
+                               .text((d && Object.keys(companies).includes(d.name))?"Founded in: " + companies[d.name].founded: " ")
+                    d3.select('.companyInfoBox_info')
+                               .text((d && Object.keys(companies).includes(d.name))?companies[d.name].info: " ")
+                    d3.select('.companyInfoBox_website')
+                               .text((d && Object.keys(companies).includes(d.name))?companies[d.name].website: " ")
+                               .attr('href', companies[d.name].website);
+
+                    d3.select('.companyInfoBox').style('width', '300px');
                 })
                 .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
@@ -219,4 +236,3 @@ const MegaBalls = ({
 };
 
 export default MegaBalls;
-
