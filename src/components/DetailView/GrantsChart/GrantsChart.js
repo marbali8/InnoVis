@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import ideasData from '../../../data/monthly_new_ideas.json';
-import '../../../global.module.scss';
 
 const RELEVANT_YEARS = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"];
 
@@ -74,6 +73,15 @@ const GrantsChart = ({ onYearClicked }) => {
                 canvas.append('g').classed('legend', true);
                 canvas.append('g').classed('xaxis', true);
                 canvas.append('g').classed('yaxis', true);
+                // canvas.append('g').classed('tooltip', true)
+                //     .append('rect').classed('line_tooltip', true)
+                //     .attr('width', 30).attr('height', 20)
+                //     .attr('fill', 'white')
+                //     .attr("opacity", 0)
+                //     .append('text')
+                //     .attr('x', 0).attr('y', 0)
+                //     .style('font', "Open Sans")
+                //     .attr("font-size", 14);
 
                 d3.select('.legend').append('g').classed('legend_total', true);
                 d3.select('.legend').append('g').classed('legend_researchers', true);
@@ -159,16 +167,27 @@ const GrantsChart = ({ onYearClicked }) => {
                 .style('opacity', '0')
                 .style('fill', color)
                 .style("r", class_name === 'total' ? 5 : 4)
-                .attr("cx", function (_, i) { return x_scale(i * width / 12) })
-                .attr("cy", function (d) { return y_scale(d) })
+                .attr("cx", function (_, i) { return x_scale(i * width / 12); })
+                .attr("cy", function (d) { return y_scale(d); })
                 .on('mouseover', function (_) {
                     this.style.r = class_name === 'total' ? 7 : 6;
+                    
+                    // d3.select('.line_tooltip')
+                    //     .attr("x", x_scale(i * width / 12))
+                    //     .attr("y", y_scale(d) - 20)
+                    //     .attr("rx", 4).attr("ry", 4)
+                    //     .attr('opacity', 1)
+                    //     .raise()
+                    //     .select('text')
+                    //     .text(d);
                 })
                 .on('mouseout', function (_) {
                     this.style.r = class_name === 'total' ? 5 : 4;
-                })
-                .append('title')
-                .text(function (d) { return d; });
+                    
+                    // d3.select('.line_tooltip')
+                    //     .attr("opacity", 0)
+                    //     .text("");
+                });
 
         }
 
