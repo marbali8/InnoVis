@@ -25,8 +25,8 @@ and in megaballs we use d3 to select the elements mounted here and change them
       const card = companyInfoBox.append('div').classed('companyInfoBox', true);
 
       card.append('h1').classed('companyInfoBox_companyName', true);
-      card.append('p').classed('companyInfoBox_founders', true);
       card.append('p').classed('companyInfoBox_year', true);
+      card.append('p').classed('companyInfoBox_founders', true);
       card.append('p').classed('companyInfoBox_info',true);
       card.append('a').classed('companyInfoBox_website',true);
     }

@@ -69,14 +69,44 @@
       font-size: 16px;
   }
 
-  .companyInfoBox {
-    font-family: $font;
-    .card{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 300px;
-    margin: auto;
-    text-align: center;
+  .companyInfoBox{
+    border-radius: 10px;
+    width: 500px;
+    padding-top: 20px;
+
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      -webkit-backdrop-filter: blur(15px);
+      backdrop-filter: blur(15px);
+      // opacity set to 1 for now since people hate blur :(
+      background-color: rgba(255, 255, 255, 0.8);
+  }
+
+    h1{
+      font-size: 28px;
+      text-align: center;
+
+    }
+
+    p{
+      font-size: 16px;
+      padding-left: 30px;
+      padding-right: 30px;
     }
   }
+
+  a{
+    display: block;
+    text-align: center;
+  }
+
+  a{
+    &:link{
+        color: $KTH-gray;
+    }
+    &:visited{
+        color: $KTH-gray-medium;
+    }
+  }
+
 
 }
