@@ -20,6 +20,21 @@ const CompanyLabels = (data = [], year = 2018) => {
 
     return (<div className={classes.container}>
         {
+            categories.map(category => getLegendForCategory(category))
+        }
+    </div>);
+};
+
+export default CompanyLabels;
+
+/*return (<div className={classes.container}>
+    {
+        categories.map(category => getLegendForCategory(category))
+    }
+</div>);*/
+
+/*    return (<div className={classes.container}>
+        {
             categories.map(category => {
                 return (
                     getRevenueForCompanyObjectByYear(category, year) !== 'null'
@@ -27,7 +42,4 @@ const CompanyLabels = (data = [], year = 2018) => {
                         : null)
             })
         }
-    </div>);
-};
-
-export default CompanyLabels;
+    </div>);*/
