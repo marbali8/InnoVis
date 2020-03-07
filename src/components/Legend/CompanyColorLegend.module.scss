@@ -1,39 +1,23 @@
+@import '../../globalStyle.module.scss';
+
 .container{
 
     display:flex;
     flex-direction:column;
 
+
     .categoryRow{
 
-        height:25px;
+        height:35px;
         width:900px;
-        // use margin to make space between the rows
-        margin-top:2px;
-        margin-left:20px;
-        margin-right:60px;
-        margin-bottom:2px;
 
         align-items: center;
-
         display:flex;
-        flex-direction:row;
-
-        // spreads out the contents of the row in diff ways, use this!
-        justify-content: flex-start;
 
         .companyLabel{
-            @import '../../globalStyle.module.scss';
-
-             // import kth font from globalStyles and use it to set font and font size here as well
-
-             font-family: $font;
-             font-size: 1vw;
-             display: inline-block;
-             text-align: center;
-             margin-left:5px;
+             font-family:$font;
+             font-size: 20px;
              margin-top:1px;
-             //margin-bottom:30px;
-
         }
     }
 

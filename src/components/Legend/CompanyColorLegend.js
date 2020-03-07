@@ -1,26 +1,19 @@
 import React from 'react';
 import classes from './CompanyColorLegend.module.scss';
-
-// getColorBycompanyCategory returns the color of the category, taking in the category id as input, where there are 10 categories in total.
 import { getColorByCompanyCategory } from './../../utility_functions/ColorFunctions.js';
 import { getRevenueForCompanyObjectByYear } from '../../data/data_functions';
-
-// this contains an array of categories, where each elem has an id as an identifier and a label in swedish
 import categories from '../../data/category_label_mapping.json';
 
-const CompanyLabels = (data = [], year = 2010) => {
-    
-    // function that takes in a category element and outputs a row in the company color legend
-    const getLegendForCategory = (category) => {
+const CompanyLabels = (data = [], year = 2018) => {
 
-        // this circle needs to change color based on category using getColorByCompanyCategory(category.id);
+    const getLegendForCategory = (category) => {
         const color = getColorByCompanyCategory(category.id);
-        const circle = <div style={{ display: 'inline-block', width: '20px', height: '20px', backgroundColor: color, borderRadius: '50%' }} />;
+        const circle = <div style={{ marginRight: '10px', display: 'inline-block', width: '20px', height: '20px', backgroundColor: color, borderRadius: '50%' }} />;
 
         return <div className={classes.categoryRow}>
             {circle}
             <div className={classes.companyLabel}>
-                <div><pre>{JSON.stringify(category.labelEn,null,2).slice(1, -1)}</pre></div>
+                <div><pre>{JSON.stringify(category.labelEn, null, 2).slice(1, -1)}</pre></div>
             </div>
         </div>
     };
@@ -29,9 +22,9 @@ const CompanyLabels = (data = [], year = 2010) => {
         {
             categories.map(category => {
                 return (
-                getRevenueForCompanyObjectByYear(category, year) !== 'null'
-                ? getLegendForCategory(category)
-                : 'null')
+                    getRevenueForCompanyObjectByYear(category, year) !== 'null'
+                        ? getLegendForCategory(category)
+                        : null)
             })
         }
     </div>);

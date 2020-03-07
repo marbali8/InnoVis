@@ -9,6 +9,7 @@ import MegaBalls from '../../components/MegaBallsView2/MegaBallsView_v2.js'
 import CompanyLabel from '../../components/Legend/CompanyColorLegend.js'
 import BallsLegend from '../../components/MegaBallsView2/legend.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
+import './App.module.scss';
 
 function App() {
 
@@ -54,8 +55,8 @@ function App() {
                 </div>
             </div>
 
-            <div className={classes.CompanyLabel}> 
-                <CompanyLabel data = {megaballData} year = {year}></CompanyLabel>
+            <div className={classes.CompanyLabel}>
+                <CompanyLabel data={megaballData} year={year}></CompanyLabel>
             </div>
 
             <div className={classes.footer}>

@@ -2,22 +2,22 @@
   {
     "id": 0,
     "label": "Byggverksamhet",
-    "labelEn": "Construction" 
+    "labelEn": "Construction"
   },
   {
     "id": 1,
     "label": "Finans- och försäkringsverksamhet",
-    "labelEn": "Treasury and Insurance" 
+    "labelEn": "Finance and insurance"
   },
   {
     "id": 2,
     "label": "Handel; reparation av motorfordon och motorcyklar",
-    "labelEn": "Commerce, Repair of motor vehicles and motorbikes"
+    "labelEn": "Commerce, repair of motor vehicles and motorcycles"
   },
   {
     "id": 3,
     "label": "Informations- och kommunikationsverksamhet",
-    "labelEn": "Information and communication activities"
+    "labelEn": "Information and communication"
   },
   {
     "id": 4,
@@ -27,26 +27,26 @@
   {
     "id": 5,
     "label": "Tillverkning",
-    "labelEn": "Manufacturing" 
+    "labelEn": "Manufacturing"
   },
   {
     "id": 6,
     "label": "Utbildning",
-    "labelEn": "Education" 
+    "labelEn": "Education"
   },
   {
     "id": 7,
     "label": "Uthyrning, fastighetsservice, resetjänster och andra stödtjänster",
-    "labelEn": "Rental, estate service and other support services"
+    "labelEn": "Rental, administrative and/or other support services"
   },
   {
     "id": 8,
     "label": "Verksamhet inom juridik, ekonomi, vetenskap och teknik",
-    "labelEn": "Legal, finance, science and technological activies"
+    "labelEn": "Law, finance, economics, science and/or technology"
   },
   {
     "id": 9,
-    "label": "Övrigt", 
+    "label": "Övrigt",
     "labelEn": "Other"
   }
 ]
