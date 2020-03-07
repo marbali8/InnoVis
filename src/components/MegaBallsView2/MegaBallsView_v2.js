@@ -187,9 +187,7 @@ const MegaBalls = ({
                                .text((d && Object.keys(companies).includes(d.name))?companies[d.name].info: " ")
                     d3.select('.companyInfoBox_website')
                                .text((d && Object.keys(companies).includes(d.name))?companies[d.name].website: " ")
-                               .attr('href', companies[d.name].website);
-
-                    d3.select('.companyInfoBox').style('width', '300px');
+                               .attr('href', (d && Object.keys(companies).includes(d.name))?companies[d.name].website: " ");
                 })
                 .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
