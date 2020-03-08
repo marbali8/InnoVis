@@ -57,6 +57,11 @@ function App() {
                 <div className={classes.companyLabel}>
                     <CompanyLabel data={megaballData} year={year}></CompanyLabel>
                 </div>
+                <div className={classes.footer}>
+                    Developed as part of Information Visualization at KTH for KTH Innovation by Alex, Alvin, Christina,
+                    Hannah, Jacob and Mar.
+            </div>
+
             </div>
         </div >
     );
