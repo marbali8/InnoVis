@@ -123,7 +123,7 @@ const MegaBalls = ({
 
                     d3.select('.companyTooltip')
                         .attr("x", (x + width / 2))
-                        .attr("y", y + height / 2)
+                        .attr("y", y)
                         .text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
                         .transition()
                         .delay(20)
