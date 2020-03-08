@@ -1,49 +1,95 @@
 @import '../../globalStyle.module.scss';
 
+
+// this is like a function that takes in opacity: (0-1), blurLevel= a number with px appended e.g. '15px'
+// and applies the blur effect to whatever element the css selector applies to!
+// see here for more details: https://sass-lang.com/documentation/at-rules/mixin
+@mixin blurEffect($opacity,$blurLevel){
+  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    -webkit-backdrop-filter: blur($blurLevel);
+    backdrop-filter: blur($blurLevel);
+    // opacity set to 1 for now since people hate blur :( 
+    background-color: rgba(255, 255, 255, $opacity);  
+  }
+}
+
 .App {
+  height:100vh;
+  width:100vw;
+  font-family: $font;
+  position:relative;
 
-  padding-top: 50px;
-  padding-bottom: 50px;
-  background-color: #ffffff;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .companyLabel{
-    background-color:white;
+  // removes ability to scroll page! comment out for debugging purposes
+  // overflow:hidden;
+  
+  // megaballs is out of content flow, so places outside. (positioned absolutely behind content)
+  .megaBallsView{
+    position:relative;
+    position:absolute;
   }
 
+    .content{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-self:center;
 
-  .title {
-    padding: 10px;
-    text-align: center;
-    font-family: $font;
-    font-weight: bold;
-    // border-radius: 5px;
-    font-size: 40px;
-    border-top: 2px solid;
-    border-bottom: 2px solid;
-    color: $black;
-    z-index:1;
-    //background-color: #65656c;
-  }
+      padding-top:50px;
+      
+      .header {
+        position:relative;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        
+        .titleAndSubtitleWrapper {
+          border-top: 2px solid;
+          text-align:center;
+         
+          .title {
+          
+          font-weight: bold;
+          font-size: 60px;
+          border-bottom: 2px solid;
+          }
+          .subtitle {
+          margin-top:10px;
+          font-size: 20px;
+          font-style: italic;
+          }
+        }
+      }
 
-  .subtitle {
-    padding: 10px;
-    text-align: center;
-    font-family: $font;
-    z-index:1;
-    // border-radius: 5px;
-    font-size: 25px;
-    font-style: italic;
-    color: $black;
-    //background-color: #65656c;
+    .ballsLegend{
+      // display inline block is just temporary so that the element doesn't spread horizontally
+      // which stops you from being able to drag the circle
+      // display:inline-block;
+      z-index:2;
+      position:relative;
+    }
+       
+    .companyLabel{
+      background-color:white;
+   
+    }
 
-    margin-bottom: 20px;
-  }
+    .sunburst{
+      // display:inline-block;
+      z-index:2;
+      position:relative;
+    }
+
+    .grantsChart{
+      border-radius:10px;
+      // display:inline-block;
+      padding:20px;
+      z-index:2;
+      position:relative;
+      @include blurEffect(0.8,15px);
+    }
 
   .footer {
+    position:relative;
     padding: 10px;
     text-align: center;
     font-family: $font;
@@ -53,39 +99,35 @@
     color: #65656c;
   }
 
-  .megaBallsView {
-    padding:20px;
-    border-radius: 8px;
-    //background-color: rgb(233, 229, 229);
-    
-  }
-
-  .aggregateKTHDataView {
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    background-color: rgb(233, 229, 229)
-  }
-
   .infobox {
-      fill: black;
-      font-family: "Open Sans", sans-serif;
-      font-size: 16px;
+    // display:inline-block;
+    position:relative;
+    fill: black;
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    z-index:2;
   }
 
- 
   .timeSlider{
+    position:relative;
     padding:10px;
     border-radius:10px;
-    
- //adds blur effect to background
- @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  // opacity set to 1 for now since people hate blur :( 
-  background-color: rgba(255, 255, 255, 1.0);  
-}
+    z-index:2;
+
+    @include blurEffect(0.1,15px);
+  }
+
+  .companyLabel{
+    border-radius:10px;
+   position:relative;
+   z-index:2;
+   @include blurEffect(1,15px);
+  }
 
   }
 
-}
+} //app
+
+
+
+

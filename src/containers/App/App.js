@@ -15,6 +15,7 @@ function App() {
     const [year, setYear] = useState(2018);
     const debouncedYear = useDebounce(year, 100);
 
+
     const handleTimeSliderYearClicked = (year) => {
         setYear(year);
     };
@@ -22,46 +23,44 @@ function App() {
     const megaballData = useMemo(() => { return getDataForMegaballs(debouncedYear) }, [debouncedYear]);
     const dataForSunburst = useMemo(() => { return getDataForSunburst(debouncedYear) }, [debouncedYear]);
 
+    const header =
+        <div className={classes.header}>
+            <div className={classes.titleAndSubtitleWrapper}>
+                <div className={classes.title}>KTH Innovation</div>
+                <div className={classes.subtitle}>Visualising the impact of KTH startups</div>
+            </div>
+        </div>
+
     return (
         <div className={classes.App}>
-            <div className={classes.title}>
-                KTH Innovation
-            </div>
-            <div className={classes.subtitle}>
-                Take a look at our alumni companies and ideas!
-            </div>
             <div className={classes.megaBallsView}>
                 <MegaBalls data={megaballData} year={debouncedYear} />
             </div>
-            <div className={classes.legend}>
-                <BallsLegend />
-            </div>
-            <div className={classes.timeSlider}>
-                <TimeSlider onYearClicked={handleTimeSliderYearClicked} />
-            </div>
 
-            <div className={classes.aggregateKTHDataView}>
-                <Sunburst data={dataForSunburst} />
-                <GrantsChart onYearClicked={debouncedYear} />
+            <div className={classes.content}>
+                {header}
+                <div className={classes.ballsLegend}>
+                    <BallsLegend />
+                </div>
+                <div className={classes.timeSlider}>
+                    <TimeSlider onYearClicked={handleTimeSliderYearClicked} />
+                </div>
+                <div className={classes.sunburst}>
+                    <Sunburst data={dataForSunburst} />
+                </div>
+                <div className={classes.grantsChart}>
+                    <GrantsChart onYearClicked={debouncedYear} />
+                </div>
                 <div className={classes.infobox}>
                     <Infobox onYearClicked={debouncedYear} />
                 </div>
+                <div className={classes.companyLabel}>
+                    <CompanyLabel data={megaballData} year={year}></CompanyLabel>
+                </div>
             </div>
-            <div className={classes.companyLabel}>
-                <CompanyLabel data={megaballData} year={year}></CompanyLabel>
-            </div>
-
-            <div className={classes.footer}>
-                Developed as part of Information Visualization at KTH for KTH Innovation by Alex, Alvin, Christina,
-                Hannah, Jacob and Mar.
-            </div>
-        </div>
+        </div >
     );
 }
-
-/*            <div className = {classes.CompanyLabel}>
-                <CompanyLabel data={megaballData}></CompanyLabel>
-            </div>*/
 
 export default App;
 

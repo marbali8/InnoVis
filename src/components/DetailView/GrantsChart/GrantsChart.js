@@ -20,9 +20,9 @@ const GrantsChart = ({ onYearClicked }) => {
     const didMount = useRef(false);
 
     const data = getYearData();
-    const summary = [{ title: 'total', color: 'black'}, 
-                     { title: 'students', color: '#696969'},
-                     { title: 'researchers', color: '#C0C0C0'}];
+    const summary = [{ title: 'total', color: 'black' },
+    { title: 'students', color: '#696969' },
+    { title: 'researchers', color: '#C0C0C0' }];
 
     // x axis
     var x_scale = d3.scaleOrdinal()
@@ -105,7 +105,7 @@ const GrantsChart = ({ onYearClicked }) => {
         function drawLinePlot() {
 
             // title
-            
+
             d3.select('.title').select('text')
                 .attr("transform", 'translate(15, ' + margin.top + ')')
                 .attr('font-size', '14')
@@ -113,15 +113,15 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr('font-family', 'Open Sans')
                 .attr('width', width)
                 .attr('align', 'center')
-                .text('Number of ideas')
+                .text('Number of ideas supported in ' + year_choice)
 
             // legend
-            
+
             d3.select('.legend').attr("transform", 'translate(0, ' + axis_height + ')')
             drawLegend(0); drawLegend(1); drawLegend(2);
 
             // axis
-            
+
             d3.select('.xaxis')
                 .call(x_axis)
                 .attr("transform", 'translate(' + 0 + ' ' + (axis_height - margin.bottom) + ')')
@@ -132,7 +132,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr('font-family', 'Open Sans');
 
             // lines and points
-            
+
             drawLine(0); drawLine(1); drawLine(2);
 
             d3.select(svgRef.current)
@@ -171,7 +171,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 .attr("cy", function (d) { return y_scale(d); })
                 .on('mouseover', function (_) {
                     this.style.r = class_name === 'total' ? 7 : 6;
-                    
+
                     // d3.select('.line_tooltip')
                     //     .attr("x", x_scale(i * width / 12))
                     //     .attr("y", y_scale(d) - 20)
@@ -183,7 +183,7 @@ const GrantsChart = ({ onYearClicked }) => {
                 })
                 .on('mouseout', function (_) {
                     this.style.r = class_name === 'total' ? 5 : 4;
-                    
+
                     // d3.select('.line_tooltip')
                     //     .attr("opacity", 0)
                     //     .text("");
@@ -195,7 +195,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
             const class_name = summary[data_index].title;
             const color = summary[data_index].color;
-            const where_y = data_index*15;
+            const where_y = data_index * 15;
 
             d3.select('.legend_' + class_name)
                 .append('circle')
@@ -221,13 +221,13 @@ const GrantsChart = ({ onYearClicked }) => {
                 .on('mouseover', function (_) {
 
                     this.style.fontWeight = 'bold';
-                    const titles = summary.map(function(d) { return d.title; } );
-                    titles.forEach(function(da) {
+                    const titles = summary.map(function (d) { return d.title; });
+                    titles.forEach(function (da) {
 
-                        if (da !== class_name) { 
-                            d3.select('.' + da).select('.lines').select('path').style("opacity", 0.3); 
+                        if (da !== class_name) {
+                            d3.select('.' + da).select('.lines').select('path').style("opacity", 0.3);
                         } else {
-                            d3.select('.' + da).select('.lines').select('path').style("stroke", 'rgb(25, 84, 166)'); 
+                            d3.select('.' + da).select('.lines').select('path').style("stroke", 'rgb(25, 84, 166)');
                             d3.select('.' + da).select('.points').selectAll('circle').style("fill", 'rgb(25, 84, 166)');
                         }
                         d3.select('.' + da).select('.points').selectAll('circle').style("opacity", 0);
@@ -236,13 +236,13 @@ const GrantsChart = ({ onYearClicked }) => {
                 .on('mouseout', function (_) {
 
                     this.style.fontWeight = 'normal';
-                    summary.forEach(function(da) {
+                    summary.forEach(function (da) {
 
                         if (da.title !== class_name) {
-                            d3.select('.' + da.title).select('.lines').select('path').style("opacity", 1); 
+                            d3.select('.' + da.title).select('.lines').select('path').style("opacity", 1);
                         } else {
-                            d3.select('.' + da.title).select('.lines').select('path').style("stroke", da.color); 
-                            d3.select('.' + da.title).select('.points').selectAll('circle').style("fill", da.color);  
+                            d3.select('.' + da.title).select('.lines').select('path').style("stroke", da.color);
+                            d3.select('.' + da.title).select('.points').selectAll('circle').style("fill", da.color);
                         }
                         d3.select('.' + da.title).select('.points').selectAll('circle').style("opacity", 1);
                     })
