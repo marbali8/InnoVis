@@ -5,16 +5,16 @@ import company_data from '../../data/company_details'
 import {keyBy} from 'lodash'
 // import styles from '../../globalStyle.module.scss';
 
-const fontSizeOfCompanyDetail = 30;
-const maxZoomScale = 9;
+const fontSizeOfCompanyDetail = 30 / 2; // /2 because scale for balls and tooltip increased by 2 in y and x axis
+const maxZoomScale = 8;
+const minZoomScale = 0.5;
 
 const MegaBalls = ({
-    height = 500,
-    width = 1000,
+    height = window.innerHeight,
+    width = window.innerWidth,
     margin = { left: 0, right: 0, top: 0, bottom: 0 },
     year = 2010,
     data = [],
-    category,
 }) => {
 
     const anchor = useRef();
@@ -66,7 +66,7 @@ const MegaBalls = ({
 
                 const anchorNode = d3.select(anchor.current)
                     .attr("preserveAspectRatio", "xMinYMin meet")
-                    .attr("viewBox", "0 0 " + width + " " + height)
+                    .attr("viewBox", "0 0" + (width) + " " + (height))
                     .attr("overflow", 'visible')
                     .classed("svg-content", true)
 
@@ -78,9 +78,9 @@ const MegaBalls = ({
 
                 zoom.current = d3.zoom();
                 zoom.current.scaleExtent([1, maxZoomScale]);
-                canvas.append('g').classed('balls', true).attr("transform", "translate(" + width / 2 + "," + height / 1.8 + ")");
+                canvas.append('g').classed('balls', true).attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(2,2)");
 
-                canvas.append('g').classed('tooltip', true).attr("transform", "translate(" + width / 2 + "," + height / 1.8 + ")")
+                canvas.append('g').classed('tooltip', true).attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(2,2)")
                     .append('text')
                     .attr('class', 'companyTooltip')
                     .attr("font-weight", 450)
@@ -95,8 +95,10 @@ const MegaBalls = ({
                     .append('tspan');
 
                 // setup zoom functionality
+                zoom.current = d3.zoom();
+                zoom.current.scaleExtent([minZoomScale, maxZoomScale]);
                 anchorNode.call(zoom.current.on("zoom", function () {
-                    anchorNode.select("g").attr("transform", d3.event.transform);
+                    anchorNode.select(".canvas").attr("transform", d3.event.transform);
                     const fontSize = d3.event.transform.k >= 1 ? fontSizeOfCompanyDetail / d3.event.transform.k : fontSizeOfCompanyDetail;
                     d3.select('.companyTooltip').attr("font-size", (fontSize) + "px");
                 }));
@@ -105,21 +107,21 @@ const MegaBalls = ({
 
         function resetZoom() {
             zoom.current = d3.zoom();
-            zoom.current.scaleExtent([1, maxZoomScale]);
+            zoom.current.scaleExtent([0.5, maxZoomScale]);
             d3.select(anchor.current).selectAll(".canvas").transition().duration(1000).attr("transform", d3.zoomIdentity);
             d3.select(anchor.current).call(zoom.current.transform, d3.zoomIdentity);
         }
 
         function setupSimulation() {
             simulation.current = d3.forceSimulation()
-                .force("forceX", d3.forceX().strength(-0.01).x(0))
-                .force("forceY", d3.forceY().strength(-0.01).y(0))
+                .force("forceX", d3.forceX().strength(-0.04).x(0))
+                .force("forceY", d3.forceY().strength(-0.04).y(0))
                 .force("charge", d3.forceManyBody().strength(-1))
                 .force('collision', d3.forceCollide().radius((d) => { return d.size; }))
-                .force("charge", d3.forceManyBody().strength(-3))
+                .force("charge", d3.forceManyBody().strength(-2))
                 .velocityDecay(0.83)
-                .force("collide", d3.forceCollide().strength(1).radius((d) => { return d.size })
-                    .iterations(10));
+            //.force("collide", d3.forceCollide().strength(1).radius((d) => { return d.size })
+            //.iterations(10));
         }
 
         function drawBalls() {
@@ -133,10 +135,14 @@ const MegaBalls = ({
                         return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d.revenue + 'SEK revenue in ' + year;
                     });
             })
+                .attr("opacity", 0.9);
 
             balls.transition()
                 .duration(500)
                 .attr("r", (d) => d.size);
+
+
+            // d3.select(anchor.current).append('circle').attr('cx', width / 2).attr('cy', height / 2).attr('r', 100);
 
             var enter = balls.enter()
                 .append("circle")
@@ -145,6 +151,7 @@ const MegaBalls = ({
                 .attr("fill", function (d) {
                     return getColorByCompanyCategory(d.id)
                 })
+                .attr("opacity", 0.9)
                 .on('mouseenter', function (d) {
                     var self = d3.select(this);
                     const x = self.attr('cx');
@@ -152,7 +159,7 @@ const MegaBalls = ({
 
                     d3.select('.companyTooltip')
                         .attr("x", (x + width / 2))
-                        .attr("y", y)
+                        .attr("y", y + height / 2)
                         .text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
                         .transition()
                         .delay(20)
@@ -226,10 +233,13 @@ const MegaBalls = ({
             simulation.current.stop();
         }
 
-    }, [data, year, height, width]); // useEffect
+    }, [year, width, height, data.nodes]); // useEffect
 
     return <React.Fragment>
-        <svg overflow='visible' height={height} width={width} ref={anchor} />
+
+        <svg overflow='visible'
+            height={height} width={width} ref={anchor} />
+
     </React.Fragment>
 };
 

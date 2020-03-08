@@ -1,0 +1,29 @@
+@import '../../globalStyle.module.scss';
+
+.container{
+
+    display:inline-block;
+    display:flex;
+    flex-direction:column;
+
+
+    .categoryRow{
+
+        height:35px;
+        width:900px;
+
+        align-items: center;
+        display:flex;
+
+        .companyLabel{
+             font-family:$font;
+             font-size: 20px;
+             margin-top:1px;
+        }
+    }
+
+    
+
+
+
+}
