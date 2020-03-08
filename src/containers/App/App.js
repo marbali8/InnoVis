@@ -58,8 +58,9 @@ function App() {
                     <CompanyLabel data={megaballData} year={year}></CompanyLabel>
                 </div>
                 <div className={classes.footer}>
-                    Developed as part of Information Visualization at KTH for KTH Innovation by Alex, Alvin, Christina,
-                    Hannah, Jacob and Mar.
+                    <p> This data is taken from tax revenue and was provided by KTH Innovation. </p>
+                    <p>Developed as part of Information Visualization at KTH for KTH Innovation by <a href="mailto:hesseb@kth.se">Alexander Hesseborn</a>, <a href="mailto:alvinh@kth.se">Alvin Häger</a>, <a href="mailto:sonebo@kth.se">Christina Sonebo</a>, <a href="mailto:hcbayat@kth.se">Hannah Clara Bayat</a>, <a href="mailto:jacobel@kth.se">Jacob von Eckermann</a> and <a href="mailto:marbr@kth.se">Mar Balibrea</a>. </p>
+
             </div>
 
             </div>
