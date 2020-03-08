@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
+import classes from './MegaBallsView_v2.module.scss';
+
 // import styles from '../../globalStyle.module.scss';
 
 const fontSizeOfCompanyDetail = 30 / 2; // /2 because scale for balls and tooltip increased by 2 in y and x axis
@@ -15,10 +17,18 @@ const MegaBalls = ({
     data = [],
 }) => {
 
+    const [tooltipName, setTooltipName] = useState("");
+    const [tooltipEmployees, setTooltipEmployees] = useState("");
+    const [tooltipRevenue, setTooltipRevenue] = useState("");
+    const [tooltipPosition, setTooltipPosition] = useState({x: 0, y: 0});
     const anchor = useRef();
     const didMount = useRef(false);
     const simulation = useRef(null);
     const zoom = useRef(null);
+
+    function onCursorMove(e) {
+      setTooltipPosition({x: e.nativeEvent.offsetX + 5, y: e.nativeEvent.offsetY + 5})
+    }
 
     useEffect(() => {
         setupContainersOnMount();
@@ -26,7 +36,7 @@ const MegaBalls = ({
         drawBalls();
         didMount.current = true;
 
-        //----- FUNCTION DEFINITIONS ------------------------------------------------------// 
+        //----- FUNCTION DEFINITIONS ------------------------------------------------------//
         function setupContainersOnMount() {
 
             if (!didMount.current) {
@@ -45,18 +55,18 @@ const MegaBalls = ({
                 canvas.append('g').classed('balls', true).attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(2,2)");
 
                 canvas.append('g').classed('tooltip', true).attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(2,2)")
-                    .append('text')
-                    .attr('class', 'companyTooltip')
-                    .attr("font-weight", 450)
-                    .attr('x', 0)
-                    .attr('y', 0)
-                    .attr('text-anchor', 'middle')
-                    .style('font', "Open Sans")
-                    .attr("font-size", fontSizeOfCompanyDetail)
-                    .attr("cursor", "none")
-                    .attr("pointer-events", "none")
-                    .attr("opacity", 0)
-                    .append('tspan');
+                    // .append('text')
+                    // .attr('class', 'companyTooltip')
+                    // .attr("font-weight", 450)
+                    // .attr('x', 0)
+                    // .attr('y', 0)
+                    // .attr('text-anchor', 'middle')
+                    // .style('font', "Open Sans")
+                    // .attr("font-size", fontSizeOfCompanyDetail)
+                    // .attr("cursor", "none")
+                    // .attr("pointer-events", "none")
+                    // .attr("opacity", 0)
+                    // .append('tspan');
 
                 // setup zoom functionality
                 zoom.current = d3.zoom();
@@ -116,25 +126,37 @@ const MegaBalls = ({
                     return getColorByCompanyCategory(d.id)
                 })
                 .attr("opacity", 0.9)
-                .on('mouseenter', function (d) {
+                .on('mouseenter', function (d, e) {
                     var self = d3.select(this);
                     const x = self.attr('cx');
                     const y = self.attr('cy');
-
-                    d3.select('.companyTooltip')
+                    setTooltipName(d.name)
+                    setTooltipEmployees(d.employees)
+                    setTooltipRevenue(d.revenue)
+                    console.log(x, y)
+                    setTooltipPosition({x: e.clientX, y: e.clientY})
+                    /*
+                    d3.select('.tooltip')
+                        .append('rect')
+                        .attr('class', 'companybox')
+                        .attr('width', '100')
+                        .attr('height', '100')
                         .attr("x", (x + width / 2))
                         .attr("y", y + height / 2)
-                        .text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
-                        .transition()
-                        .delay(20)
-                        .attr("opacity", 1).select("tspan")
-                        .attr("font-weight", 300)
-                        .text(" but this is not.");
+                        .style('fill', 'white')
+                    */
+                        //.text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
+                        //.transition()
+                        //.delay(20)
+                        //.attr("opacity", 1).select("tspan")
+                        //.attr("font-weight", 300)
+                        //.text(" but this is not.");
                 })
                 .on('mouseout', function (d) {
-                    d3.select('.companyTooltip')
-                        .attr("opacity", 0)
-                        .text("");
+                    d3.select('.companybox').remove()
+                    setTooltipName("")
+                        //.attr("opacity", 0)
+                        //.text("");
                 })
                 .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
@@ -171,19 +193,24 @@ const MegaBalls = ({
 
     }, [year, width, height, data.nodes]); // useEffect
 
-    return <React.Fragment>
+    return <div onMouseMove={onCursorMove}>
 
+        <div className={classes.tooltipBox} style={{display: tooltipName ? 'block' : 'none', left: `${tooltipPosition.x}px`, top: `${tooltipPosition.y}px` }}>
+          <div className={classes.tooltipName}>{tooltipName}</div>
+          <div className={classes.tooltipEmployees}><b>Number of employees:</b> {tooltipEmployees}</div>
+          <div className={classes.tooltipRevenue}><b>Revenue:</b> {tooltipRevenue} SEK</div>
+        </div>
         <svg overflow='visible'
             height={height} width={width} ref={anchor} />
 
-    </React.Fragment>
+      </div>
 };
 
 export default MegaBalls;
 
 
 
-//old code: 
+//old code:
 
     // const nodes = data.nodes.map((node) => {
     //     let copyNode;
