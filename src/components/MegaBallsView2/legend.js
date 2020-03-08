@@ -60,7 +60,7 @@ const BallsLegend = ({
                     .attr('text-anchor', 'middle');
 
                 d3.selectAll('.details')
-                    .text("company revenue");
+                    .text("Company revenue");
 
             }
         }

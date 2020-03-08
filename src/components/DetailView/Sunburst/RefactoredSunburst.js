@@ -101,8 +101,9 @@ const Sunburst = ({
                     d3.selectAll(".center_text").text(d.data.fractional)
                         .style("font-size", "30px")
                         .style("font-weight", 750);
+
                     d3.select('.balls').selectAll('circle').attr('opacity', 0.1);
-                    d3.select('.balls').selectAll("._" + d.index).attr('opacity', 0.8);
+                    d3.select('.balls').selectAll("._" + d.index).attr('opacity', 0.9);
                 })
                 .on('mouseleave', function (d) {
                     d3.selectAll('.arc').attr("opacity", 1.0);
