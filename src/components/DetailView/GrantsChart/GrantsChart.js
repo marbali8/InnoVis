@@ -226,7 +226,7 @@ const GrantsChart = ({ onYearClicked }) => {
                   .attr('font-size', 20)
                   .attr('font-family', 'Open Sans')
                   .attr('font-style', 'italic')
-                  .text(class_name === 'total' ? class_name: 'by ' + class_name)
+                  .text(class_name === 'total' ? class_name : 'ideas by ' + class_name)
                   .on('mouseover', function (_) {
 
                       this.style.fontWeight = 'bold';
@@ -256,7 +256,7 @@ const GrantsChart = ({ onYearClicked }) => {
                           d3.select('.' + da.title).select('.points').selectAll('circle').style("opacity", 1);
                       })
                   });
-            }  
+            }
 
         }
 
