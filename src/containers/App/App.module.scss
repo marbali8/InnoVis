@@ -4,135 +4,168 @@
 // this is like a function that takes in opacity: (0-1), blurLevel= a number with px appended e.g. '15px'
 // and applies the blur effect to whatever element the css selector applies to!
 // see here for more details: https://sass-lang.com/documentation/at-rules/mixin
-@mixin blurEffect($opacity,$blurLevel){
+@mixin blurEffect($opacity,$blurLevel) {
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     -webkit-backdrop-filter: blur($blurLevel);
     backdrop-filter: blur($blurLevel);
     // opacity set to 1 for now since people hate blur :( 
-    background-color: rgba(255, 255, 255, $opacity);  
+    background-color: rgba(255, 255, 255, $opacity);
   }
 }
 
+
 .App {
-  height:100vh;
-  width:100vw;
+  height: 100vh;
+  width: 100vw;
   font-family: $font;
-  position:relative;
+  position: relative;
+  //background-color:green;
 
   // removes ability to scroll page! comment out for debugging purposes
   // overflow:hidden;
-  
+
   // megaballs is out of content flow, so places outside. (positioned absolutely behind content)
-  .megaBallsView{
-    position:relative;
-    position:absolute;
+  .megaBallsView {
+    position: absolute;
   }
 
-    .content{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-self:center;
+  .legend {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 45px;
+    top: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    @include blurEffect(0.5, 15px)
+  }
 
-      padding-top:50px;
-      
-      .header {
-        position:relative;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        
-        .titleAndSubtitleWrapper {
-          border-top: 2px solid;
-          text-align:center;
-         
-          .title {
-          
+  .aggregateView {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 45px;
+    bottom: 50px;
+    border-radius: 10px;
+    @include blurEffect(0.5, 15px)
+  }
+
+  .content {
+    //position:relative;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    margin: 0 auto;
+
+    padding-top: 50px;
+
+    .infoButton {
+      position: absolute;
+      top: 45px;
+      right:80px;
+    }
+
+    
+
+    .header {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 40px;
+
+      .titleAndSubtitleWrapper {
+        border-top: 2px solid;
+        text-align: center;
+
+        .title {
           font-weight: bold;
           font-size: 60px;
           border-bottom: 2px solid;
-          }
-          .subtitle {
-          margin-top:10px;
+        }
+
+        .subtitle {
+          margin-top: 10px;
           font-size: 20px;
           font-style: italic;
-          }
         }
       }
+    }
 
-    .ballsLegend{
+    .introductionText{
+      width:900px;
+      height:300px;
+      font-size: 25px;
+      font-family:$font;
+      display: flex;
+      flex-direction:column;
+      text-align:center; justify-self: center;
+      z-index:2;
+    }
+
+    .ballsLegend {
       // display inline block is just temporary so that the element doesn't spread horizontally
       // which stops you from being able to drag the circle
+      z-index: 2;
+    }
+
+    .sunburst {
       // display:inline-block;
-      z-index:2;
-      position:relative;
-    }
-       
-    .companyLabel{
-      background-color:white;
-   
+      z-index: 2;
+      position: absolute;
+      left: 45px;
+      bottom: 80px;
     }
 
-    .sunburst{
-      // display:inline-block;
-      z-index:2;
-      position:relative;
+    .grantsChart {
+      border-radius: 10px;
+      padding: 20px;
+      z-index: 2;
     }
 
-    .grantsChart{
-      border-radius:10px;
-      // display:inline-block;
-      padding:20px;
-      z-index:2;
-      position:relative;
-      @include blurEffect(0.7,15px);
+    .footer {
+      padding: 10px;
+      text-align: center;
+      font-family: $font;
+      font-size: 10px;
+      font-style: italic;
+
+      position: absolute;
+      bottom: 55px;
+      z-index: 2;
     }
 
-  .footer {
-    position:relative;
-    padding: 10px;
-    text-align: center;
-    font-family: $font;
-    // border-radius: 5px;
-    font-size: 10px;
-    font-style: italic;
-    color: #65656c;
-  }
+    a:link {
+      color: #000000;
+      text-decoration: none;
+    }
 
-  a:link { 
-    color: #000000;
-    text-decoration: none; 
-  }
+    .infobox {
+      position: relative;
+      fill: black;
+      font-family: "Open Sans", sans-serif;
+      font-size: 16px;
+      z-index: 2;
 
-  .infobox {
-    // display:inline-block;
-    position:relative;
-    fill: black;
-    font-family: "Open Sans", sans-serif;
-    font-size: 16px;
-    z-index:2;
-  }
+    }
 
-  .timeSlider{
-    position:relative;
-    padding:10px;
-    border-radius:10px;
-    z-index:2;
+    .timeSlider {
+      position: absolute;
+      bottom: 50px;
+      padding: 20px;
+      border-radius: 100px;
+      z-index: 2;
+      @include blurEffect(0.1, 15px);
+    }
 
-    @include blurEffect(0.1,15px);
-  }
-
-  .companyLabel{
-   border-radius:10px;
-   position:relative;
-   z-index:2;
-   @include blurEffect(1,15px);
-  }
+    .companyLabel {
+      z-index: 2;
+    }
 
   }
 
-} //app
+}
 
-
-
-
+//app
