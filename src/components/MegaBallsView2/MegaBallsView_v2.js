@@ -20,14 +20,14 @@ const MegaBalls = ({
     const [tooltipName, setTooltipName] = useState("");
     const [tooltipEmployees, setTooltipEmployees] = useState("");
     const [tooltipRevenue, setTooltipRevenue] = useState("");
-    const [tooltipPosition, setTooltipPosition] = useState({x: 0, y: 0});
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
     const anchor = useRef();
     const didMount = useRef(false);
     const simulation = useRef(null);
     const zoom = useRef(null);
 
     function onCursorMove(e) {
-      setTooltipPosition({x: e.nativeEvent.offsetX + 5, y: e.nativeEvent.offsetY + 5})
+        setTooltipPosition({ x: e.nativeEvent.offsetX + 5, y: e.nativeEvent.offsetY + 5 })
     }
 
     useEffect(() => {
@@ -55,18 +55,18 @@ const MegaBalls = ({
                 canvas.append('g').classed('balls', true).attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(2,2)");
 
                 canvas.append('g').classed('tooltip', true).attr("transform", "translate(" + width / 2 + "," + height / 2 + ") scale(2,2)")
-                    // .append('text')
-                    // .attr('class', 'companyTooltip')
-                    // .attr("font-weight", 450)
-                    // .attr('x', 0)
-                    // .attr('y', 0)
-                    // .attr('text-anchor', 'middle')
-                    // .style('font', "Open Sans")
-                    // .attr("font-size", fontSizeOfCompanyDetail)
-                    // .attr("cursor", "none")
-                    // .attr("pointer-events", "none")
-                    // .attr("opacity", 0)
-                    // .append('tspan');
+                // .append('text')
+                // .attr('class', 'companyTooltip')
+                // .attr("font-weight", 450)
+                // .attr('x', 0)
+                // .attr('y', 0)
+                // .attr('text-anchor', 'middle')
+                // .style('font', "Open Sans")
+                // .attr("font-size", fontSizeOfCompanyDetail)
+                // .attr("cursor", "none")
+                // .attr("pointer-events", "none")
+                // .attr("opacity", 0)
+                // .append('tspan');
 
                 // setup zoom functionality
                 zoom.current = d3.zoom();
@@ -133,8 +133,7 @@ const MegaBalls = ({
                     setTooltipName(d.name)
                     setTooltipEmployees(d.employees)
                     setTooltipRevenue(d.revenue)
-                    console.log(x, y)
-                    setTooltipPosition({x: e.clientX, y: e.clientY})
+                    setTooltipPosition({ x: e.clientX, y: e.clientY })
                     /*
                     d3.select('.tooltip')
                         .append('rect')
@@ -145,18 +144,18 @@ const MegaBalls = ({
                         .attr("y", y + height / 2)
                         .style('fill', 'white')
                     */
-                        //.text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
-                        //.transition()
-                        //.delay(20)
-                        //.attr("opacity", 1).select("tspan")
-                        //.attr("font-weight", 300)
-                        //.text(" but this is not.");
+                    //.text(() => { return d.name + ": " + (d.employees === null ? '0' : d.employees) + " employee(s) & " + d3.format(",")(d.revenue) + ' SEK revenue in ' + year })
+                    //.transition()
+                    //.delay(20)
+                    //.attr("opacity", 1).select("tspan")
+                    //.attr("font-weight", 300)
+                    //.text(" but this is not.");
                 })
                 .on('mouseout', function (d) {
                     d3.select('.companybox').remove()
                     setTooltipName("")
-                        //.attr("opacity", 0)
-                        //.text("");
+                    //.attr("opacity", 0)
+                    //.text("");
                 })
                 .attr('fill-opacity', 1.0)
                 .attr("stroke", d => d.error ? "red" : "black")
@@ -195,15 +194,15 @@ const MegaBalls = ({
 
     return <div onMouseMove={onCursorMove}>
 
-        <div className={classes.tooltipBox} style={{display: tooltipName ? 'block' : 'none', left: `${tooltipPosition.x}px`, top: `${tooltipPosition.y}px` }}>
-          <div className={classes.tooltipName}>{tooltipName}</div>
-          <div className={classes.tooltipEmployees}><b>Number of employees:</b> {tooltipEmployees}</div>
-          <div className={classes.tooltipRevenue}><b>Revenue:</b> {tooltipRevenue} SEK</div>
+        <div className={classes.tooltipBox} style={{ display: tooltipName ? 'block' : 'none', left: `${tooltipPosition.x}px`, top: `${tooltipPosition.y}px` }}>
+            <div className={classes.tooltipName}>{tooltipName}</div>
+            <div className={classes.tooltipEmployees}><b>Number of employees:</b> {tooltipEmployees}</div>
+            <div className={classes.tooltipRevenue}><b>Revenue:</b> {tooltipRevenue} SEK</div>
         </div>
         <svg overflow='visible'
             height={height} width={width} ref={anchor} />
 
-      </div>
+    </div>
 };
 
 export default MegaBalls;
