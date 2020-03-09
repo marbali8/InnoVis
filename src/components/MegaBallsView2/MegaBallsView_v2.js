@@ -2,12 +2,17 @@ import React, { useEffect, useRef, useMemo, useState } from "react";
 import * as d3 from 'd3';
 import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
 import classes from './MegaBallsView_v2.module.scss';
+import data from '../../data/companies_details.json';
+import {keyBy} from 'lodash';
 
 // import styles from '../../globalStyle.module.scss';
 
 const fontSizeOfCompanyDetail = 30 / 2; // /2 because scale for balls and tooltip increased by 2 in y and x axis
 const maxZoomScale = 8;
 const minZoomScale = 0.5;
+
+const companies = keyBy(data, 'name');
+
 
 const MegaBalls = ({
     height = window.innerHeight,
@@ -21,6 +26,16 @@ const MegaBalls = ({
     const [tooltipEmployees, setTooltipEmployees] = useState("");
     const [tooltipRevenue, setTooltipRevenue] = useState("");
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+    const [tooltipFounded, setTooltipFounded] = useState("");
+    const [tooltipFounders, setTooltipFounders] = useState("");
+    const [tooltipInfo, setTooltipInfo] = useState("");
+    const [tooltipWebsite, setTooltipWebsite] = useState("");
+    const [foundedIn, setFoundedIn] = useState("");
+    const[foundedBy, setFoundedBy] = useState("");
+
+
+
+
     const anchor = useRef();
     const didMount = useRef(false);
     const simulation = useRef(null);
@@ -134,6 +149,23 @@ const MegaBalls = ({
                     setTooltipEmployees(d.employees)
                     setTooltipRevenue(d.revenue)
                     setTooltipPosition({ x: e.clientX, y: e.clientY })
+
+                    if(d && Object.keys(companies).includes(d.name)){
+                      setFoundedIn("Founded in: ")
+                      setFoundedBy("Founders: ")
+                      setTooltipFounded(companies[d.name].founded);
+                      setTooltipFounders(companies[d.name].founders);
+                      setTooltipInfo(companies[d.name].info);
+                      setTooltipWebsite(companies[d.name].website);
+                    } else {
+                      setFoundedIn("")
+                      setFoundedBy("")
+                      setTooltipFounded("")
+                      setTooltipFounders("")
+                      setTooltipInfo("")
+                      setTooltipWebsite("")
+                    }
+
                     /*
                     d3.select('.tooltip')
                         .append('rect')
@@ -198,15 +230,18 @@ const MegaBalls = ({
             <div className={classes.tooltipName}>{tooltipName}</div>
             <div className={classes.tooltipEmployees}><b>Number of employees:</b> {tooltipEmployees}</div>
             <div className={classes.tooltipRevenue}><b>Revenue:</b> {tooltipRevenue} SEK</div>
+            <div className={classes.tooltipFounded}><b>{foundedIn}</b> {tooltipFounded}</div>
+            <div className={classes.tooltipFounders}><b>{foundedBy}</b>{tooltipFounders}</div>
+            <div className={classes.tooltipInfo}>{tooltipInfo}</div>
+            <a href={tooltipWebsite} className={classes.tooltipWebsite}>{tooltipWebsite}</a>
         </div>
         <svg overflow='visible'
             height={height} width={width} ref={anchor} />
-
+          paste
     </div>
 };
 
 export default MegaBalls;
-
 
 
 //old code:
