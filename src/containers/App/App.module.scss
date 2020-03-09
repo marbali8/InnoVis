@@ -109,10 +109,10 @@
       // border-radius: 5px;
       font-size: 10px;
       font-style: italic;
-      color: #65656c;
 
       position: absolute;
-      bottom: 50px;
+      bottom: 55px;
+      z-index: 2;
     }
 
     a:link {
