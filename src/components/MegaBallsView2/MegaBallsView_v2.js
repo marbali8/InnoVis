@@ -61,7 +61,25 @@ const MegaBalls = ({
                     .attr("overflow", 'visible')
                     .classed("svg-content", true)
 
+
                 let canvas = anchorNode.append('g').classed("canvas", true);
+                //glow definitions
+                let defs = anchorNode.append("defs");
+                let filter = defs.append("filter")
+                                 .attr("id","glow")
+                                 .attr("x", "-5000%")
+                                 .attr("y", "-5000%")
+                                 .attr("width", "10000%")
+                                 .attr("height", "10000%");
+
+                filter.append("feGaussianBlur")
+                      .attr("stdDeviation","8.0")
+                      .attr("result","coloredBlur");
+                let feMerge = filter.append("feMerge");
+                          feMerge.append("feMergeNode")
+                                 .attr("in","coloredBlur");
+                          feMerge.append("feMergeNode")
+                                 .attr("in","SourceGraphic");
 
                 zoom.current = d3.zoom();
                 zoom.current.scaleExtent([1, maxZoomScale]);
@@ -198,13 +216,13 @@ const MegaBalls = ({
                 .attr("stroke", d => d.error ? "red" : "black")
                 .style("stroke-width", '1px')
                 .attr("vector-effect", "non-scaling-stroke")
-                .attr('stroke-opacity', function (d) {
+                .attr("stroke-opacity", 0.2)
+                .style("filter", function (d) {
                     //TODO: GLOW
                     if (Object.keys(companies).includes(d.name)) {
-                        console.log(d.name);
-                        return 1;
+                        return "url(#glow)";
                     }
-                    return 0.2;
+                        return "";
                 })
                 .transition(d3.easeLinear)
                 .duration(700)
