@@ -47,17 +47,17 @@ const Infobox = ({onYearClicked}) => {
             const largeSpace = 20;
 
             //title
-            var y = margin.top + largeFont / 2;
+            /*var y = margin.top + largeFont / 2;
             svg
                 .append('text')
                 .attr("x", width/2)
                 .attr("y", y)
                 .attr('font-size', 18)
                 .attr('text-anchor', 'middle')
-                .text("title?");
+                .text("title?");*/
 
             //ideas
-            y = y + largeSpace + largeSpace + smallSpace;
+            var y = margin.top + largeFont / 2 + largeSpace + largeSpace + smallSpace;
             var diff = 0;
             svg
                 .append('text')

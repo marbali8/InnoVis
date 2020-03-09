@@ -9,6 +9,7 @@ import CompanyLabel from '../../components/Legend/CompanyColorLegend.js'
 import BallsLegend from '../../components/MegaBallsView2/legend.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 import useDebounce from '../../hooks/useDebounce.js';
+import InfoButton from '../../components/InfoButton/InfoButton.js';
 
 function App() {
 
@@ -20,8 +21,12 @@ function App() {
         setYear(year);
     };
 
-    const megaballData = useMemo(() => { return getDataForMegaballs(debouncedYear) }, [debouncedYear]);
-    const dataForSunburst = useMemo(() => { return getDataForSunburst(debouncedYear) }, [debouncedYear]);
+    const megaballData = useMemo(() => {
+        return getDataForMegaballs(debouncedYear)
+    }, [debouncedYear]);
+    const dataForSunburst = useMemo(() => {
+        return getDataForSunburst(debouncedYear)
+    }, [debouncedYear]);
 
     const header =
         <div className={classes.header}>
@@ -37,34 +42,50 @@ function App() {
                 <MegaBalls data={megaballData} year={debouncedYear} />
             </div>
 
-            <div className={classes.content}>
-                {header}
+            <div className={classes.legend}>
+                <div className={classes.companyLabel}>
+                    <CompanyLabel data={megaballData} year={year} />
+                </div>
                 <div className={classes.ballsLegend}>
                     <BallsLegend />
                 </div>
+            </div>
+
+            <div className={classes.content}>
+
+                <div className={classes.infoButton}>
+                    <InfoButton />
+                </div>
+
+
+
+                {header}
                 <div className={classes.timeSlider}>
                     <TimeSlider onYearClicked={handleTimeSliderYearClicked} />
                 </div>
                 <div className={classes.sunburst}>
                     <Sunburst data={dataForSunburst} />
                 </div>
-                <div className={classes.grantsChart}>
-                    <GrantsChart onYearClicked={debouncedYear} />
-                </div>
-                <div className={classes.infobox}>
-                    <Infobox onYearClicked={debouncedYear} />
-                </div>
-                <div className={classes.companyLabel}>
-                    <CompanyLabel data={megaballData} year={year}/>
+                <div className={classes.aggregateView}>
+                    <div className={classes.infobox}>
+                        <Infobox onYearClicked={debouncedYear} />
+                    </div>
+                    <div className={classes.grantsChart}>
+                        <GrantsChart onYearClicked={debouncedYear} />
+                    </div>
                 </div>
                 <div className={classes.footer}>
-                    <p> This data is taken from tax revenue and was provided by KTH Innovation. </p>
-                    <p>Developed as part of Information Visualization at KTH for KTH Innovation by <a href="mailto:hesseb@kth.se">Alexander Hesseborn</a>, <a href="mailto:alvinh@kth.se">Alvin Häger</a>, <a href="mailto:sonebo@kth.se">Christina Sonebo</a>, <a href="mailto:hcbayat@kth.se">Hannah Clara Bayat</a>, <a href="mailto:jacobel@kth.se">Jacob von Eckermann</a> and <a href="mailto:marbr@kth.se">Mar Balibrea</a>. </p>
+                    <p> This data is taken from tax revenue and was provided by KTH Innovation </p>
+                    <p>Developed as part of Information Visualization at KTH for KTH Innovation by <a
+                        href="mailto:hesseb@kth.se">Alexander Hesseborn</a>, <a href="mailto:alvinh@kth.se">Alvin
+                        Häger</a>, <a href="mailto:sonebo@kth.se">Christina Sonebo</a>, <a href="mailto:hcbayat@kth.se">Hannah
+                        Clara Bayat</a>, <a href="mailto:jacobel@kth.se">Jacob von Eckermann</a> and <a
+                            href="mailto:marbr@kth.se">Mar Balibrea</a>. </p>
+
+                </div>
 
             </div>
-
-            </div>
-        </div >
+        </div>
     );
 }
 
