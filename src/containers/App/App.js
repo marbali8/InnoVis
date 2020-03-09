@@ -9,6 +9,7 @@ import CompanyLabel from '../../components/Legend/CompanyColorLegend.js'
 import BallsLegend from '../../components/MegaBallsView2/legend.js'
 import { getDataForSunburst, getDataForMegaballs } from '../../data/data_functions.js';
 import useDebounce from '../../hooks/useDebounce.js';
+import InfoButton from '../../components/InfoButton/InfoButton.js';
 
 function App() {
 
@@ -51,6 +52,10 @@ function App() {
             </div>
 
             <div className={classes.content}>
+
+                <InfoButton />
+
+
                 {header}
                 <div className={classes.timeSlider}>
                     <TimeSlider onYearClicked={handleTimeSliderYearClicked} />
