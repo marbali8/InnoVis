@@ -19,7 +19,7 @@
   width: 100vw;
   font-family: $font;
   position: relative;
-  //background-color:red;
+  //background-color:green;
 
   // removes ability to scroll page! comment out for debugging purposes
   // overflow:hidden;
@@ -27,6 +27,16 @@
   // megaballs is out of content flow, so places outside. (positioned absolutely behind content)
   .megaBallsView {
     position: absolute;
+  }
+
+  .aggregateView {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 45px;
+    bottom: 50px;
+    border-radius: 10px;
+    @include blurEffect(0.5, 15px)
   }
 
   .content {
@@ -39,9 +49,6 @@
     margin: 0 auto;
 
     padding-top: 50px;
-
-    //background-color: red;
-
 
     .header {
       position: relative;
@@ -82,7 +89,6 @@
     .sunburst {
       // display:inline-block;
       z-index: 2;
-      //position: relative;
       position: absolute;
       left: 45px;
       bottom: 45px;
@@ -93,16 +99,11 @@
       // display:inline-block;
       padding: 20px;
       z-index: 2;
-      position: relative;
-      @include blurEffect(0.7, 15px);
+      //@include blurEffect(0.7, 15px);
 
-      position: absolute;
-      right: 55px;
-      bottom: 45px;
     }
 
     .footer {
-      position: relative;
       padding: 10px;
       text-align: center;
       font-family: $font;
@@ -127,6 +128,7 @@
       font-family: "Open Sans", sans-serif;
       font-size: 16px;
       z-index: 2;
+
     }
 
     .timeSlider {
