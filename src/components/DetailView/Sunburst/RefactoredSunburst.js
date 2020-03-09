@@ -9,8 +9,8 @@ const transitionDuration = 900;
 /** Sunburst component that updates everytime a prop changes with a transition animation, takes in a list of data + other optional props
  data prop format example: [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] */
 const Sunburst = ({
-    widthHeightValue = 350,
-    margin = { top: 10, right: 10, bottom: 10, left: 10 },
+    widthHeightValue = 300,
+    margin = { top: 0, right: 0, bottom: 0, left: 0 },
     data = []
 }) => {
 

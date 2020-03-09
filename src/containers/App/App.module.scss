@@ -19,6 +19,7 @@
   width: 100vw;
   font-family: $font;
   position: relative;
+  background-color:red;
 
   // removes ability to scroll page! comment out for debugging purposes
   // overflow:hidden;
@@ -84,7 +85,7 @@
       //position: relative;
       position: absolute;
       left: 45px;
-      bottom: 50px;
+      bottom: 35px;
     }
 
     .grantsChart {
@@ -94,6 +95,10 @@
       z-index: 2;
       position: relative;
       @include blurEffect(0.7, 15px);
+
+      position: absolute;
+      right: 45px;
+      bottom: 45px;
     }
 
     .footer {
