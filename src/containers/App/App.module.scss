@@ -91,12 +91,7 @@
     .ballsLegend {
       // display inline block is just temporary so that the element doesn't spread horizontally
       // which stops you from being able to drag the circle
-      // display:inline-block;
       z-index: 2;
-      position: absolute;
-      left: 20px;
-      top: 50px;
-
     }
 
     .sunburst {
@@ -112,6 +107,7 @@
       // display:inline-block;
       padding: 20px;
       z-index: 2;
+
       //@include blurEffect(0.7, 15px);
 
     }

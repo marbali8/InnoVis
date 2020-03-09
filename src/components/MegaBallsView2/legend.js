@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 
 const BallsLegend = ({
     height = 80, width = 1000,
-    margin = { left: 0, right: 0, top: 10, bottom: 0 },
+    margin = { left: 0, right: 0, top: 20, bottom: 0 },
 }) => {
 
     const anchor = useRef();
@@ -46,7 +46,7 @@ const BallsLegend = ({
                     .attr("r", function (d) { return d.radius / 1.3; })
                     .style("fill", "transparent")
                     .attr("stroke", "black")
-                    .attr("stroke-width", 2)
+                    .attr("stroke-width", 1.5)
                     .style("stroke-dasharray", ("4,2"));
 
                 canvas
@@ -54,7 +54,7 @@ const BallsLegend = ({
                     .attr('class', 'details')
                     .attr('x', (circleX + maxR * 4))
                     .attr('y', height / 2 / 1.3 - 8)
-                    .style("font-size", "18px")
+                    .style("font-size", 18)
                     .attr("font-weight", 500)
                     .attr('text-anchor', 'middle');
 
@@ -65,7 +65,7 @@ const BallsLegend = ({
         }
     }, [height, margin.bottom, margin.left, margin.right, margin.top, width]); // useEffect
 
-    return <React.Fragment><svg height={height} width={width} ref={anchor} /> </React.Fragment>;
+    return <React.Fragment><svg height={maxR * 2} width={width} ref={anchor} /> </React.Fragment>;
 };
 
 export default BallsLegend;
