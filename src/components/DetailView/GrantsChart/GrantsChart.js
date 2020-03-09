@@ -11,8 +11,8 @@ const GrantsChart = ({ onYearClicked }) => {
     const year_choice = onYearClicked;
     // set dimensions of the graph
     const margin = { top: 10, right: 20, bottom: 50, left: 20 };
-    const width = 400 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const width = 500 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
     const axis_height = height - 50;
 
     // state and ref to svg
@@ -24,10 +24,11 @@ const GrantsChart = ({ onYearClicked }) => {
     { title: 'students', color: '#696969' },
     { title: 'researchers', color: '#C0C0C0' }];
 
+    var scale_width = width - 40;
     // x axis
     var x_scale = d3.scaleOrdinal()
         .domain(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"])
-        .range([0, width / 12, width / 6, width / 4, width / 3, 5 * (width / 12), width / 2, 7 * (width / 12), 2 * (width / 3), 3 * (width / 4), 5 * (width / 6), 11 * (width / 12)]);
+        .range([0, scale_width / 12, scale_width / 6, scale_width / 4, scale_width / 3, 5 * (scale_width / 12), scale_width / 2, 7 * (scale_width / 12), 2 * (scale_width / 3), 3 * (scale_width / 4), 5 * (scale_width / 6), 11 * (scale_width / 12)]);
     var x_axis = d3.axisBottom().scale(x_scale);
 
     // y axis
@@ -44,8 +45,8 @@ const GrantsChart = ({ onYearClicked }) => {
     // code runs only if data has been fetched
     useEffect(() => {
 
-        setupContainersOnMount()
-        drawLinePlot()
+        setupContainersOnMount();
+        drawLinePlot();
         didMount.current = true;
 
 
@@ -107,29 +108,33 @@ const GrantsChart = ({ onYearClicked }) => {
             // title
 
             d3.select('.title').select('text')
-                .attr("transform", 'translate(15, ' + margin.top + ')')
-                .attr('font-size', '14')
+                //.attr("transform", 'translate(15, ' + margin.top + ')')
+                .attr('text-anchor', 'middle')
+                .attr('x', scale_width/2)
+                .attr('y', margin.top)
+                .attr('font-size', 20)
                 .attr('font-weight', 'bold')
                 .attr('font-family', 'Open Sans')
-                .attr('width', width)
-                .attr('align', 'center')
-                .text('Number of ideas supported in ' + year_choice)
+                .text('Number of ideas supported in ' + year_choice);
 
             // legend
 
-            d3.select('.legend').attr("transform", 'translate(0, ' + axis_height + ')')
+            d3.select('.legend').attr("transform", 'translate(0, ' + axis_height + ')');
             drawLegend(0); drawLegend(1); drawLegend(2);
 
             // axis
 
             d3.select('.xaxis')
                 .call(x_axis)
-                .attr("transform", 'translate(' + 0 + ' ' + (axis_height - margin.bottom) + ')')
-                .attr('font-family', 'Open Sans');
+                .attr("transform", 'translate(' + margin.left + ' ' + (axis_height - margin.bottom) + ')')
+                .attr('font-family', 'Open Sans')
+                .attr('font-size', 14);
 
             d3.select('.yaxis')
                 .call(y_axis)
-                .attr('font-family', 'Open Sans');
+                .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')')
+                .attr('font-family', 'Open Sans')
+                .attr('font-size', 14);
 
             // lines and points
 
@@ -156,11 +161,13 @@ const GrantsChart = ({ onYearClicked }) => {
                 .style("fill", 'none')
                 .transition().ease(d3.easeQuad)
                 .duration(500)
-                .attr("d", lineGenerator(data[data_index]));
+                .attr("d", lineGenerator(data[data_index]))
+                .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')');
 
             d3.select('.' + class_name).selectAll('circle').remove();
 
             d3.select('.' + class_name).select('.points')
+                .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')')
                 .selectAll('point')
                 .data(data[data_index])
                 .enter().append("circle")
@@ -195,7 +202,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
             const class_name = summary[data_index].title;
             const color = summary[data_index].color;
-            const where_y = data_index * 15;
+            const where_y = data_index * 20 - 5;
 
             d3.select('.legend_' + class_name)
                 .append('circle')
@@ -208,16 +215,16 @@ const GrantsChart = ({ onYearClicked }) => {
                 .append('line')
                 .attr('x1', 0).attr('x2', 20)
                 .attr('y1', -4 + where_y).attr('y2', -4 + where_y)
-                .style('stroke', color)
+                .style('stroke', color);
 
             d3.select('.legend_' + class_name)
                 .append('text')
                 .attr('x', 30)
                 .attr('y', where_y)
-                .attr('font-size', '12')
+                .attr('font-size', 20)
                 .attr('font-family', 'Open Sans')
                 .attr('font-style', 'italic')
-                .text(class_name == 'total' ? class_name: 'by ' + class_name)
+                .text(class_name === 'total' ? class_name: 'by ' + class_name)
                 .on('mouseover', function (_) {
 
                     this.style.fontWeight = 'bold';
