@@ -13,6 +13,7 @@
   }
 }
 
+
 .App {
   height:100vh;
   width:100vw;
@@ -24,17 +25,21 @@
   
   // megaballs is out of content flow, so places outside. (positioned absolutely behind content)
   .megaBallsView{
-    position:relative;
     position:absolute;
   }
 
     .content{
+      width:80%;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-self:center;
+      margin:0 auto;
 
       padding-top:50px;
+      
+
+      background-color:red;
       
       .header {
         position:relative;
