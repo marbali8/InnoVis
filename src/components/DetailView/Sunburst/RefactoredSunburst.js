@@ -9,12 +9,12 @@ const transitionDuration = 900;
 /** Sunburst component that updates everytime a prop changes with a transition animation, takes in a list of data + other optional props
  data prop format example: [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] */
 const Sunburst = ({
-    widthHeightValue = 300,
-    margin = { top: 0, right: 0, bottom: 0, left: 0 },
+    widthHeightValue = 600,
+    margin = { top: 50, right: 0, bottom: 0, left: 0 },
     data = []
 }) => {
 
-    const width = widthHeightValue - margin.left - margin.right;
+    const width = widthHeightValue - margin.left - margin.right - margin.top;
     const height = widthHeightValue - margin.top - margin.bottom;
     const outerRadius = ((width + height) / 4) - margin.top;
     const innerRadius = outerRadius / 3;
@@ -47,8 +47,12 @@ const Sunburst = ({
 
         setupContainersOnMount();
         drawSunburst();
-        //brush(category);
-        addTextInCenter();
+        addTextInCenter();        
+
+        d3.selectAll(".top_text").text("Distribution across industry types")
+                    .style("font-size", "25px")
+                    .style("font-weight", 500);
+
         didMount.current = true;
 
         //----- FUNCTION DEFINITIONS -------------------------------------------------------------------------//
@@ -64,7 +68,8 @@ const Sunburst = ({
                     .append('g')
                     .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                     .classed('sunburst_canvas', true);
-
+                    addTextAtTop();
+                
                 // container for arcs
                 canvas.append('g').classed('arcs', true);
             }
@@ -134,6 +139,22 @@ const Sunburst = ({
                 .text("");
 
             center_text.exit().remove();
+        }
+
+        /** draws the text at the top of the sunburst */
+        function addTextAtTop() {
+            let top_text = d3.select('.sunburst_outer_svg').selectAll('.top_text').data([0], (d) => d);
+
+            // adds the top text only when mounting
+            top_text
+                .enter().append('text')
+                .attr('x', width / 2)
+                .attr('y', margin.top/2)
+                .attr('class', 'top_text')
+                .style("text-anchor", "middle")
+                .text("");
+
+            top_text.exit().remove();
         }
 
         // used to interpolate between start and end angle when transitioning 
