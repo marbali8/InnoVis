@@ -57,8 +57,6 @@ function App() {
                     <InfoButton />
                 </div>
 
-
-
                 {header}
                 <div className={classes.timeSlider}>
                     <TimeSlider onYearClicked={handleTimeSliderYearClicked} />
@@ -81,7 +79,6 @@ function App() {
                         Häger</a>, <a href="mailto:sonebo@kth.se">Christina Sonebo</a>, <a href="mailto:hcbayat@kth.se">Hannah
                         Clara Bayat</a>, <a href="mailto:jacobel@kth.se">Jacob von Eckermann</a> and <a
                             href="mailto:marbr@kth.se">Mar Balibrea</a>. </p>
-
                 </div>
 
             </div>

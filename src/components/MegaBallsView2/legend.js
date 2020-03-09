@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from 'd3';
 
 const BallsLegend = ({
-    height = 80, width,
+    height = 100, width,
     margin = { left: 0, right: 0, top: 20, bottom: 0 },
 }) => {
 
@@ -52,11 +52,10 @@ const BallsLegend = ({
                 canvas
                     .append('text')
                     .attr('class', 'details')
-                    .attr('x', (circleX + maxR * 4))
+                    .attr('x', (maxR * 2))
                     .attr('y', height / 2 / 1.3 - 8)
-                    .style("font-size", 18)
-                    .attr("font-weight", 500)
-                    .attr('text-anchor', 'middle');
+                    .style("font-size", 24)
+                    .attr('text-anchor', 'start');
 
                 d3.selectAll('.details')
                     .text("Company revenue");

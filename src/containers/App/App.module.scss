@@ -43,6 +43,7 @@
   .aggregateView {
     display: flex;
     flex-direction: column;
+    align-items: center;
     position: absolute;
     right: 45px;
     bottom: 50px;
@@ -101,7 +102,8 @@
       font-family:$font;
       display: flex;
       flex-direction:column;
-      text-align:center; justify-self: center;
+      text-align:center;
+      justify-self: center;
       z-index:2;
     }
 
@@ -146,7 +148,7 @@
       position: relative;
       fill: black;
       font-family: "Open Sans", sans-serif;
-      font-size: 16px;
+      font-size: 24px;
       z-index: 2;
 
     }
