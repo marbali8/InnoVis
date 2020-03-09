@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from 'd3';
 
 const BallsLegend = ({
-    height = 80, width = 1000,
+    height = 80, width,
     margin = { left: 0, right: 0, top: 20, bottom: 0 },
 }) => {
 
