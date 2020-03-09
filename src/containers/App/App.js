@@ -43,7 +43,7 @@ function App() {
 
             <div className={classes.legend}>
                 <div className={classes.companyLabel}>
-                    <CompanyLabel data={megaballData} year={year}/>
+                    <CompanyLabel data={megaballData} year={year} />
                 </div>
                 <div className={classes.ballsLegend}>
                     <BallsLegend />
