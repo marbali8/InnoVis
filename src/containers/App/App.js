@@ -46,7 +46,7 @@ function App() {
                     <BallsLegend />
                 </div>
                 <div className={classes.companyLabel}>
-                    <CompanyLabel data={megaballData} year={year}/>
+                    <CompanyLabel data={megaballData} year={year} />
                 </div>
             </div>
 

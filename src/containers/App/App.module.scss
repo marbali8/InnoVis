@@ -88,6 +88,17 @@
       }
     }
 
+    .introductionText{
+      width:900px;
+      height:300px;
+      font-size: 25px;
+      font-family:$font;
+      display: flex;
+      flex-direction:column;
+      text-align:center; justify-self: center;
+      z-index:2;
+    }
+
     .ballsLegend {
       // display inline block is just temporary so that the element doesn't spread horizontally
       // which stops you from being able to drag the circle
