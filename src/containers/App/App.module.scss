@@ -19,7 +19,7 @@
   width: 100vw;
   font-family: $font;
   position: relative;
-  background-color:red;
+  //background-color:red;
 
   // removes ability to scroll page! comment out for debugging purposes
   // overflow:hidden;
@@ -98,7 +98,7 @@
 
       position: absolute;
       right: 55px;
-      bottom: 55px;
+      bottom: 45px;
     }
 
     .footer {
@@ -110,6 +110,9 @@
       font-size: 10px;
       font-style: italic;
       color: #65656c;
+
+      position: absolute;
+      bottom: 50px;
     }
 
     a:link {
@@ -141,7 +144,7 @@
       position: absolute;
       left: 45px;
       top: 120px;
-      @include blurEffect(0.7, 15px);
+      //@include blurEffect(0.7, 15px);
     }
 
   }
