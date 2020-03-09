@@ -133,6 +133,11 @@ const MegaBalls = ({
 
             // d3.select(anchor.current).append('circle').attr('cx', width / 2).attr('cy', height / 2).attr('r', 100);
 
+            // var formatter = new Intl.NumberFormat('se', {
+            //   style: 'currency',
+            //   currency: 'SEK',
+            // });
+
             var enter = balls.enter()
                 .append("circle")
                 .attr("id", (d) => d.key)
@@ -147,7 +152,7 @@ const MegaBalls = ({
                     const y = self.attr('cy');
                     setTooltipName(d.name)
                     setTooltipEmployees(d.employees)
-                    setTooltipRevenue(d.revenue)
+                    setTooltipRevenue(new Intl.NumberFormat('en-US').format(d.revenue))
                     setTooltipPosition({ x: e.clientX, y: e.clientY })
 
                     if(d && Object.keys(companies).includes(d.name)){
@@ -229,7 +234,7 @@ const MegaBalls = ({
         <div className={classes.tooltipBox} style={{ display: tooltipName ? 'block' : 'none', left: `${tooltipPosition.x}px`, top: `${tooltipPosition.y}px` }}>
             <div className={classes.tooltipName}>{tooltipName}</div>
             <div className={classes.tooltipEmployees}><b>Number of employees:</b> {tooltipEmployees}</div>
-            <div className={classes.tooltipRevenue}><b>Revenue:</b> {tooltipRevenue} SEK</div>
+            <div className={classes.tooltipRevenue}><b>Revenue:</b> {tooltipRevenue} kSEK</div>
             <div className={classes.tooltipFounded}><b>{foundedIn}</b> {tooltipFounded}</div>
             <div className={classes.tooltipFounders}><b>{foundedBy}</b>{tooltipFounders}</div>
             <div className={classes.tooltipInfo}>{tooltipInfo}</div>
