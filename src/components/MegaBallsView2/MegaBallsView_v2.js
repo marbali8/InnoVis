@@ -242,7 +242,6 @@ const MegaBalls = ({
         </div>
         <svg overflow='visible'
             height={height} width={width} ref={anchor} />
-          paste
     </div>
 };
 
