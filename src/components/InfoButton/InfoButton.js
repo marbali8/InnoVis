@@ -13,7 +13,7 @@ const InfoButton = () => {
                     <div className={classes.introText}>
                         <p>The circles represent startup companies KTH innovation has helped create and foster</p>
                         <p>The circle's area is proportional to the total revenue of that company during the active year, which is selected with the time slider </p>
-                        <p>Hover on the circles to find out more about each company!</p>
+                        <p>Hover on the circles to find out more about each company, and use zoom to pan in and out!</p>
                     </div>
                     <div className={classes.footer}>
 
