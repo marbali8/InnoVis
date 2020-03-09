@@ -41,11 +41,17 @@ function App() {
                 <MegaBalls data={megaballData} year={debouncedYear} />
             </div>
 
-            <div className={classes.content}>
-                {header}
+            <div className={classes.legend}>
                 <div className={classes.ballsLegend}>
                     <BallsLegend />
                 </div>
+                <div className={classes.companyLabel}>
+                    <CompanyLabel data={megaballData} year={year}/>
+                </div>
+            </div>
+
+            <div className={classes.content}>
+                {header}
                 <div className={classes.timeSlider}>
                     <TimeSlider onYearClicked={handleTimeSliderYearClicked} />
                 </div>
@@ -59,9 +65,6 @@ function App() {
                     <div className={classes.grantsChart}>
                         <GrantsChart onYearClicked={debouncedYear} />
                     </div>
-                </div>
-                <div className={classes.companyLabel}>
-                    <CompanyLabel data={megaballData} year={year} />
                 </div>
                 <div className={classes.footer}>
                     <p> This data is taken from tax revenue and was provided by KTH Innovation </p>

@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 
 const BallsLegend = ({
     height = 80, width = 1000,
-    margin = { left: 10, right: 0, top: 15, bottom: -10 },
+    margin = { left: 0, right: 0, top: 10, bottom: 0 },
 }) => {
 
     const anchor = useRef();

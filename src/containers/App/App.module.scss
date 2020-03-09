@@ -29,6 +29,18 @@
     position: absolute;
   }
 
+  .legend {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 45px;
+    top: 50px;
+    width: 550px;
+    border-radius: 10px;
+    padding: 10px;
+    @include blurEffect(0.5, 15px)
+  }
+
   .aggregateView {
     display: flex;
     flex-direction: column;
@@ -141,13 +153,7 @@
     }
 
     .companyLabel {
-      padding: 5px;
-      border-radius: 10px;
       z-index: 2;
-      position: absolute;
-      left: 45px;
-      top: 120px;
-      //@include blurEffect(0.7, 15px);
     }
 
   }
