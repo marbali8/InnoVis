@@ -85,7 +85,7 @@
       //position: relative;
       position: absolute;
       left: 45px;
-      bottom: 35px;
+      bottom: 45px;
     }
 
     .grantsChart {
@@ -97,8 +97,8 @@
       @include blurEffect(0.7, 15px);
 
       position: absolute;
-      right: 45px;
-      bottom: 45px;
+      right: 55px;
+      bottom: 55px;
     }
 
     .footer {
