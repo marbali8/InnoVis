@@ -1,9 +1,9 @@
-import React, {useEffect, useRef, useMemo, useState} from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import * as d3 from 'd3';
-import {getColorByCompanyCategory} from '../../utility_functions/ColorFunctions.js';
+import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
 import classes from './MegaBallsView_v2.module.scss';
 import data from '../../data/companies_details.json';
-import {keyBy} from 'lodash';
+import { keyBy } from 'lodash';
 
 // import styles from '../../globalStyle.module.scss';
 
@@ -15,17 +15,17 @@ const companies = keyBy(data, 'name');
 
 
 const MegaBalls = ({
-                       height = window.innerHeight,
-                       width = window.innerWidth,
-                       margin = {left: 0, right: 0, top: 0, bottom: 0},
-                       year = 2010,
-                       data = [],
-                   }) => {
+    height = window.innerHeight,
+    width = window.innerWidth,
+    margin = { left: 0, right: 0, top: 0, bottom: 0 },
+    year = 2010,
+    data = [],
+}) => {
 
     const [tooltipName, setTooltipName] = useState("");
     const [tooltipEmployees, setTooltipEmployees] = useState("");
     const [tooltipRevenue, setTooltipRevenue] = useState("");
-    const [tooltipPosition, setTooltipPosition] = useState({x: 0, y: 0});
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
     const [tooltipFounded, setTooltipFounded] = useState("");
     const [tooltipFounders, setTooltipFounders] = useState("");
     const [tooltipInfo, setTooltipInfo] = useState("");
@@ -40,7 +40,7 @@ const MegaBalls = ({
     const zoom = useRef(null);
 
     function onCursorMove(e) {
-        setTooltipPosition({x: e.nativeEvent.offsetX + 5, y: e.nativeEvent.offsetY + 5})
+        setTooltipPosition({ x: e.nativeEvent.offsetX + 5, y: e.nativeEvent.offsetY + 5 })
     }
 
     useEffect(() => {
@@ -66,20 +66,20 @@ const MegaBalls = ({
                 //glow definitions
                 let defs = anchorNode.append("defs");
                 let filter = defs.append("filter")
-                                 .attr("id","glow")
-                                 .attr("x", "-5000%")
-                                 .attr("y", "-5000%")
-                                 .attr("width", "10000%")
-                                 .attr("height", "10000%");
+                    .attr("id", "glow")
+                    .attr("x", "-5000%")
+                    .attr("y", "-5000%")
+                    .attr("width", "10000%")
+                    .attr("height", "10000%");
 
                 filter.append("feGaussianBlur")
-                      .attr("stdDeviation","8.0")
-                      .attr("result","coloredBlur");
+                    .attr("stdDeviation", "8.0")
+                    .attr("result", "coloredBlur");
                 let feMerge = filter.append("feMerge");
-                          feMerge.append("feMergeNode")
-                                 .attr("in","coloredBlur");
-                          feMerge.append("feMergeNode")
-                                 .attr("in","SourceGraphic");
+                feMerge.append("feMergeNode")
+                    .attr("in", "coloredBlur");
+                feMerge.append("feMergeNode")
+                    .attr("in", "SourceGraphic");
 
                 zoom.current = d3.zoom();
                 zoom.current.scaleExtent([1, maxZoomScale]);
@@ -171,7 +171,7 @@ const MegaBalls = ({
                     setTooltipName(d.name);
                     setTooltipEmployees(d.employees);
                     setTooltipRevenue(new Intl.NumberFormat('en-US').format(d.revenue));
-                    setTooltipPosition({x: e.clientX, y: e.clientY});
+                    setTooltipPosition({ x: e.clientX, y: e.clientY });
 
                     if (d && Object.keys(companies).includes(d.name)) {
                         setFoundedIn("Founded in: ");
@@ -222,7 +222,7 @@ const MegaBalls = ({
                     if (Object.keys(companies).includes(d.name)) {
                         return "url(#glow)";
                     }
-                        return "";
+                    return "";
                 })
                 .transition(d3.easeLinear)
                 .duration(700)
@@ -270,7 +270,7 @@ const MegaBalls = ({
             <a href={tooltipWebsite} className={classes.tooltipWebsite}>{tooltipWebsite}</a>
         </div>
         <svg overflow='visible'
-             height={height} width={width} ref={anchor}/>
+            height={height} width={width} ref={anchor} />
     </div>
 };
 
