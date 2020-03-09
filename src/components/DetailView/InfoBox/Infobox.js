@@ -10,9 +10,9 @@ const Infobox = ({onYearClicked}) => {
 
     const year_choice = onYearClicked;
     // set dimensions of the graph
-    const margin = {top: 20, right: 10, bottom: 20, left: 10};
-    const total_width = 300;
-    const total_height = 330;
+    const margin = {top: 0, right: 0, bottom: 0, left: 0};
+    const total_width = 330;
+    const total_height = 260;
     const width = total_width - margin.left - margin.right;
     const height = total_height - margin.top - margin.bottom;
 
@@ -42,7 +42,7 @@ const Infobox = ({onYearClicked}) => {
                 }
             }
 
-            const largeFont = 18;
+            const largeFont = 28;
             const smallSpace = 5;
             const largeSpace = 20;
 
@@ -57,20 +57,20 @@ const Infobox = ({onYearClicked}) => {
                 .text("title?");*/
 
             //ideas
-            var y = margin.top + largeFont / 2 + largeSpace + largeSpace + smallSpace;
+            var y = margin.top + largeSpace + smallSpace;
             var diff = 0;
             svg
                 .append('text')
                 .attr('class', 'ideastext')
-                .attr("x", width - 72)
+                .attr("x", 3 * width / 4)
                 .attr("y", y)
                 .attr('font-size', largeFont)
                 .attr('font-weight', 'bold')
-                .attr('text-anchor', 'start')
+                .attr('text-anchor', 'middle')
                 .text(yearData.ideas);
             svg
                 .append('text')
-                .attr("x", width - 34)
+                .attr("x", 3 * width / 4 + largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -89,7 +89,7 @@ const Infobox = ({onYearClicked}) => {
 
             svg
                 .append('text')
-                .attr("x", width - 77)
+                .attr("x", 3 * width / 4 - largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
                 .text("Ideas");
@@ -99,15 +99,15 @@ const Infobox = ({onYearClicked}) => {
             svg
                 .append('text')
                 .attr('class', 'researcherstext')
-                .attr("x", width - 72)
+                .attr("x", 3 * width / 4)
                 .attr("y", y)
                 .attr('font-size', largeFont)
                 .attr('font-weight', 'bold')
-                .attr('text-anchor', 'start')
+                .attr('text-anchor', 'middle')
                 .text(yearData.researchers);
             svg
                 .append('text')
-                .attr("x", width - 34)
+                .attr("x", 3 * width / 4 + largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -125,7 +125,7 @@ const Infobox = ({onYearClicked}) => {
                 .text((diff === 0 ? '\xB10' : diff > 0 ? '+' + diff : diff));
             svg
                 .append('text')
-                .attr("x", width - 77)
+                .attr("x", 3 * width / 4 - largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
                 .text("Researchers");
@@ -135,15 +135,15 @@ const Infobox = ({onYearClicked}) => {
             svg
                 .append('text')
                 .attr('class', 'studentstext')
-                .attr("x", width - 72)
+                .attr("x", 3 * width / 4)
                 .attr("y", y)
                 .attr('font-size', largeFont)
                 .attr('font-weight', 'bold')
-                .attr('text-anchor', 'start')
+                .attr('text-anchor', 'middle')
                 .text(yearData.students);
             svg
                 .append('text')
-                .attr("x", width - 34)
+                .attr("x", 3 * width / 4 + largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -162,7 +162,7 @@ const Infobox = ({onYearClicked}) => {
 
             svg
                 .append('text')
-                .attr("x", width - 77)
+                .attr("x", 3 * width / 4 - largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
                 .text("Students");
@@ -172,15 +172,15 @@ const Infobox = ({onYearClicked}) => {
             svg
                 .append('text')
                 .attr('class', 'fundingstext')
-                .attr("x", width - 72)
+                .attr("x", 3 * width / 4)
                 .attr("y", y)
                 .attr('font-size', largeFont)
                 .attr('font-weight', 'bold')
-                .attr('text-anchor', 'start')
+                .attr('text-anchor', 'middle')
                 .text(yearData.funding);
             svg
                 .append('text')
-                .attr("x", width - 34)
+                .attr("x", 3 * width / 4 + largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -199,7 +199,7 @@ const Infobox = ({onYearClicked}) => {
 
             svg
                 .append('text')
-                .attr("x", width - 77)
+                .attr("x", 3 * width / 4 - largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
                 .text("Fundings");
@@ -209,15 +209,15 @@ const Infobox = ({onYearClicked}) => {
             svg
                 .append('text')
                 .attr('class', 'patentstext')
-                .attr("x", width - 72)
+                .attr("x", 3 * width / 4)
                 .attr("y", y)
                 .attr('font-size', largeFont)
                 .attr('font-weight', 'bold')
-                .attr('text-anchor', 'start')
+                .attr('text-anchor', 'middle')
                 .text(yearData.patent_applications);
             svg
                 .append('text')
-                .attr("x", width - 34)
+                .attr("x", 3 * width / 4 + largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -236,25 +236,25 @@ const Infobox = ({onYearClicked}) => {
 
             svg
                 .append('text')
-                .attr("x", width - 77)
+                .attr("x", 3 * width / 4 - largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("Patent Applications");
+                .text("Patent applications");
 
             //novelty searches
             y = y + largeSpace + largeSpace + smallSpace;
             svg
                 .append('text')
                 .attr('class', 'noveltytext')
-                .attr("x", width - 72)
+                .attr("x", 3 * width / 4)
                 .attr("y", y)
                 .attr('font-size', largeFont)
                 .attr('font-weight', 'bold')
-                .attr('text-anchor', 'start')
+                .attr('text-anchor', 'middle')
                 .text(yearData.novelty_searches);
             svg
                 .append('text')
-                .attr("x", width - 34)
+                .attr("x", 3 * width / 4 + largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -273,10 +273,10 @@ const Infobox = ({onYearClicked}) => {
 
             svg
                 .append('text')
-                .attr("x", width - 77)
+                .attr("x", 3 * width / 4 - largeFont)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("Novelty Searches");
+                .text("Novelty searches");
 
 
         }

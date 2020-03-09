@@ -45,6 +45,13 @@
   .bubble {
     position:relative;
 
+    .introText{
+      font-weight:bold;
+      font-family:$font;
+      text-align:center;
+      font-size:12px;
+    }
+
     .footer{
       text-align: center;
       font-family: $font;

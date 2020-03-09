@@ -57,8 +57,6 @@ function App() {
                     <InfoButton />
                 </div>
 
-
-
                 {header}
                 <div className={classes.timeSlider}>
                     <TimeSlider onYearClicked={handleTimeSliderYearClicked} />

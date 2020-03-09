@@ -47,11 +47,11 @@ const Sunburst = ({
 
         setupContainersOnMount();
         drawSunburst();
-        addTextInCenter();        
+        addTextInCenter();
 
         d3.selectAll(".top_text").text("Distribution across industry types")
-                    .style("font-size", "25px")
-                    .style("font-weight", 500);
+            .style("font-size", "25px")
+            .style("font-weight", 'bold');
 
         didMount.current = true;
 
@@ -68,8 +68,8 @@ const Sunburst = ({
                     .append('g')
                     .attr('transform', 'translate(' + height / 2 + ' ' + width / 2 + ')')
                     .classed('sunburst_canvas', true);
-                    addTextAtTop();
-                
+                addTextAtTop();
+
                 // container for arcs
                 canvas.append('g').classed('arcs', true);
             }
@@ -149,7 +149,7 @@ const Sunburst = ({
             top_text
                 .enter().append('text')
                 .attr('x', width / 2)
-                .attr('y', margin.top/2)
+                .attr('y', margin.top / 2)
                 .attr('class', 'top_text')
                 .style("text-anchor", "middle")
                 .text("");
