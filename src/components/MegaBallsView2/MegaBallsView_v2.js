@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useMemo, useState } from "react";
+import React, {useEffect, useRef, useMemo, useState} from "react";
 import * as d3 from 'd3';
-import { getColorByCompanyCategory } from '../../utility_functions/ColorFunctions.js';
+import {getColorByCompanyCategory} from '../../utility_functions/ColorFunctions.js';
 import classes from './MegaBallsView_v2.module.scss';
 import data from '../../data/companies_details.json';
 import {keyBy} from 'lodash';
@@ -15,25 +15,23 @@ const companies = keyBy(data, 'name');
 
 
 const MegaBalls = ({
-    height = window.innerHeight,
-    width = window.innerWidth,
-    margin = { left: 0, right: 0, top: 0, bottom: 0 },
-    year = 2010,
-    data = [],
-}) => {
+                       height = window.innerHeight,
+                       width = window.innerWidth,
+                       margin = {left: 0, right: 0, top: 0, bottom: 0},
+                       year = 2010,
+                       data = [],
+                   }) => {
 
     const [tooltipName, setTooltipName] = useState("");
     const [tooltipEmployees, setTooltipEmployees] = useState("");
     const [tooltipRevenue, setTooltipRevenue] = useState("");
-    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+    const [tooltipPosition, setTooltipPosition] = useState({x: 0, y: 0});
     const [tooltipFounded, setTooltipFounded] = useState("");
     const [tooltipFounders, setTooltipFounders] = useState("");
     const [tooltipInfo, setTooltipInfo] = useState("");
     const [tooltipWebsite, setTooltipWebsite] = useState("");
     const [foundedIn, setFoundedIn] = useState("");
-    const[foundedBy, setFoundedBy] = useState("");
-
-
+    const [foundedBy, setFoundedBy] = useState("");
 
 
     const anchor = useRef();
@@ -42,7 +40,7 @@ const MegaBalls = ({
     const zoom = useRef(null);
 
     function onCursorMove(e) {
-        setTooltipPosition({ x: e.nativeEvent.offsetX + 5, y: e.nativeEvent.offsetY + 5 })
+        setTooltipPosition({x: e.nativeEvent.offsetX + 5, y: e.nativeEvent.offsetY + 5})
     }
 
     useEffect(() => {
@@ -106,7 +104,9 @@ const MegaBalls = ({
                 .force("forceX", d3.forceX().strength(-0.04).x(0))
                 .force("forceY", d3.forceY().strength(-0.04).y(0))
                 .force("charge", d3.forceManyBody().strength(-1))
-                .force('collision', d3.forceCollide().radius((d) => { return d.size; }))
+                .force('collision', d3.forceCollide().radius((d) => {
+                    return d.size;
+                }))
                 .force("charge", d3.forceManyBody().strength(-2))
                 .velocityDecay(0.83)
             //.force("collide", d3.forceCollide().strength(1).radius((d) => { return d.size })
@@ -116,7 +116,7 @@ const MegaBalls = ({
         function drawBalls() {
             var balls = d3.select('.balls').selectAll('circle').data(data.nodes, (d) => {
                 return d.key
-            })
+            });
 
             balls.on('mouseover', function (d) {
                 d3.selectAll('.companyTooltip')
@@ -150,25 +150,25 @@ const MegaBalls = ({
                     var self = d3.select(this);
                     const x = self.attr('cx');
                     const y = self.attr('cy');
-                    setTooltipName(d.name)
-                    setTooltipEmployees(d.employees)
-                    setTooltipRevenue(new Intl.NumberFormat('en-US').format(d.revenue))
-                    setTooltipPosition({ x: e.clientX, y: e.clientY })
+                    setTooltipName(d.name);
+                    setTooltipEmployees(d.employees);
+                    setTooltipRevenue(new Intl.NumberFormat('en-US').format(d.revenue));
+                    setTooltipPosition({x: e.clientX, y: e.clientY});
 
-                    if(d && Object.keys(companies).includes(d.name)){
-                      setFoundedIn("Founded in: ")
-                      setFoundedBy("Founders: ")
-                      setTooltipFounded(companies[d.name].founded);
-                      setTooltipFounders(companies[d.name].founders);
-                      setTooltipInfo(companies[d.name].info);
-                      setTooltipWebsite(companies[d.name].website);
+                    if (d && Object.keys(companies).includes(d.name)) {
+                        setFoundedIn("Founded in: ");
+                        setFoundedBy("Founders: ");
+                        setTooltipFounded(companies[d.name].founded);
+                        setTooltipFounders(companies[d.name].founders);
+                        setTooltipInfo(companies[d.name].info);
+                        setTooltipWebsite(companies[d.name].website);
                     } else {
-                      setFoundedIn("")
-                      setFoundedBy("")
-                      setTooltipFounded("")
-                      setTooltipFounders("")
-                      setTooltipInfo("")
-                      setTooltipWebsite("")
+                        setFoundedIn("")
+                        setFoundedBy("")
+                        setTooltipFounded("")
+                        setTooltipFounders("")
+                        setTooltipInfo("")
+                        setTooltipWebsite("")
                     }
 
                     /*
@@ -198,7 +198,14 @@ const MegaBalls = ({
                 .attr("stroke", d => d.error ? "red" : "black")
                 .style("stroke-width", '1px')
                 .attr("vector-effect", "non-scaling-stroke")
-                .attr('stroke-opacity', 0.2)
+                .attr('stroke-opacity', function (d) {
+                    //TODO: GLOW
+                    if (Object.keys(companies).includes(d.name)) {
+                        console.log(d.name);
+                        return 1;
+                    }
+                    return 0.2;
+                })
                 .transition(d3.easeLinear)
                 .duration(700)
                 .attr("r", (d) => d.size);
@@ -231,7 +238,11 @@ const MegaBalls = ({
 
     return <div onMouseMove={onCursorMove}>
 
-        <div className={classes.tooltipBox} style={{ display: tooltipName ? 'block' : 'none', left: `${tooltipPosition.x}px`, top: `${tooltipPosition.y}px` }}>
+        <div className={classes.tooltipBox} style={{
+            display: tooltipName ? 'block' : 'none',
+            left: `${tooltipPosition.x}px`,
+            top: `${tooltipPosition.y}px`
+        }}>
             <div className={classes.tooltipName}>{tooltipName}</div>
             <div className={classes.tooltipEmployees}><b>Number of employees:</b> {tooltipEmployees}</div>
             <div className={classes.tooltipRevenue}><b>Revenue:</b> {tooltipRevenue} kSEK</div>
@@ -241,7 +252,7 @@ const MegaBalls = ({
             <a href={tooltipWebsite} className={classes.tooltipWebsite}>{tooltipWebsite}</a>
         </div>
         <svg overflow='visible'
-            height={height} width={width} ref={anchor} />
+             height={height} width={width} ref={anchor}/>
     </div>
 };
 
@@ -250,28 +261,28 @@ export default MegaBalls;
 
 //old code:
 
-    // const nodes = data.nodes.map((node) => {
-    //     let copyNode;
-    //     if (node.key === 3812) {
-    //         const copyNode = node;
-    //         copyNode.x = width / 15;
-    //         copyNode.y = 0;
-    //         return node;
-    //     }
+// const nodes = data.nodes.map((node) => {
+//     let copyNode;
+//     if (node.key === 3812) {
+//         const copyNode = node;
+//         copyNode.x = width / 15;
+//         copyNode.y = 0;
+//         return node;
+//     }
 
-    //     if (node.key === 26110) {
-    //         const copyNode = node;
-    //         copyNode.x = 0;
-    //         copyNode.y = -height / 15;
-    //         return node;
-    //     }
+//     if (node.key === 26110) {
+//         const copyNode = node;
+//         copyNode.x = 0;
+//         copyNode.y = -height / 15;
+//         return node;
+//     }
 
-    //     if (node.key === 72190) {
-    //         const copyNode = node;
-    //         copyNode.x = -width / 15;
-    //         copyNode.y = 0;
-    //         return node;
-    //     }
-    //     copyNode = node;
-    //     return copyNode;
-    // });
+//     if (node.key === 72190) {
+//         const copyNode = node;
+//         copyNode.x = -width / 15;
+//         copyNode.y = 0;
+//         return node;
+//     }
+//     copyNode = node;
+//     return copyNode;
+// });
