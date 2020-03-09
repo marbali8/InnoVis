@@ -42,7 +42,7 @@ const Infobox = ({onYearClicked}) => {
                 }
             }
 
-            const largeFont = 24;
+            const largeFont = 18;
             const smallSpace = 5;
             const largeSpace = 20;
 
@@ -70,7 +70,7 @@ const Infobox = ({onYearClicked}) => {
                 .text(yearData.ideas);
             svg
                 .append('text')
-                .attr("x", width - 24)
+                .attr("x", width - 34)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -92,7 +92,7 @@ const Infobox = ({onYearClicked}) => {
                 .attr("x", width - 77)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("IDEAS");
+                .text("Ideas");
 
             //researchers
             y = y + largeSpace + largeSpace + smallSpace;
@@ -107,7 +107,7 @@ const Infobox = ({onYearClicked}) => {
                 .text(yearData.researchers);
             svg
                 .append('text')
-                .attr("x", width - 24)
+                .attr("x", width - 34)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -128,7 +128,7 @@ const Infobox = ({onYearClicked}) => {
                 .attr("x", width - 77)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("RESEARCHERS");
+                .text("Researchers");
 
             //students
             y = y + largeSpace + largeSpace + smallSpace;
@@ -143,7 +143,7 @@ const Infobox = ({onYearClicked}) => {
                 .text(yearData.students);
             svg
                 .append('text')
-                .attr("x", width - 24)
+                .attr("x", width - 34)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -165,7 +165,7 @@ const Infobox = ({onYearClicked}) => {
                 .attr("x", width - 77)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("STUDENTS");
+                .text("Students");
 
             //fundings
             y = y + largeSpace + largeSpace + smallSpace;
@@ -180,7 +180,7 @@ const Infobox = ({onYearClicked}) => {
                 .text(yearData.funding);
             svg
                 .append('text')
-                .attr("x", width - 24)
+                .attr("x", width - 34)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -202,7 +202,7 @@ const Infobox = ({onYearClicked}) => {
                 .attr("x", width - 77)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("FUNDINGS");
+                .text("Fundings");
 
             //patent applications
             y = y + largeSpace + largeSpace + smallSpace;
@@ -217,7 +217,7 @@ const Infobox = ({onYearClicked}) => {
                 .text(yearData.patent_applications);
             svg
                 .append('text')
-                .attr("x", width - 24)
+                .attr("x", width - 34)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -239,7 +239,7 @@ const Infobox = ({onYearClicked}) => {
                 .attr("x", width - 77)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("PATENT APPLICATIONS");
+                .text("Patent Applications");
 
             //novelty searches
             y = y + largeSpace + largeSpace + smallSpace;
@@ -254,7 +254,7 @@ const Infobox = ({onYearClicked}) => {
                 .text(yearData.novelty_searches);
             svg
                 .append('text')
-                .attr("x", width - 24)
+                .attr("x", width - 34)
                 .attr("y", y)
                 .attr('text-anchor', 'start')
                 .attr('fill', function () {
@@ -276,7 +276,7 @@ const Infobox = ({onYearClicked}) => {
                 .attr("x", width - 77)
                 .attr("y", y)
                 .attr('text-anchor', 'end')
-                .text("NOVELTY SEARCHES");
+                .text("Novelty Searches");
 
 
         }

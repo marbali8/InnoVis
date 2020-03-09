@@ -29,7 +29,7 @@ function App() {
                 <div className={classes.title}>KTH Innovation</div>
                 <div className={classes.subtitle}>Visualising the impact of KTH startups</div>
             </div>
-        </div>
+        </div>;
 
     return (
         <div className={classes.App}>
@@ -55,7 +55,7 @@ function App() {
                     <Infobox onYearClicked={debouncedYear} />
                 </div>
                 <div className={classes.companyLabel}>
-                    <CompanyLabel data={megaballData} year={year}></CompanyLabel>
+                    <CompanyLabel data={megaballData} year={year}/>
                 </div>
                 <div className={classes.footer}>
                     Developed as part of Information Visualization at KTH for KTH Innovation by Alex, Alvin, Christina,
