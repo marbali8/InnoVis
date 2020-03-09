@@ -129,8 +129,11 @@
     .companyLabel {
       padding: 5px;
       border-radius: 10px;
-      position: relative;
+      //position: relative;
       z-index: 2;
+      position: absolute;
+      left: 56px;
+      top: 120px;
       @include blurEffect(0.7, 15px);
     }
 
