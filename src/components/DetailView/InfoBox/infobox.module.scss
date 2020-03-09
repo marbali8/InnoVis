@@ -1,0 +1,30 @@
+
+
+.popupBox{
+    position:absolute;
+    // right:50px;
+  .bubble {
+    width:100px;
+    height:100px;
+    position:relative;
+    top:0;
+
+    background: #00aabb;
+    border-radius: .4em;
+  }
+
+  .bubble:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 23px solid transparent;
+    border-bottom-color: #00aabb;
+    border-top: 0;
+    margin-left: -23px;
+    margin-top: -23px;
+  }
+
+}
