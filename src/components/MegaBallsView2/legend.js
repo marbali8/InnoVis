@@ -49,7 +49,6 @@ const BallsLegend = ({
                     .attr("stroke-width", 2)
                     .style("stroke-dasharray", ("4,2"));
 
-
                 canvas
                     .append('text')
                     .attr('class', 'details')
