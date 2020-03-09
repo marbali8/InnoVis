@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import yearlyAggregateData from '../../../data/kth_innovation_yearly_data.json';
 
@@ -6,11 +6,11 @@ const RELEVANT_YEARS = ["2008", "2009", "2010", "2011", "2012", "2013", "2014", 
 
 const yearly_aggregate_data = yearlyAggregateData;
 
-const Infobox = ({onYearClicked}) => {
+const Infobox = ({ onYearClicked }) => {
 
     const year_choice = onYearClicked;
     // set dimensions of the graph
-    const margin = {top: 0, right: 0, bottom: 0, left: 0};
+    const margin = { top: 0, right: 0, bottom: 0, left: 0 };
     const total_width = 330;
     const total_height = 260;
     const width = total_width - margin.left - margin.right;
@@ -47,14 +47,14 @@ const Infobox = ({onYearClicked}) => {
             const largeSpace = 20;
 
             //title
-            /*var y = margin.top + largeFont / 2;
-            svg
-                .append('text')
-                .attr("x", width/2)
-                .attr("y", y)
-                .attr('font-size', 18)
-                .attr('text-anchor', 'middle')
-                .text("title?");*/
+            // var y = margin.top + largeFont / 2;
+            // svg
+            //     .append('text')
+            //     .attr("x", width / 2)
+            //     .attr("y", y)
+            //     .attr('font-size', 18)
+            //     .attr('text-anchor', 'middle')
+            //     .text("title?");
 
             //ideas
             var y = margin.top + largeSpace + smallSpace;
@@ -290,7 +290,7 @@ const Infobox = ({onYearClicked}) => {
     }, [height, width, margin.right, margin.left, margin.top, margin.bottom, data, year_choice]);
 
     return <React.Fragment>
-        <svg height={height} width={width} ref={svgRef}/>
+        <svg height={height} width={width} ref={svgRef} />
     </React.Fragment>;
 };
 
