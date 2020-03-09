@@ -53,7 +53,10 @@ function App() {
 
             <div className={classes.content}>
 
-                <InfoButton />
+                <div className={classes.infoButton}>
+                    <InfoButton />
+                </div>
+
 
 
                 {header}
