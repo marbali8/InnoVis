@@ -85,7 +85,7 @@
       padding:20px;
       z-index:2;
       position:relative;
-      @include blurEffect(0.8,15px);
+      @include blurEffect(0.7,15px);
     }
 
   .footer {
@@ -97,6 +97,11 @@
     font-size: 10px;
     font-style: italic;
     color: #65656c;
+  }
+
+  a:link { 
+    color: #000000;
+    text-decoration: none; 
   }
 
   .infobox {

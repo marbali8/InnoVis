@@ -13,7 +13,7 @@ const CompanyLabels = (data = [], year = 2018) => {
         return <div key={"categoryRow_" + category.id} className={classes.categoryRow}>
             {circle}
             <div className={classes.companyLabel}>
-                <div><pre>{JSON.stringify(category.labelEn, null, 2).slice(1, -1)}</pre></div>
+                <div><p>{JSON.stringify(category.labelEn, null, 2).slice(1, -1)}</p></div>
             </div>
         </div>
     };
