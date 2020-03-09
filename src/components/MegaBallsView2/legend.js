@@ -42,8 +42,8 @@ const BallsLegend = ({
 
                 circles.append("circle")
                     .attr("cx", circleX)
-                    .attr("cy", function (d) { return d.cy; })
-                    .attr("r", function (d) { return d.radius; })
+                    .attr("cy", function (d) { return d.cy / 1.5; })
+                    .attr("r", function (d) { return d.radius / 1.5; })
                     .style("fill", "transparent")
                     .attr("stroke", "black")
                     .attr("stroke-width", 2)
@@ -53,9 +53,9 @@ const BallsLegend = ({
                 canvas
                     .append('text')
                     .attr('class', 'details')
-                    .attr('x', (circleX + maxR * 4 + 20))
-                    .attr('y', height / 2 - 12)
-                    .style("font-size", "21px")
+                    .attr('x', (circleX + maxR * 4))
+                    .attr('y', height / 2 / 1.5 - 5)
+                    .style("font-size", "18px")
                     .attr("font-weight", 500)
                     .attr('text-anchor', 'middle');
 
