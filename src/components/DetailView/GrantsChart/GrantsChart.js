@@ -204,56 +204,59 @@ const GrantsChart = ({ onYearClicked }) => {
             const color = summary[data_index].color;
             const where_y = data_index * 20 - 5;
 
-            d3.select('.legend_' + class_name)
-                .append('circle')
-                .style('fill', color)
-                .style('r', 3)
-                .attr('cx', 10)
-                .attr('cy', -4 + where_y);
+            if (!didMount.current) {
 
-            d3.select('.legend_' + class_name)
-                .append('line')
-                .attr('x1', 0).attr('x2', 20)
-                .attr('y1', -4 + where_y).attr('y2', -4 + where_y)
-                .style('stroke', color);
+              d3.select('.legend_' + class_name)
+                  .append('circle')
+                  .style('fill', color)
+                  .style('r', 3)
+                  .attr('cx', 10)
+                  .attr('cy', -4 + where_y);
 
-            d3.select('.legend_' + class_name)
-                .append('text')
-                .attr('x', 30)
-                .attr('y', where_y)
-                .attr('font-size', 20)
-                .attr('font-family', 'Open Sans')
-                .attr('font-style', 'italic')
-                .text(class_name === 'total' ? class_name: 'by ' + class_name)
-                .on('mouseover', function (_) {
+              d3.select('.legend_' + class_name)
+                  .append('line')
+                  .attr('x1', 0).attr('x2', 20)
+                  .attr('y1', -4 + where_y).attr('y2', -4 + where_y)
+                  .style('stroke', color);
 
-                    this.style.fontWeight = 'bold';
-                    const titles = summary.map(function (d) { return d.title; });
-                    titles.forEach(function (da) {
+              d3.select('.legend_' + class_name)
+                  .append('text')
+                  .attr('x', 30)
+                  .attr('y', where_y)
+                  .attr('font-size', 20)
+                  .attr('font-family', 'Open Sans')
+                  .attr('font-style', 'italic')
+                  .text(class_name === 'total' ? class_name: 'by ' + class_name)
+                  .on('mouseover', function (_) {
 
-                        if (da !== class_name) {
-                            d3.select('.' + da).select('.lines').select('path').style("opacity", 0.3);
-                        } else {
-                            d3.select('.' + da).select('.lines').select('path').style("stroke", 'rgb(25, 84, 166)');
-                            d3.select('.' + da).select('.points').selectAll('circle').style("fill", 'rgb(25, 84, 166)');
-                        }
-                        d3.select('.' + da).select('.points').selectAll('circle').style("opacity", 0);
-                    })
-                })
-                .on('mouseout', function (_) {
+                      this.style.fontWeight = 'bold';
+                      const titles = summary.map(function (d) { return d.title; });
+                      titles.forEach(function (da) {
 
-                    this.style.fontWeight = 'normal';
-                    summary.forEach(function (da) {
+                          if (da !== class_name) {
+                              d3.select('.' + da).select('.lines').select('path').style("opacity", 0.3);
+                          } else {
+                              d3.select('.' + da).select('.lines').select('path').style("stroke", 'rgb(25, 84, 166)');
+                              d3.select('.' + da).select('.points').selectAll('circle').style("fill", 'rgb(25, 84, 166)');
+                          }
+                          d3.select('.' + da).select('.points').selectAll('circle').style("opacity", 0);
+                      })
+                  })
+                  .on('mouseout', function (_) {
 
-                        if (da.title !== class_name) {
-                            d3.select('.' + da.title).select('.lines').select('path').style("opacity", 1);
-                        } else {
-                            d3.select('.' + da.title).select('.lines').select('path').style("stroke", da.color);
-                            d3.select('.' + da.title).select('.points').selectAll('circle').style("fill", da.color);
-                        }
-                        d3.select('.' + da.title).select('.points').selectAll('circle').style("opacity", 1);
-                    })
-                });
+                      this.style.fontWeight = 'normal';
+                      summary.forEach(function (da) {
+
+                          if (da.title !== class_name) {
+                              d3.select('.' + da.title).select('.lines').select('path').style("opacity", 1);
+                          } else {
+                              d3.select('.' + da.title).select('.lines').select('path').style("stroke", da.color);
+                              d3.select('.' + da.title).select('.points').selectAll('circle').style("fill", da.color);
+                          }
+                          d3.select('.' + da.title).select('.points').selectAll('circle').style("opacity", 1);
+                      })
+                  });
+            }  
 
         }
 
