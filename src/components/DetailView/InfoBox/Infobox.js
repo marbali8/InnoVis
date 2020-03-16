@@ -11,8 +11,8 @@ const Infobox = ({ onYearClicked }) => {
     const year_choice = onYearClicked;
     // set dimensions of the graph
     const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-    const total_width = 330;
-    const total_height = 260;
+    const total_width = 10;
+    const total_height = 120;
     const width = total_width - margin.left - margin.right;
     const height = total_height - margin.top - margin.bottom;
 
@@ -42,22 +42,22 @@ const Infobox = ({ onYearClicked }) => {
                 }
             }
 
-            const largeFont = 28;
+            const largeFont = 18;
             const smallSpace = 5;
-            const largeSpace = 20;
+            const largeSpace = 12;
 
             var y = margin.top + largeFont / 2;
             svg
                 .append('text')
                 .attr("x", width / 2 - 30)
                 .attr("y", y - 45)
-                .attr('font-size', 20)
+                .attr('font-size', 14)
                 .attr('font-weight', 'bold')
                 .attr('text-anchor', 'middle')
                 .text("Statistics for " + onYearClicked + (onYearClicked === 2010 ? '' : " / change from prev. year (" + (onYearClicked - 1) + ")"));
 
             //ideas
-            var y = margin.top + largeSpace + smallSpace;
+            y = margin.top;
             var diff = 0;
             svg
                 .append('text')

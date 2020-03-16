@@ -34,8 +34,8 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    left: 45px;
-    top: 50px;
+    left: 30px;
+    top: 30px;
     border-radius: 10px;
     padding: 10px;
     @include blurEffect(0.5, 15px)
@@ -47,7 +47,7 @@
     align-items: center;
     position: absolute;
     right: 45px;
-    bottom: 50px;
+    bottom: 0px;
     border-radius: 10px;
     @include blurEffect(0.5, 15px)
   }
@@ -61,7 +61,7 @@
     justify-self: center;
     margin: 0 auto;
 
-    padding-top: 50px;
+    padding-top: 30px;
 
     .infoButton {
       position: absolute;
@@ -83,13 +83,13 @@
 
         .title {
           font-weight: bold;
-          font-size: 60px;
+          font-size: 40px;
           border-bottom: 2px solid;
         }
 
         .subtitle {
           margin-top: 10px;
-          font-size: 20px;
+          font-size: 14px;
           font-style: italic;
         }
       }
@@ -117,12 +117,12 @@
       // display:inline-block;
       z-index: 2;
       position: absolute;
-      left: 45px;
-      bottom: 80px;
+      left: 20px;
+      bottom: 0px;
     }
 
     .grantsChart {
-      border-radius: 10px;
+      border-radius: 0px;
       padding: 20px;
       z-index: 2;
     }
@@ -150,14 +150,14 @@
       position: relative;
       fill: black;
       font-family: "Open Sans", sans-serif;
-      font-size: 24px;
+      font-size: 12px;
       z-index: 2;
 
     }
 
     .timeSlider {
       position: absolute;
-      bottom: 50px;
+      bottom: 20px;
       padding: 20px;
       border-radius: 100px;
       z-index: 2;

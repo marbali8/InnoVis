@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from 'd3';
 
 const BallsLegend = ({
-    height = 100, width,
-    margin = { left: 0, right: 0, top: 20, bottom: 0 },
+    height = 60, width,
+    margin = { left: 0, right: 0, top: 10, bottom: 0 },
 }) => {
 
     const anchor = useRef();
@@ -54,7 +54,7 @@ const BallsLegend = ({
                     .attr('class', 'details')
                     .attr('x', (maxR * 2))
                     .attr('y', height / 2 / 1.3 - 8)
-                    .style("font-size", 24)
+                    .style("font-size", 14)
                     .attr('text-anchor', 'start');
 
                 d3.selectAll('.details')

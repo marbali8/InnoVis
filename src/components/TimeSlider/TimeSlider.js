@@ -5,15 +5,15 @@ import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import classes from './TimeSlider.module.scss';
 
-const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range = [0, 100] }) => {
+const TimeSlider = ({ height = 70, width = 600, onYearClicked, range = [0, 100] }) => {
 
     // TODO: will need also data for the graph behind, w/h for the graph
     // TODO: will need to call a drag event of main view
     // TODO: be able to upload svg's width and height
 
-    var margin = { left: 100, right: 100 },
+    var margin = { left: 50, right: 50 },
         step = 1,
-        stroke_width = 20;
+        stroke_width = 15;
 
     // state and ref to svgI guess I don't really understand everything, but it does sound like we're not doing it as one sho
     let divRef = useRef();
@@ -63,25 +63,25 @@ const TimeSlider = ({ height = 180, width = 1000, onYearClicked, range = [0, 100
         */
         const text = svg_.append("text")
             .attr('x', width / 2)
-            .attr('y', 60)
-            .attr('font-size', '60pt')
+            .attr('y', 25)
+            .attr('font-size', 35)
             .attr('font-family', 'open sans, sans-serif')
-            .attr('text-anchor', 'middle')
+            .attr('text-anchor', 'middle');
 
         const start = svg_.append("text")
             .attr("font-weight", function () { return 600; })
-            .attr('x', 50)
-            .attr('y', 97)
-            .attr('font-size', '16pt')
+            .attr('x', 20)
+            .attr('y', height/2 + 5)
+            .attr('font-size', 14)
             .attr('font-family', 'open sans, sans-serif')
             .attr('text-anchor', 'middle')
             .text('2010');
 
         const end = svg_.append("text")
             .attr("font-weight", function () { return 600; })
-            .attr('x', 950)
-            .attr('y', 97)
-            .attr('font-size', '16pt')
+            .attr('x', width-20)
+            .attr('y', height/2 + 5)
+            .attr('font-size', 14)
             .attr('font-family', 'open sans, sans-serif')
             .attr('text-anchor', 'middle')
             .text('2018');

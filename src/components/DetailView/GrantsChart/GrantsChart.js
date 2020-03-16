@@ -11,8 +11,8 @@ const GrantsChart = ({ onYearClicked }) => {
     const year_choice = onYearClicked;
     // set dimensions of the graph
     const margin = { top: 10, right: 20, bottom: 50, left: 20 };
-    const width = 500 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    const width = 320 - margin.left - margin.right;
+    const height = 350 - margin.top - margin.bottom;
     const axis_height = height - 50;
 
     // state and ref to svg
@@ -110,9 +110,9 @@ const GrantsChart = ({ onYearClicked }) => {
             d3.select('.title').select('text')
                 //.attr("transform", 'translate(15, ' + margin.top + ')')
                 .attr('text-anchor', 'middle')
-                .attr('x', scale_width / 2)
+                .attr('x', scale_width / 2 + 3)
                 .attr('y', margin.top)
-                .attr('font-size', 20)
+                .attr('font-size', 12)
                 .attr('font-weight', 'bold')
                 .attr('font-family', 'Open Sans')
                 .text('Number of ideas supported in ' + year_choice);
@@ -127,14 +127,12 @@ const GrantsChart = ({ onYearClicked }) => {
             d3.select('.xaxis')
                 .call(x_axis)
                 .attr("transform", 'translate(' + margin.left + ' ' + (axis_height - margin.bottom) + ')')
-                .attr('font-family', 'Open Sans')
-                .attr('font-size', 14);
+                .attr('font-family', 'Open Sans');
 
             d3.select('.yaxis')
                 .call(y_axis)
                 .attr("transform", 'translate(' + margin.left + ' ' + 0 + ')')
-                .attr('font-family', 'Open Sans')
-                .attr('font-size', 14);
+                .attr('font-family', 'Open Sans');
 
             // lines and points
 
@@ -157,7 +155,7 @@ const GrantsChart = ({ onYearClicked }) => {
             d3.select('.' + class_name).select('.lines')
                 .select('path')
                 .style("stroke", color)
-                .style("stroke-width", class_name === 'total' ? 5 : 3)
+                .style("stroke-width", class_name === 'total' ? 4 : 2)
                 .style("fill", 'none')
                 .transition().ease(d3.easeQuad)
                 .duration(500)
@@ -202,7 +200,7 @@ const GrantsChart = ({ onYearClicked }) => {
 
             const class_name = summary[data_index].title;
             const color = summary[data_index].color;
-            const where_y = data_index * 20 - 5;
+            const where_y = data_index * 15 - 5;
 
             if (!didMount.current) {
 
@@ -223,7 +221,7 @@ const GrantsChart = ({ onYearClicked }) => {
                     .append('text')
                     .attr('x', 30)
                     .attr('y', where_y)
-                    .attr('font-size', 20)
+                    .attr('font-size', 12)
                     .attr('font-family', 'Open Sans')
                     .attr('font-style', 'italic')
                     .text(class_name === 'total' ? class_name : 'ideas by ' + class_name)

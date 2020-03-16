@@ -9,8 +9,8 @@ const transitionDuration = 900;
 /** Sunburst component that updates everytime a prop changes with a transition animation, takes in a list of data + other optional props
  data prop format example: [{ label: 'FirstObj', color: 'red', value: 1 }, { label: 'SecondObj', color: 'blue', value: 1 }] */
 const Sunburst = ({
-    widthHeightValue = 600,
-    margin = { top: 50, right: 0, bottom: 0, left: 0 },
+    widthHeightValue = 300,
+    margin = { top: 20, right: 0, bottom: 0, left: 0 },
     data = []
 }) => {
 
@@ -50,7 +50,7 @@ const Sunburst = ({
         addTextInCenter();
 
         d3.selectAll(".top_text").text("Distribution across industry types")
-            .style("font-size", "25px")
+            .style("font-size", 14)
             .style("font-weight", 'bold');
 
         didMount.current = true;
@@ -104,7 +104,7 @@ const Sunburst = ({
                     d3.selectAll('.arc').attr("opacity", 0.5);
                     d3.select(this).attr("opacity", 1.0);
                     d3.selectAll(".center_text").text(d.data.fractional)
-                        .style("font-size", "30px")
+                        .style("font-size", 20)
                         .style("font-weight", 750);
 
                     d3.select('.balls').selectAll('circle').attr('opacity', 0.1);
@@ -133,7 +133,7 @@ const Sunburst = ({
             center_text
                 .enter().append('text')
                 .attr('x', width / 2)
-                .attr('y', height / 2 + 12)
+                .attr('y', height / 2 + 8)
                 .attr('class', 'center_text')
                 .style("text-anchor", "middle")
                 .text("");

@@ -3,16 +3,16 @@
 .container{
     display:flex;
     flex-direction:column;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 
     .categoryRow{
         display:flex;
         align-items:center;
-        height:35px;
+        height:20px;
 
         .companyLabel{
              font-family:$font;
-             font-size: 24px;
+             font-size: 14px;
              padding: 10 10;
         }
     }
