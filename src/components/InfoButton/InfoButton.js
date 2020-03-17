@@ -5,7 +5,7 @@ const InfoButton = () => {
 
     const [showButton, setShowButton] = useState(false);
 
-    return <div>
+    return <div style={{ zIndex: '100' }}>
         <div onClick={() => { setShowButton(!showButton) }} className={classes.InfoButton}>
             <div className={classes.button}>?</div>
             {showButton && <div className={classes.popupBox}>
