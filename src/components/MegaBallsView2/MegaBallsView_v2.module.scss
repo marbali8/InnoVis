@@ -14,10 +14,10 @@
 
 
 .tooltipBox {
-  width: 450px;
+  width: 300px;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
   font-family: $font;
-  padding: 20px;
+  padding: 10px;
   background: #ffffff;
   position: absolute;
   border-radius: 10px;
@@ -28,20 +28,35 @@
   text-align: center;
   font-weight: bold;
   padding-bottom: 5px;
-  font-size: 24px;
+  font-size: 14px;
+}
+
+.tooltipEmployees {
+  font-size: 12px;
+}
+
+.tooltipRevenue {
+  font-size: 12px;
 }
 
 .tooltipFounded {
+  font-size: 12px;
   padding-top: 5px;
 }
 
+.tooltipFounders {
+  font-size: 12px;
+}
+
 .tooltipInfo{
+  font-size: 12px;
   display: block;
   padding-top: 5px;
 }
 
 .tooltipWebsite {
+  font-size: 12px;
   display: block;
-  padding-top: 10px;
+  padding-top: 5px;
   text-align: center;
 }
