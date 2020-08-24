@@ -1,3 +1,13 @@
+KTH Innovation is for students or researchers who need help in developing their business ideas. If you want to test your technology idea or research result and get market feedback, they offer business development support. 
+They asked us to create a visualization to show KTH Innovation to the world and answer questions like in which fields ideas from KTH has contributed the most or the impact companies started at KTH have created in society (in terms of revenue, job opportunities, etc.).
+This is our visualisation showing the impact KTH Innovation is making on the work sector.
+
+https://youtu.be/qr43dCNDrp8
+
+
+-------------------------
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
